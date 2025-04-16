@@ -32,6 +32,12 @@ public partial class TheWitcher : Mod
                 skill = o_skill_weapon_coating
             "),
             new MslEvent(eventType: EventType.Other, subtype: 10, code: "event_inherited()"),
+            new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
+                event_inherited()
+                var _name = ds_map_find_value(data, ""idName"")
+                with (skill)
+                    coating_oil = _name
+            "),
             new MslEvent(eventType: EventType.Other, subtype: 25, code: @"
                 event_inherited()
                 with (loot_object)
@@ -81,8 +87,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "吊死鬼之毒"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it adds ~lg~+50%~/~ Weapon Damage when fighting humanoid creatures."},
-                    {ModLanguage.Chinese, "应用于武器，在与类人生物战斗时，使兵器伤害~lg~+50%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to humanoids by ~lg~20%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对类人生物造成的伤害增加~lg~20%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Hanged Man's Venom is a toxin that is equally lethal to humans, elves and dwarves. Applied to a blade, it deals more damage than any other coating. This oil is ineffective against monsters."},

@@ -7,6 +7,7 @@ with (interact_id)
     {
 
         // Effects
+        scr_apply_coating_oil(other.coating_oil)
 
         if inmouse
         {
