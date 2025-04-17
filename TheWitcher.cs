@@ -32,6 +32,8 @@ call.i gml_Script_scr_coating_oil_damage_calc(argc=2)
 pop.v.v local._damage
 pushloc.v local._damage")
             .Save();
+
+        PatchWitcherSkills();
     }
 
     private void PatchWeaponCoatingSkill()
