@@ -91,19 +91,15 @@ public partial class TheWitcher : Mod
                 event_perform_object(child_skill, ev_create, 0)
             "),
 
-            new MslEvent(eventType: EventType.Other, subtype: 10, code: @"
+            new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
                 event_inherited()
-                if ((!is_open) && can_learn && round(scr_atr(""SP"")) >= 1)
+                var _list = scr_atr(""recipesWitcherAlchemyOpened"")
+                ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"")
+                with (o_craftingMenu)
                 {
-                    var _list = scr_atr(""recipesWitcherAlchemyOpened"")
-                    ds_list_add(_list, ""hanged_man_venom"")
-                    show_message(""hanged_man_venom"")
-                    with (o_craftingMenu)
-                    {
-                        event_user(11);
-                        event_user(13);
-                        event_user(12);
-                    }
+                    event_user(11);
+                    event_user(13);
+                    event_user(12);
                 }
             ")
         );

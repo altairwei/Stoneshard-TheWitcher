@@ -23,7 +23,7 @@ public partial class TheWitcher : Mod
 
         PatchCoatingDisplay();
         PatchWeaponCoatingSkill();
-        PatchHangedManVenom();
+        AddWeaponOil();
 
         Msl.LoadAssemblyAsString("gml_GlobalScript_scr_damage_calculation")
             .MatchFrom("ret.v")

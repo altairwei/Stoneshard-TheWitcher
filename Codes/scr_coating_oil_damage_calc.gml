@@ -33,7 +33,11 @@ function scr_coating_oil_damage_calc()
                     _multiplier = 1.2
                 break;
             }
-        break;
+            break;
+        case "vampire_oil":
+            if (_target.typeID == "vampire")
+                _multiplier = 1.2
+            break;
     }
 
     if (_multiplier > 1)

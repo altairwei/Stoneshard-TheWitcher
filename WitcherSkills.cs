@@ -45,6 +45,18 @@ public partial class TheWitcher : Mod
             new MslEvent("o_skill_category_witcher_other_24.gml", EventType.Other, 24)
         );
 
+        /*
+        o_skill_category_witcher.ApplyEvent(
+            new MslEvent(eventType: EventType.Other, subtype: 10, code: @"
+                event_inherited()
+                if (learning_skill.object_index == o_skill_witcher_alchemy_ico)
+                {
+                    show_message(""o_skill_category_witcher_other_10"")
+                }
+            ")
+        );
+        */
+
         Msl.LoadGML("gml_Object_o_skillmenu_Create_0")
             .MatchFrom("var _metaCategoriesArray = ")
             .InsertBelow(@"array_push(_metaCategoriesArray[1], o_skill_category_witcher)")
