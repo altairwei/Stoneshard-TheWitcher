@@ -94,7 +94,8 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
                 event_inherited()
                 var _list = scr_atr(""recipesWitcherAlchemyOpened"")
-                ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"")
+                ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"", ""necrophage_oil"",
+                                    ""specter_oil"", ""insectoid_oil"", ""hybrid_oil"")
                 with (o_craftingMenu)
                 {
                     event_user(11);

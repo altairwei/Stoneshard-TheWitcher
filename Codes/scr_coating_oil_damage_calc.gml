@@ -37,6 +37,22 @@ function scr_coating_oil_damage_calc()
             if (_target.typeID == "vampire")
                 _oil_damage = _damage * 0.2
             break;
+        case "necrophage_oil":
+            if (_target.typeID == "undead")
+                _oil_damage = _damage * 0.2
+            break;
+        case "specter_oil":
+            if (_target.typeID == "spectre")
+                _oil_damage = _damage * 0.4
+            break;
+        case "insectoid_oil":
+            if (_target.object_index == o_crawler || _target.object_index == o_hornets)
+                _oil_damage = _damage * 0.4
+            break;
+        case "hybrid_oil":
+            if (_target.object_index == o_crawler || _target.object_index == o_hornets)
+                _oil_damage = _damage * 0.3
+            break;
     }
 
     if (_oil_damage > 1)
