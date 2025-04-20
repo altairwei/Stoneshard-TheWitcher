@@ -1,10 +1,11 @@
 function scr_coating_oil_damage_calc()
 {
-    var _target = argument0
-    var _damage = argument1
+    var _target = argument1
+    var _damage = argument0
+    var _oil_damage = 0
 
     if (!is_player())
-        return _damage;
+        return _oil_damage;
 
     var _oil = ""
     var _count = 0
@@ -18,9 +19,7 @@ function scr_coating_oil_damage_calc()
     }
 
     if (_count < 1)
-        return _damage;
-
-    var _multiplier = 1
+        return _oil_damage;
 
     switch (_oil)
     {
@@ -30,18 +29,18 @@ function scr_coating_oil_damage_calc()
                 case "human":
                 case "elf":
                 case "dwarf":
-                    _multiplier = 1.2
+                    _oil_damage = _damage * 0.2
                 break;
             }
             break;
         case "vampire_oil":
             if (_target.typeID == "vampire")
-                _multiplier = 1.2
+                _oil_damage = _damage * 0.2
             break;
     }
 
-    if (_multiplier > 1)
+    if (_oil_damage > 1)
         scr_actionsLogUpdate("Target:" + object_get_name(_target.object_index))
 
-    return math_round(_damage * _multiplier)
+    return math_round(_oil_damage)
 }

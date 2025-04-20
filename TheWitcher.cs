@@ -4,6 +4,7 @@
 
 using ModShardLauncher;
 using ModShardLauncher.Mods;
+using UndertaleModLib;
 using UndertaleModLib.Models;
 
 namespace TheWitcher;
@@ -24,14 +25,6 @@ public partial class TheWitcher : Mod
         PatchCoatingDisplay();
         PatchWeaponCoatingSkill();
         AddWeaponOil();
-
-        Msl.LoadAssemblyAsString("gml_GlobalScript_scr_damage_calculation")
-            .MatchFrom("ret.v")
-            .InsertAbove(@"push.v arg.argument0
-call.i gml_Script_scr_coating_oil_damage_calc(argc=2)
-pop.v.v local._damage
-pushloc.v local._damage")
-            .Save();
 
         PatchWitcherSkills();
     }

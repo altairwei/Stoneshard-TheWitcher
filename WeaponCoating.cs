@@ -102,6 +102,7 @@ public partial class TheWitcher : Mod
             ")
         );
 
+        AddWeaponOilDamageMechanism();
         AddWeaponOilTexts();
         AddWeaponOilObject("hanged_man_venom");
         AddWeaponOilObject("vampire_oil");
@@ -190,6 +191,42 @@ public partial class TheWitcher : Mod
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Whosoever seeks to destroy a vampire, to banish it from this world forever, should prepare St. Gregory's Oil, called Vampire Oil by witchers. No fleder or bruxa can withstand it."},
                     {ModLanguage.Chinese, "无论谁想消灭吸血鬼，将其永远驱逐出这个世界，都应该准备圣格雷戈里油，猎魔人称之为吸血鬼油。任何蝙蝠或巫婆都无法抵御它。"}
+                }
+            )
+        );
+    }
+
+    private void AddWeaponOilDamageMechanism()
+    {
+        Msl.LoadAssemblyAsString("gml_GlobalScript_scr_damage_calculation")
+            .MatchFrom("call.i gml_Script_scr_actionsLogVisible(argc=1)")
+            .InsertAbove(@"pushloc.v local._damage
+call.i gml_Script_scr_coating_oil_damage_calc(argc=2)
+pop.v.v local._oil_damage
+push.v local._damage
+pushloc.v local._oil_damage
+add.v.v
+pop.v.v local._damage
+push.v arg.argument0")
+            .MatchFromUntil("push.s \"Slashing\"", "pushloc.v local._slashing")
+            .InsertBelow(@"push.s ""Weapon_Oil""
+conv.s.v
+pushloc.v local._oil_damage")
+            .MatchFrom("call.i @@NewGMLArray@@(argc=26)")
+            .ReplaceBy("call.i @@NewGMLArray@@(argc=28)")
+            .Save();
+
+        Msl.LoadGML("gml_GlobalScript_scr_actionsLogGetDamageColorTag")
+            .MatchFrom("_colorTag = \"~dp~\"")
+            .InsertBelow("else if (argument0 == \"Weapon_Oil\")\n        _colorTag = \"~dg~\";")
+            .Save();
+
+        Msl.InjectTableLogDamagesLocalization(
+            new LocalizationLogText(
+                id: "Weapon_Oil",
+                name: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "weapon oil"},
+                    {ModLanguage.Chinese, "点剑油"}
                 }
             )
         );
