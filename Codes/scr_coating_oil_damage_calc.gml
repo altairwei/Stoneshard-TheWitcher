@@ -53,6 +53,10 @@ function scr_coating_oil_damage_calc()
             if (_target.object_index == o_crawler || _target.object_index == o_hornets)
                 _oil_damage = _damage * 0.3
             break;
+        case "ogroid_oil":
+            if (_target.object_index == o_small_troll || _target.object_index == o_ancientTroll)
+                _oil_damage = _damage * 0.3
+            break;
     }
 
     if (_oil_damage > 1)

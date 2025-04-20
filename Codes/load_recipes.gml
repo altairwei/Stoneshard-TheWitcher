@@ -17,7 +17,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe2":  "silver_nugget",
         "Recipe3":  "hemp",
         "Recipe4":  "hemp",
-        "Recipe5":  "-",
+        "Recipe5":  "garlic",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "1",
@@ -28,7 +28,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe1":  "oil",
         "Recipe2":  "church_candle",
         "Recipe3":  "mindwort",
-        "Recipe4":  "-",
+        "Recipe4":  "rhubarb",
         "Recipe5":  "-",
         "Recipe6":  "-",
         "AMOUNT":   "1",
@@ -65,7 +65,19 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe2":  "flyagaric",
         "Recipe3":  "henbane",
         "Recipe4":  "burnet",
-        "Recipe5":  "-",
+        "Recipe5":  "citrus",
+        "Recipe6":  "-",
+        "AMOUNT":   "1",
+        "XP":       "1",
+        "SOURCE":   "Skill"
+    },
+    "ogroid_oil": {
+        "CAT":      "weapon_oil",
+        "Recipe1":  "oil",
+        "Recipe2":  "stool",
+        "Recipe3":  "stool",
+        "Recipe4":  "henbane",
+        "Recipe5":  "citrus",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "1",
@@ -77,5 +89,5 @@ global.recipes_witcher_alchemy_categories_order_list = __dsDebuggerListCreate()
 ds_list_add(global.recipes_witcher_alchemy_categories_order_list, "weapon_oil")
 
 global.recipes_witcher_alchemy_category_order_map = json_decode(@'{
-    "weapon_oil": ["hanged_man_venom", "vampire_oil", "necrophage_oil", "specter_oil", "insectoid_oil", "hybrid_oil"]
+    "weapon_oil": ["hanged_man_venom", "vampire_oil", "necrophage_oil", "specter_oil", "insectoid_oil", "hybrid_oil", "ogroid_oil"]
 }')

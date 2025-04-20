@@ -95,7 +95,7 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 var _list = scr_atr(""recipesWitcherAlchemyOpened"")
                 ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"", ""necrophage_oil"",
-                                    ""specter_oil"", ""insectoid_oil"", ""hybrid_oil"")
+                                    ""specter_oil"", ""insectoid_oil"", ""hybrid_oil"", ""ogroid_oil"")
                 with (o_craftingMenu)
                 {
                     event_user(11);

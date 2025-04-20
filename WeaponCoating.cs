@@ -110,6 +110,7 @@ public partial class TheWitcher : Mod
         AddWeaponOilObject("specter_oil");
         AddWeaponOilObject("insectoid_oil");
         AddWeaponOilObject("hybrid_oil");
+        AddWeaponOilObject("ogroid_oil");
     }
 
     private int oil_idx = 0;
@@ -253,12 +254,28 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "混种兽油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to hybrids (such as Harpy and Gulon) by ~lg~40%~/~."},
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to hybrids (such as Harpy and Gulon) by ~lg~30%~/~."},
                     {ModLanguage.Chinese, "应用于武器，对混种兽（比如哈比和谷隆）造成的伤害增加~lg~30%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Hybrids combine the capabilities, the strengths, and the weaknesses of different creatures, so they should never be taken lightly. However, this oil is very effective against monsters of this type."},
                     {ModLanguage.Chinese, "混种兽结合了不同生物的能力、长处和弱点，因此绝不能掉以轻心。不过，这种剑油对混种兽非常有效。"}
+                }
+            ),
+
+            new LocalizationItem(
+                id: "ogroid_oil",
+                name: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Ogroid Oil"},
+                    {ModLanguage.Chinese, "食人魔油"}
+                },
+                effect: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to trolls by ~lg~30%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对巨魔造成的伤害增加~lg~30%~/~。"}
+                },
+                description: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Trolls are giant, eat or ate human flesh. This oil is very effective against trolls."},
+                    {ModLanguage.Chinese, "巨魔是巨人，吃人肉。这种油对巨魔非常有效。"}
                 }
             )
         );
