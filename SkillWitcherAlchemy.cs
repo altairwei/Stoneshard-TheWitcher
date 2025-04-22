@@ -6,7 +6,7 @@ namespace TheWitcher;
 
 public partial class TheWitcher : Mod
 {
-    private void PatchSkill_Witcher_Alchemy()
+    private void AddSkill_Witcher_Alchemy()
     {
         AdjustSkillIcon("s_witcher_alchemy");
 

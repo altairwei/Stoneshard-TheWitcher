@@ -12,7 +12,8 @@ public partial class TheWitcher : Mod
         Msl.GetSprite("s_witcher_branch").OriginX = 0;
         Msl.GetSprite("s_witcher_branch").OriginY = 0;
 
-        PatchSkill_Witcher_Alchemy();
+        AddSkill_Witcher_Alchemy();
+        AddSkill_Quen_Sign();
 
         // Add Skill Branch
 
@@ -24,8 +25,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "猎魔人"}
                 },
                 hover: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Gained the ability to leech blood through an occult ritual, but also became extremely tyrannical and bloodthirsty.##~y~Main focus:~/~#~w~High Damage~/~, ~w~Bleeding~/~, ~w~Survivability~/~"},
-                    {ModLanguage.Chinese, "通过秘仪获得了吸血能力，但也因此变得异常暴虐嗜血。##~y~能力要义：~/~#~w~高伤害~/~、~w~造成出血~/~、~w~生存能力~/~"}
+                    {ModLanguage.English, "##~y~Main focus:~/~#~w~Survival~/~, ~w~Support~/~, ~w~Crowd Control~/~"},
+                    {ModLanguage.Chinese, "通过青草试炼获得强健的体魄和毒素免疫能力，在战斗中使用各种炼金物品和简单的法术。##~y~能力要义：~/~#~w~生存~/~、~w~辅助~/~、~w~控场~/~"}
                 }
             )
         );
@@ -40,9 +41,20 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
-        o_skill_category_witcher.ApplyEvent(ModFiles,
-            new MslEvent("o_skill_category_witcher_create_0.gml", EventType.Create, 0),
-            new MslEvent("o_skill_category_witcher_other_24.gml", EventType.Other, 24)
+        o_skill_category_witcher.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                text = ""Witcher""
+                skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico]
+                branch_sprite = s_witcher_branch
+                owner = gml_Script_scr_GetMobParametr
+            "),
+            new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
+                event_inherited()
+                // Tier 1
+                scr_guiLayoutOffsetUpdate(o_skill_witcher_alchemy_ico, 24, 55, 1)
+                scr_guiLayoutOffsetUpdate(o_skill_quen_sign_ico, 62, 55, 1)
+            ")
         );
 
         /*
