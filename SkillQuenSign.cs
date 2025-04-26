@@ -19,7 +19,7 @@ public partial class TheWitcher : Mod
                 },
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @"Opens the menu for ~w~crafting weapon coating oil~/~."},
-                    {ModLanguage.Chinese, @"被动性法印，形成一个法力护盾围绕猎魔人，让他暂时无法被伤害，可以吸收物理伤害。"}
+                    {ModLanguage.Chinese, @"触发~w~6~/~回合耐久为~lg~/*Shield_Duration*/~/~点的~lg~“法力护盾”~/~：##精力自动恢复~r~-25%~/~##触发时有~w~/*Cure_Chance*/%~/~的概率会消除~r~流血~/~和~o~着火~/~状态。##护盾会吸收所有物理、自然和魔法伤害，直到破损为止。"}
                 }
             )
         );
@@ -60,6 +60,27 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 13, code: @"
                 event_inherited()
                 scr_stop_player()
+                if instance_exists(owner)
+                {
+                    var _chance = 45 * owner.Magic_Power / 100
+                    if (scr_chance_value(_chance))
+                    {
+                        with (scr_instance_exists_in_list(o_db_bleed_parent, owner.buffs))
+                            instance_destroy()
+                        with (scr_instance_exists_in_list(o_db_gaping_wound, owner.buffs))
+                            instance_destroy()
+                        with (scr_instance_exists_in_list(o_db_fire, owner.buffs))
+                            instance_destroy()
+                    }
+                }
+            "),
+            new MslEvent(eventType: EventType.Other, subtype: 17, code: @"
+                if instance_exists(owner)
+                {
+                    ds_map_replace(data, ""Shield_Duration"", 25 + 40 * power(owner.Magic_Power / 100, 3))
+                    ds_map_replace(data, ""Cure_Chance"", (45 * owner.Magic_Power / 100))
+                }
+                event_inherited()
             ")
         );
 
@@ -91,8 +112,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "法力护盾"}
                 },
                 description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @"Opens the menu for ~w~crafting weapon coating oil~/~."},
-                    {ModLanguage.Chinese, @"法力护盾（耐久：~lg~/*Shield_Duration*///*Max_Duration*/~/~）围绕猎魔人，让他暂时无法被伤害，可以吸收物理伤害。"}
+                    {ModLanguage.English, @"Magical Shield absorbs all physical, natural and magical damage until broken. Current duration: ~lg~/*Shield_Duration*///*Max_Duration*/~/~"},
+                    {ModLanguage.Chinese, @"法力护盾会吸收所有物理、自然和魔法伤害，直到破损为止。当前耐久：~lg~/*Shield_Duration*///*Max_Duration*/~/~"}
                 }
             )
         );
@@ -100,7 +121,7 @@ public partial class TheWitcher : Mod
         UndertaleGameObject o_b_magical_shield = Msl.AddObject(
             name: "o_b_magical_shield",
             parentName: "o_magical_buff",
-            spriteName: "s_b_stone_armor",
+            spriteName: "s_b_magical_shield",
             isVisible: true,
             isPersistent: false,
             isAwake: true
@@ -113,7 +134,7 @@ public partial class TheWitcher : Mod
                 Max_Duration = 25
                 Shield_Duration = Max_Duration
                 scr_buff_atr()
-                buff_snd = snd_spell_stone_armor
+                buff_snd = snd_abillity_shield_block
             "),
 
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
@@ -130,24 +151,15 @@ public partial class TheWitcher : Mod
                 ds_map_add(data, ""MP_Restoration"", -25)
                 if instance_exists(owner)
                 {
-                    Max_Duration = 25 + 25 * (owner.Magic_Power / 100)
+                    Max_Duration = 25 + 40 * power(owner.Magic_Power / 100, 3)
                     Shield_Duration = Max_Duration
                 }
-            "),
-
-            // gml_Object_o_b_stone_armor_Other_13 每次攻击就会调用？
-            // scr_damage => event_user(3) 有 add_damage 感觉可以抵消伤害
-            // 力挽狂澜貌似可以抵消伤害。
-            // 闪避可以避免消耗护盾耐久
-            new MslEvent(eventType: EventType.Other, subtype: 13, code: @"
-                event_inherited()
-                add_damage = -1 * damage
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
                 event_inherited()
                 with (target)
-                    scr_guiAnimation_ext(x, y, s_brace_yourself_proc)
+                    scr_guiAnimation_ext(x, y, s_magical_shield_proc)
                 if (Shield_Duration <= 0)
                     instance_destroy()
             "),
@@ -162,6 +174,7 @@ public partial class TheWitcher : Mod
             ")
         );
 
+        // Add the mechanism of magical shield in attack processes
         Msl.LoadGML("gml_GlobalScript_scr_attack")
             .MatchFrom("var DMG_r = 0")
             .InsertAbove(@"
@@ -170,6 +183,22 @@ public partial class TheWitcher : Mod
                     P_proc = true
                 }
             ")
+            .Save();
+
+        // Spell attack
+        Msl.LoadGML("gml_GlobalScript_scr_skill_damage")
+            .MatchFrom("    var dmg = 0")
+            .InsertBelow(@"
+    var _magic_shield = false
+    with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
+        _magic_shield = true")
+            .MatchFrom("    if _need_log")
+            .InsertAbove(@"
+    if (_magic_shield && scr_actionsLogVisible(_target))
+    {
+        audio_play_sound(choose(snd_block_1, snd_block_2, snd_block_3, snd_block_4), 4, 0)
+    }
+")
             .Save();
 
         Msl.LoadGML("gml_GlobalScript_scr_damage_physical_calc")
@@ -194,5 +223,27 @@ public partial class TheWitcher : Mod
         }
             ")
             .Save();
+
+        UndertaleSprite animation = Msl.GetSprite("s_magical_shield_proc");
+        animation.CollisionMasks.RemoveAt(0);
+        animation.OriginX = 20;
+        animation.OriginY = 15;
+        animation.IsSpecialType = true;
+        animation.SVersion = 3;
+        animation.GMS2PlaybackSpeed = 0.5f;
+        animation.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+    
+        AdjustBuffIcon("s_b_magical_shield");
+    }
+
+    private void AdjustBuffIcon(string name)
+    {
+        UndertaleSprite buff_ico = Msl.GetSprite(name);
+        buff_ico.OriginX = 13;
+        buff_ico.OriginY = 13;
+        buff_ico.IsSpecialType = true;
+        buff_ico.SVersion = 3;
+        buff_ico.GMS2PlaybackSpeed = 1;
+        buff_ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
     }
 }
