@@ -14,6 +14,7 @@ public partial class TheWitcher : Mod
 
         AddSkill_Witcher_Alchemy();
         AddSkill_Quen_Sign();
+        AddSkill_Axii_Sign();
 
         // Add Skill Branch
 
@@ -45,7 +46,7 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
                 text = ""Witcher""
-                skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico]
+                skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico]
                 branch_sprite = s_witcher_branch
                 owner = gml_Script_scr_GetMobParametr
             "),
@@ -54,20 +55,9 @@ public partial class TheWitcher : Mod
                 // Tier 1
                 scr_guiLayoutOffsetUpdate(o_skill_witcher_alchemy_ico, 24, 55, 1)
                 scr_guiLayoutOffsetUpdate(o_skill_quen_sign_ico, 62, 55, 1)
+                scr_guiLayoutOffsetUpdate(o_skill_axii_sign_ico, 100, 55, 1)
             ")
         );
-
-        /*
-        o_skill_category_witcher.ApplyEvent(
-            new MslEvent(eventType: EventType.Other, subtype: 10, code: @"
-                event_inherited()
-                if (learning_skill.object_index == o_skill_witcher_alchemy_ico)
-                {
-                    show_message(""o_skill_category_witcher_other_10"")
-                }
-            ")
-        );
-        */
 
         Msl.LoadGML("gml_Object_o_skillmenu_Create_0")
             .MatchFrom("var _metaCategoriesArray = ")
