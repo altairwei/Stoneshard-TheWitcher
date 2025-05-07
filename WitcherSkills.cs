@@ -12,6 +12,16 @@ public partial class TheWitcher : Mod
         Msl.GetSprite("s_witcher_branch").OriginX = 0;
         Msl.GetSprite("s_witcher_branch").OriginY = 0;
 
+        UndertaleGameObject o_skill_category_witcher = Msl.AddObject(
+            name: "o_skill_category_witcher", 
+            spriteName: "", 
+            parentName: "o_skill_category_weapon", 
+            isVisible: true, 
+            isPersistent: false, 
+            isAwake: true,
+            collisionShapeFlags: CollisionShapeFlags.Circle
+        );
+
         AddSkill_Witcher_Alchemy();
         AddSkill_Quen_Sign();
         AddSkill_Axii_Sign();
@@ -30,16 +40,6 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "通过青草试炼获得强健的体魄和毒素免疫能力，在战斗中使用各种炼金物品和简单的法术。##~y~能力要义：~/~#~w~生存~/~、~w~辅助~/~、~w~控场~/~"}
                 }
             )
-        );
-
-        UndertaleGameObject o_skill_category_witcher = Msl.AddObject(
-            name: "o_skill_category_witcher", 
-            spriteName: "", 
-            parentName: "o_skill_category_weapon", 
-            isVisible: true, 
-            isPersistent: false, 
-            isAwake: true,
-            collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
         o_skill_category_witcher.ApplyEvent(

@@ -174,7 +174,7 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        // Add the mechanism of magical shield in attack processes
+        // Melee attack
         Msl.LoadGML("gml_GlobalScript_scr_attack")
             .MatchFrom("var DMG_r = 0")
             .InsertAbove(@"
@@ -201,6 +201,28 @@ public partial class TheWitcher : Mod
 ")
             .Save();
 
+        // Arrow attack
+        Msl.LoadGML("gml_Object_o_arrow_Other_10")
+            .MatchFrom("if P_proc")
+            .InsertAbove(@"
+            with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
+            {
+                P_proc = true
+            }")
+            .Save();
+
+        // Throwed item attack
+        Msl.LoadGML("gml_Object_o_throwed_loot_Other_10")
+            .MatchFrom("if P_proc")
+            .InsertAbove(@"
+            with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
+            {
+                P_proc = true
+            }
+            ")
+            .Save();
+
+        // Damage reduction by magical shield
         Msl.LoadGML("gml_GlobalScript_scr_damage_physical_calc")
             .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - argument0.tmpDEF * (1 - Armor_Piercing / 100)) * (1 - argument2 / 100)), 0)))")
             .InsertAbove(@"

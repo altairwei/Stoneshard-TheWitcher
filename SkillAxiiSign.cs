@@ -19,7 +19,7 @@ public partial class TheWitcher : Mod
                 },
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @""},
-                    {ModLanguage.Chinese, @"有~lg~/*Charm_Chance*/%~/~的概率催眠敌人（灵术抗性能抵御催眠），使其变为友方单位~w~/*Charm_Time*/~/~回合。如果目标~y~没有察觉~/~，那么必然催眠成功。之后敌人陷入~w~12~/~回合的~r~“慌乱”~/~。"}
+                    {ModLanguage.Chinese, @"有~lg~/*Charm_Chance*/%~/~的概率~lg~催眠~/~敌人（~r~灵能抗性~/~能抵御~lg~催眠~/~），使其变为友方单位~w~/*Charm_Time*/~/~回合。如果目标~y~没有察觉~/~，那么必然催眠成功。之后敌人陷入~w~12~/~回合的~r~“慌乱”~/~。若催眠失败，则令该技能冷却时间减半。"}
                 }
             )
         );
@@ -37,7 +37,8 @@ public partial class TheWitcher : Mod
             Branch: "witcher",
             Spell: true,
             AP: "x",
-            Bonus_Range: true
+            Bonus_Range: true,
+            Crime: true
         );
 
         UndertaleGameObject o_skill_axii_sign = Msl.AddObject(
@@ -146,7 +147,31 @@ public partial class TheWitcher : Mod
                     if (scr_chance_value(_charm_chance))
                         scr_effect_create(o_db_axii_charm, {Charm_Time}, target, owner)
                     else
+                    {{
                         scr_effect_create(o_db_confuse, 12, target, target)
+                        with (owner)
+                        {{
+                            if (is_player())
+                            {{
+                                with (o_skill_axii_sign)
+                                {{
+                                    var _kd = scr_get_value_Dmap(skill, ""KD"")
+                                    scr_set_kd(skill, ""KD"", floor(_kd / 2))
+                                }}
+
+                                with (o_skill_axii_sign_ico)
+                                {{
+                                    var _kd = scr_get_value_Dmap(skill, ""KD"")
+                                    scr_set_kd(skill, ""KD"", floor(_kd / 2))
+                                }}
+                            }}
+                            else
+                            {{
+                                var _kd = scr_get_value_Dmap(""Axii_Sign"", ""KD"")
+                                scr_set_kd(""Axii_Sign"", floor(_kd / 2))
+                            }}
+                        }}
+                    }}
                 }}
 
                 instance_destroy()

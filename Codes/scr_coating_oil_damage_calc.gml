@@ -5,7 +5,10 @@ function scr_coating_oil_damage_calc()
     var _oil_damage = 0
 
     if (!is_player())
-        return _oil_damage;
+        return 0;
+
+    if (!object_is_ancestor(_target.object_index, o_unit))
+        return 0;
 
     var _oil = ""
     var _count = 0
