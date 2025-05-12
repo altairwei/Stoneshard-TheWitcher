@@ -132,6 +132,7 @@ public partial class TheWitcher : Mod
         o_axii_charm_birth.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
+                scr_audio_play_at(snd_skill_sealofinsight_startcast)
             "),
 
             // Control the chance of charm
