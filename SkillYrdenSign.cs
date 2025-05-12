@@ -23,7 +23,7 @@ public partial class TheWitcher : Mod
                         "在地面放置~w~3~/~个持续~w~9~/~回合的~lg~亚登法印~/~：",
                         "法印被触发前处于隐蔽状态，触发后每回合对敌人造成~p~/*Arcane_Damage*/点秘术伤害~/~。",
                         "造成伤害后有~lg~/*Bleed_Chance*/%~/~几率使敌人腿部出血，有~lg~/*Immob_Chance*/%~/~几率使敌人移动受限~w~2~/~回合（受敌人的击退抗性影响）。",
-                        "每与一个~lg~亚登法印~/~相邻，出血几率~lg~+/*Bleed_Chance*/%~/~，移动受限几率~lg~+/*Immob_Chance*/%~/~。",
+                        "每与一个~lg~亚登法印~/~相邻，当前法印的出血几率~lg~+/*Bleed_Chance*/%~/~，移动受限几率~lg~+/*Immob_Chance*/%~/~。",
                         "站在法印上的普通敌人所受伤害~r~+9%~/~，幽魂类敌人所受伤害~r~+33%~/~。",
                         "施法者站在~lg~亚登法印~/~上时，失手~lg~-9%~/~，精力恢复~lg~+9%~/~，暴击几率~lg~+3%~/~。"
                     )}
@@ -173,10 +173,18 @@ public partial class TheWitcher : Mod
 
                 if (_can_interract)
                 {
-                    target = scr_attack_tile(o_player)
+                    with (o_player)
+                    {
+                        var _target = noone
+                        with (instance_create_depth(scr_round_cell(mouse_x) + 13, scr_round_cell(mouse_y) + 13, 0, o_attacked_target))
+                            _target = id
+                        
+                        other.target = scr_projectile_target(_target.x, _target.y, _target)
+                    }
                     
                     with (target)
                     {
+                        scr_actionsLogUpdate(""====>"" + object_get_name(object_index))
                         if (object_index == o_attacked_target)
                             alarm[0] = -1
                     }
@@ -372,17 +380,6 @@ public partial class TheWitcher : Mod
                             {
                                 var xx = _point[0]
                                 var yy = _point[1]
-                                
-                                if (scr_tile_mark_get_instance(xx div 26, yy div 26))
-                                {
-                                    var _tile = scr_free_tile_array(xx, yy, 1, 1, false)
-                                    
-                                    if (is_array(_tile))
-                                    {
-                                        xx += _tile[0]
-                                        yy += _tile[1]
-                                    }
-                                }
                                 
                                 with (instance_create_depth(xx, yy, 0, spell))
                                 {
