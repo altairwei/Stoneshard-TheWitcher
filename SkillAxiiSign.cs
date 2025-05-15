@@ -22,7 +22,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, string.Join("##",
                         "有~lg~/*Charm_Chance*/%~/~的概率~lg~催眠~/~敌人（受~r~灵能抗性~/~影响），使其变为友方单位~w~/*Charm_Time*/~/~回合。",
                         "如果目标~lg~没有察觉~/~或处于~r~眩晕~/~状态，那么必然催眠成功。如果目标处于~r~慌乱~/~状态，催眠成功率~lg~+20%~/~。",
-                        "催眠失败或者敌人从催眠中醒来后会陷入~w~12~/~回合的~r~“慌乱”~/~。若催眠失败，则令该技能冷却时间~lg~减半~/~。"
+                        "催眠失败或者敌人从催眠中醒来后会陷入~w~12~/~回合的~r~“慌乱”~/~。若催眠失败，则令该技能冷却时间~lg~减半~/~。",
+                        "在与某些居民对话时，可以~lg~催眠~/~对方以获得便利，而代价是阵营~r~声望下降~/~。"
                     )}
                 }
             )
@@ -288,5 +289,78 @@ public partial class TheWitcher : Mod
         img.SVersion = 3;
         img.GMS2PlaybackSpeed = 0.3f;
         img.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
+        // Use Axii Sign in dialogues
+        UndertaleGameObject ob = Msl.AddObject("o_axii_dialog_initializer", isPersistent: true);
+        Msl.AddNewEvent(ob, "", EventType.Create, 0);
+        UndertaleRoom room = Msl.GetRoom("START");
+        room.AddGameObject("Instances", ob);
+
+        Msl.AddFunction(ModFiles.GetCode("scr_mod_apply_axii_charm_in_dialog.gml"), "scr_mod_apply_axii_charm_in_dialog");
+        Msl.AddFunction(ModFiles.GetCode("scr_mod_is_charmed_within.gml"), "scr_mod_is_charmed_within");
+        Msl.LoadGML(Msl.EventName("o_axii_dialog_initializer", EventType.Create, 0))
+            .MatchAll()
+            .InsertBelow(ModFiles, "o_axii_dialog_initializer.gml")
+            .Save();
+
+        Msl.InjectTableDialogLocalization(
+            new LocalizationSentence(
+                id: "npc_bandit_fence_axii_charm",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "You don’t recognize me? It’s Ander! I even bought you a drink just before the shift started! ~r~[Hypnotize]~/~"},
+                    {ModLanguage.Chinese, "你认不出我了？我是安德尔啊！刚刚上工前还请了你杯酒呢！~r~[催眠]~/~"}
+                }
+            ),
+            new LocalizationSentence(
+                id: "npc_bandit_fence_axii_was_charmed",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Oh… sorry, must’ve been seeing things. Skinflint Homs still waiting on you to finish the inventory..."},
+                    {ModLanguage.Chinese, "哦... 抱歉刚眼看花了，铁公鸡还找你清点货物呢..."}
+                }
+            ),
+            new LocalizationSentence(
+                id: "npc_bandit_fence_axii_charm_inspection",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
+                    {ModLanguage.Chinese, "斯... 你小子面生啊，我放你进去过了？"}
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "skinflint_homs_dont_know_player",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
+                    {ModLanguage.Chinese, "*戒备*谁放你进来的？报上名来。"}
+                }
+            ),
+            new LocalizationSentence(
+                id: "skinflint_homs_charm_pc",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
+                    {ModLanguage.Chinese, "我有个主意，你看我这有袋金币，我把它给你，你卖我商品，很合理吧？你赚钱不吃亏，别问我是谁，如何？~r~[催眠]~/~"}
+                }
+            ),
+            new LocalizationSentence(
+                id: "skinflint_homs_was_charmed",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
+                    {ModLanguage.Chinese, "*有节奏的*你给钱...我给货...我们都是好朋友..."}
+                }
+            ),
+            new LocalizationSentence(
+                id: "player_thieveryReaction_axii_charm_pc",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
+                    {ModLanguage.Chinese, "你什么都没看见。~r~[催眠]~/~"}
+                }
+            ),
+            new LocalizationSentence(
+                id: "player_thieveryReaction_axii_charm",
+                sentence: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
+                    {ModLanguage.Chinese, "唉？我刚刚在干嘛来着..."}
+                }
+            )
+        );
     }
 }
