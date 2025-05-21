@@ -184,7 +184,6 @@ public partial class TheWitcher : Mod
                     
                     with (target)
                     {
-                        scr_actionsLogUpdate(""====>"" + object_get_name(object_index))
                         if (object_index == o_attacked_target)
                             alarm[0] = -1
                     }

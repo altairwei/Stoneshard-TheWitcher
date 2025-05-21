@@ -26,6 +26,7 @@ public partial class TheWitcher : Mod
         AddSkill_Quen_Sign();
         AddSkill_Axii_Sign();
         AddSkill_Yrden_Sign();
+        AddSkill_Aard_Sign();
 
         // Add Skill Branch
 
@@ -47,7 +48,8 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
                 text = ""Witcher""
-                skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico]
+                skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico,
+                         o_skill_aard_sign_ico]
                 branch_sprite = s_witcher_branch
                 owner = gml_Script_scr_GetMobParametr
             "),
@@ -58,6 +60,8 @@ public partial class TheWitcher : Mod
                 scr_guiLayoutOffsetUpdate(o_skill_quen_sign_ico, 62, 55, 1)
                 scr_guiLayoutOffsetUpdate(o_skill_axii_sign_ico, 100, 55, 1)
                 scr_guiLayoutOffsetUpdate(o_skill_yrden_sign_ico, 138, 55, 1)
+                // Tier 2
+                scr_guiLayoutOffsetUpdate(o_skill_aard_sign_ico, 100, 118, 1)
             ")
         );
 
