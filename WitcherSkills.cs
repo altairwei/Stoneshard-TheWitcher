@@ -27,6 +27,7 @@ public partial class TheWitcher : Mod
         AddSkill_Axii_Sign();
         AddSkill_Yrden_Sign();
         AddSkill_Aard_Sign();
+        AddSkill_Igni_Sign();
 
         // Add Skill Branch
 
@@ -49,7 +50,7 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 text = ""Witcher""
                 skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico,
-                         o_skill_aard_sign_ico]
+                         o_skill_aard_sign_ico, o_skill_igni_sign_ico]
                 branch_sprite = s_witcher_branch
                 owner = gml_Script_scr_GetMobParametr
             "),
@@ -61,7 +62,8 @@ public partial class TheWitcher : Mod
                 scr_guiLayoutOffsetUpdate(o_skill_axii_sign_ico, 100, 55, 1)
                 scr_guiLayoutOffsetUpdate(o_skill_yrden_sign_ico, 138, 55, 1)
                 // Tier 2
-                scr_guiLayoutOffsetUpdate(o_skill_aard_sign_ico, 100, 118, 1)
+                scr_guiLayoutOffsetUpdate(o_skill_aard_sign_ico, 81, 118, 1)
+                scr_guiLayoutOffsetUpdate(o_skill_igni_sign_ico, 138, 118, 1)
             ")
         );
 

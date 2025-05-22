@@ -20,7 +20,8 @@ public partial class TheWitcher : Mod
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @"No translation"},
                     {ModLanguage.Chinese, string.Join("##",
-                        "产生冲击波，对一定范围内的敌人造成~w~/*Blunt_Damage*/点钝击伤害~/~，本次伤害击退几率~w~/*Knockback_Chance*/%~/~、击晕几率~w~/*Daze_Chance*/%~/~、失衡几率~w~/*Stagger_Chance*/%~/~。",
+                        "产生念动冲击波，对一定范围内的敌人造成~w~/*Blunt_Damage*/点钝击伤害~/~，本次伤害击退几率~w~/*Knockback_Chance*/%~/~、击晕几率~w~/*Daze_Chance*/%~/~、失衡几率~w~/*Stagger_Chance*/%~/~。",
+                        "若目标处于~r~慌乱~/~、~r~眩晕~/~等负面精神状态，念动冲击波会对目标额外造成~p~/*Psionic_Damage*/点灵能伤害~/~。",
                         "命中目标会令其~w~4~/~回合内控制抗性~r~/*Stun_Resistance*/%~/~、位移抗性~r~/*Stun_Resistance*/%~/~、灵能抗性~r~/*Psionic_Resistance*/%~/~。这个效果可以叠加，最多~w~2~/~层。",
                         "每有一个目标被法印直接击晕，所有技能当前剩余冷却时间便缩短~lg~2~/~个回合。"
                     )}
@@ -86,6 +87,7 @@ public partial class TheWitcher : Mod
         );
 
         string Blunt_Damage = "13 * owner.Magic_Power / 100";
+        string Psionic_Damage = "owner.WIL * (owner.Magic_Power + owner.Psimantic_Power) / 100";
         string Knockback_Chance = "80 * owner.Magic_Power / 100";
         string Stagger_Chance = "100 * owner.Magic_Power / 100";
         string Daze_Chance = "20 * owner.Magic_Power / 100";
@@ -100,6 +102,7 @@ public partial class TheWitcher : Mod
                 can_learn = true
                 ds_list_add(attribute,
                     ds_map_find_value(global.attribute, ""Magic_Power""),
+                    ds_map_find_value(global.attribute, ""Psimantic_Power""),
                     ds_map_find_value(global.attribute, ""WIL""))
                 ignore_interact = true
                 is_moving = false
@@ -116,6 +119,7 @@ public partial class TheWitcher : Mod
                     ds_map_replace(data, ""Stagger_Chance"", {Stagger_Chance})
                     ds_map_replace(data, ""Daze_Chance"", {Daze_Chance})
                     ds_map_replace(data, ""Stun_Resistance"", {Stun_Resistance})
+                    ds_map_replace(data, ""Psionic_Damage"", {Psionic_Damage})
                     ds_map_replace(data, ""Psionic_Resistance"", {Psionic_Resistance})
                 }}
 
@@ -218,10 +222,15 @@ public partial class TheWitcher : Mod
                     if (target.object_index != o_skill_aoe_zone)
                     {{
                         Blunt_Damage = {Blunt_Damage}
-                        event_inherited()
 
                         if (object_is_ancestor(target.object_index, o_enemy))
                         {{
+                            if (scr_instance_exists_in_list(o_db_confuse, target.buffs)
+                                    && scr_instance_exists_in_list(o_db_daze, target.buffs))
+                                Psionic_Damage = {Psionic_Damage}
+
+                            event_inherited()
+
                             if (scr_chance_value(({Knockback_Chance}) - target.Knockback_Resistance))
                                 scr_cast_knockback(owner, target)
 

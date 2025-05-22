@@ -56,8 +56,8 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
-        string Charm_Chance = "5 * owner.WIL";
-        string Charm_Time = "round(4 * owner.Magic_Power / 100)";
+        string Charm_Chance = "5 * owner.WIL * (100 + owner.Psimantic_Power) / 100";
+        string Charm_Time = "round(4 * (owner.Magic_Power + owner.Psimantic_Power) / 100)";
 
         o_skill_axii_sign.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -67,6 +67,7 @@ public partial class TheWitcher : Mod
                 can_learn = true
                 ds_list_add(attribute,
                     ds_map_find_value(global.attribute, ""Magic_Power""),
+                    ds_map_find_value(global.attribute, ""Psimantic_Power""),
                     ds_map_find_value(global.attribute, ""WIL""),
                     ds_map_find_value(global.attribute, ""Bonus_Range""))
                 ignore_interact = true

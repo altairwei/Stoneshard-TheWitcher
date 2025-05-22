@@ -31,9 +31,9 @@ public partial class TheWitcher : Mod
             )
         );
 
-        string Immob_Chance = "(25 * owner.Magic_Power) / 100";
-        string Arcane_Damage = "(2 * owner.Magic_Power) / 100";
-        string Bleed_Chance = "(15 * owner.Magic_Power) / 100";
+        string Immob_Chance = "(25 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
+        string Arcane_Damage = "(2 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
+        string Bleed_Chance = "(15 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
 
         Msl.InjectTableSkillsStats(
             id: "Yrden_Sign",
@@ -79,6 +79,7 @@ public partial class TheWitcher : Mod
                 can_learn = true
                 ds_list_add(attribute,
                     ds_map_find_value(global.attribute, ""Magic_Power""),
+                    ds_map_find_value(global.attribute, ""Arcanistic_Power""),
                     ds_map_find_value(global.attribute, ""Bonus_Range""))
                 ignore_interact = true
                 is_moving = false
