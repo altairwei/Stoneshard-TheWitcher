@@ -65,10 +65,22 @@ public partial class TheWitcher : Mod
                 sec_charge = charge
                 max_charge = charge
                 bar_color = make_color_rgb(88, 175, 19)
+                ds_map_set(data, ""quality"", (2 << 0))
+                ds_map_set(data, ""Colour"", make_colour_rgb(89, 219, 76))
                 can_merge = true
                 skill = o_skill_weapon_coating
+                dishes_object = o_inv_potion04_empty
             "),
+
+            new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
+                if (charge == 0)
+                    scr_inventory_change_item(dishes_object)
+                
+                event_inherited()
+            "),
+
             new MslEvent(eventType: EventType.Other, subtype: 10, code: "event_inherited()"),
+
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
                 event_inherited()
                 var _name = ds_map_find_value(data, ""idName"")
