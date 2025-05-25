@@ -93,7 +93,7 @@ public partial class TheWitcher : Mod
                 with (o_player)
                     scr_guiAnimation(s_drinking, 1, 1, 0)
 
-                if (true)
+                if (false)
                     scr_atr_incr(""Intoxication"", 100)
             "),
 
@@ -118,7 +118,7 @@ public partial class TheWitcher : Mod
         );
 
         AddWitcherPotionObject(
-            id: "thunderbolt",
+            id: "thunderbolt_potion",
             effects: new Dictionary<string, int>()
             {
                 {"Intoxication",     15},
@@ -142,12 +142,76 @@ public partial class TheWitcher : Mod
             }
         );
 
+        AddWitcherPotionObject(
+            id: "swallow_potion",
+            effects: new Dictionary<string, int>()
+            {
+                {"Intoxication",       10},
+                {"Pain",              -25},
+                {"max_hp_res",         50},
+                {"Condition",          25},
+                {"Healing_Received",   25},
+                {"Health_Restoration", 15}
+            },
+            code: @"
+                var _changeValue = ds_map_find_value_ext(attributes_data, ""Condition"", 0)
+                with (o_player)
+                {
+                    var key = ds_map_find_first(Body_Parts_map)
+                    var _size = ds_map_size(Body_Parts_map)
+
+                    repeat (_size)
+                    {
+                        var _condition = ds_map_find_value(Body_Parts_map, key)
+                        ds_map_set(Body_Parts_map, key, min(100, _condition + _changeValue))
+                        key = ds_map_find_next(Body_Parts_map, key)
+                    }
+                }
+
+                with (o_physical_debuff)
+                {
+                    if (is_player(target))
+                        instance_destroy()
+                }
+
+                with (o_wound_debuff)
+                {
+                    if (is_player(target))
+                        instance_destroy()
+                }
+
+                with (o_db_bleed_parent)
+                {
+                    if (is_player(target))
+                        instance_destroy()
+                }
+
+                event_inherited()
+            ",
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Swallow"},
+                {ModLanguage.Chinese, "燕子"}
+            },
+            midtext: new Dictionary<ModLanguage, string>()
+            {
+                {ModLanguage.English, "~lg~Removes~/~ all ~r~negative~/~ physical effects. Without having undergone ~o~The Trial of Grasses~/~, drinking this potion results in instant ~r~Deadly Intoxication~/~."},
+                {ModLanguage.Chinese, "可以~lg~移除~/~所有~r~负面~/~物理效果。##如果没有通过~o~青草试炼~/~，那么喝下此药会立即~r~迷醉濒死~/~。"}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "There is no bird more beautiful than the swallow, the harbinger of spring. Even the dark mages who developed the formula for witchers' potions appreciated the charm of this bird, lending its name to the potion that accelerates regeneration of a mutated organism."},
+                {ModLanguage.Chinese, "没有比燕子更美的鸟了，它是春天的使者。即便是研发猎魔人魔药配方的黑巫师，也赞赏这种鸟的魅力，并以它为名，为能加速突变体恢复的药剂命名。"}
+            }
+        );
+
         Msl.InjectTableItemsLocalization(potion_texts.ToArray());
     }
 
     private int potion_idx = 0;
     private List<LocalizationItem> potion_texts = new List<LocalizationItem>();
-    private void AddWitcherPotionObject(string id, Dictionary<string, int> effects, Dictionary<ModLanguage, string> name, Dictionary<ModLanguage, string> midtext, Dictionary<ModLanguage, string> description)
+    private void AddWitcherPotionObject(
+        string id, Dictionary<string, int> effects, Dictionary<ModLanguage, string> name,
+        Dictionary<ModLanguage, string> midtext, Dictionary<ModLanguage, string> description,
+        string code = "event_inherited()")
     {
         UndertaleGameObject inv = Msl.AddObject(
             name: $"o_inv_{id}",
@@ -175,7 +239,8 @@ public partial class TheWitcher : Mod
             Material: Msl.ItemStatsMaterial.glass,
             Weight: Msl.ItemStatsWeight.Light,
             Duration: 20,
-            tags: Msl.ItemStatsTags.special
+            tags: Msl.ItemStatsTags.special,
+            bottle: true
         );
 
         string effects_string = string.Join(
@@ -188,7 +253,9 @@ public partial class TheWitcher : Mod
                 scr_consum_atr(""{id}"")
                 i_index = {potion_idx}
                 {effects_string}
-            ")
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 24, code: code)
         );
 
         loot.ApplyEvent(
