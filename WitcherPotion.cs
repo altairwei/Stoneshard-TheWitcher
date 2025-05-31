@@ -52,7 +52,7 @@ public partial class TheWitcher : Mod
         // Make these attributes show duration text when hovered
         Msl.LoadGML("gml_Object_o_textLoader_Other_25")
             .MatchFrom("ds_list_add(global.attribute_duration, ")
-            .InsertBelow(@"ds_list_add(global.attribute_duration, ""EVS"", ""PRR"", ""Shock_Damage"")")
+            .InsertBelow(@"ds_list_add(global.attribute_duration, ""EVS"", ""PRR"", ""Shock_Damage"", ""Magic_Power"", ""Miracle_Chance"", ""Miscast_Chance"", ""Backfire_Damage"", ""CTA"", ""Crit_Avoid"", ""Mainhand_Efficiency"", ""Offhand_Efficiency"")")
             .Save();
 
         UndertaleGameObject o_inv_witcher_potion = Msl.AddObject(
@@ -93,7 +93,7 @@ public partial class TheWitcher : Mod
                 with (o_player)
                     scr_guiAnimation(s_drinking, 1, 1, 0)
 
-                if (false)
+                if (!o_skill_trial_of_grasses.is_open)
                     scr_atr_incr(""Intoxication"", 100)
             "),
 
@@ -143,6 +143,60 @@ public partial class TheWitcher : Mod
         );
 
         AddWitcherPotionObject(
+            id: "blizzard_potion",
+            effects: new Dictionary<string, int>()
+            {
+                {"Intoxication",        15},
+                {"EVS",                 50},
+                {"PRR",                 50},
+                {"CTA",                 25},
+                {"Crit_Avoid",          25},
+                {"FMB",                -25},
+                {"Mainhand_Efficiency", 25},
+                {"Offhand_Efficiency",  35}
+            },
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Blizzard"},
+                {ModLanguage.Chinese, "暴风雪"}
+            },
+            midtext: new Dictionary<ModLanguage, string>()
+            {
+                {ModLanguage.English, "Without having undergone ~o~The Trial of Grasses~/~, drinking this potion results in instant ~r~Deadly Intoxication~/~."},
+                {ModLanguage.Chinese, "如果没有通过~o~青草试炼~/~，那么喝下此药会立即~r~迷醉濒死~/~。"}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Blizzard is one of the most powerful witchers' potions. It improves reflexes and reaction time, allowing a witcher to better parry and evade attacks. It is most helpful against groups of enemies and monsters that move fast or teleport, such as wraiths and various types of vampires."},
+                {ModLanguage.Chinese, "暴雪是最强效的猎魔人魔药之一，能提升反应速度与神经反射，使猎魔人更善于格挡与闪避攻击。该药剂在对抗成群敌人或行动迅捷、会瞬移的怪物（如幽灵和各类吸血鬼）时尤为有效。"}
+            }
+        );
+
+        AddWitcherPotionObject(
+            id: "petri_philter",
+            effects: new Dictionary<string, int>()
+            {
+                {"Intoxication",         30},
+                {"Magic_Power",          50},
+                {"Miracle_Chance",       30},
+                {"Cooldown_Reduction",  -50},
+                {"Miscast_Chance",       10},
+                {"Backfire_Damage",      15}
+            },
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Petri's Philter"},
+                {ModLanguage.Chinese, "佩特里"}
+            },
+            midtext: new Dictionary<ModLanguage, string>()
+            {
+                {ModLanguage.English, "Without having undergone ~o~The Trial of Grasses~/~, drinking this potion results in instant ~r~Deadly Intoxication~/~."},
+                {ModLanguage.Chinese, "如果没有通过~o~青草试炼~/~，那么喝下此药会立即~r~迷醉濒死~/~。"}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Throughout his life, the mage Petri sought a way to strengthen his magical powers. He failed in this endeavor, but several interesting potions came about through his attempts. One of these, known as Petri's Philter, is useful to witchers with magical skills. Witchers who prefer hand-to-hand combat rarely use Petri's Philter, however, especially since it is highly toxic and thus renders the use of any other potions impossible."},
+                {ModLanguage.Chinese, "法师佩特里毕生致力于增强自身法力，虽未能如愿，但他的尝试催生了几种有趣的魔药。其中一种被称为“佩特里的魔药”，对拥有法术能力的猎魔人颇有价值。然而偏好近战的猎魔人很少使用它，尤其是因为其毒性极强，服用后便无法再使用其他药剂。"}
+            }
+        );
+
+        AddWitcherPotionObject(
             id: "swallow_potion",
             effects: new Dictionary<string, int>()
             {
@@ -151,7 +205,8 @@ public partial class TheWitcher : Mod
                 {"max_hp_res",         50},
                 {"Condition",          25},
                 {"Healing_Received",   25},
-                {"Health_Restoration", 15}
+                {"Health_Restoration", 15},
+                {"EVS",               -10}
             },
             code: @"
                 var _changeValue = ds_map_find_value_ext(attributes_data, ""Condition"", 0)
@@ -203,11 +258,77 @@ public partial class TheWitcher : Mod
             }
         );
 
+        AddWitcherPotionObject(
+            id: "tawny_owl",
+            effects: new Dictionary<string, int>()
+            {
+                {"Intoxication",        10},
+                {"max_mp_res",          50},
+                {"MP_Restoration",      35},
+                {"PRR",                 15},
+                {"Nature_Resistance",  -10},
+                {"Magic_Resistance",   -10}
+            },
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Tawny Owl"},
+                {ModLanguage.Chinese, "棕林鸮"}
+            },
+            midtext: new Dictionary<ModLanguage, string>()
+            {
+                {ModLanguage.English, "Without having undergone ~o~The Trial of Grasses~/~, drinking this potion results in instant ~r~Deadly Intoxication~/~."},
+                {ModLanguage.Chinese, "如果没有通过~o~青草试炼~/~，那么喝下此药会立即~r~迷醉濒死~/~。"}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "In preparation for an all-night vigil at the side of a cursed man, or before a battle which is certain to be prolonged, a witcher mixes a dose of Tawny Owl potion to boost his endurance."},
+                {ModLanguage.Chinese, "在为守护一名被诅咒者通宵守夜，或即将迎来一场注定持久的战斗做准备时，猎魔人会调制一剂黄褐色猫头鹰药剂，以增强体力与精力。"}
+            }
+        );
+
+        AddWitcherPotionObject(
+            id: "golden_oriole",
+            effects: new Dictionary<string, int>()
+            {
+                {"Intoxication",             5},
+                {"Poison_Resistance",       50},
+                {"Fire_Resistance",         30},
+                {"Bleeding_Resistance",     30},
+                {"Physical_Resistance",     15},
+                {"Nature_Resistance",       15},
+                {"Magic_Resistance",        15}
+            },
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Golden Oriole"},
+                {ModLanguage.Chinese, "金莺"}
+            },
+            midtext: new Dictionary<ModLanguage, string>()
+            {
+                {ModLanguage.English, "Without having undergone ~o~The Trial of Grasses~/~, drinking this potion results in instant ~r~Deadly Intoxication~/~."},
+                {ModLanguage.Chinese, "如果没有通过~o~青草试炼~/~，那么喝下此药会立即~r~迷醉濒死~/~。"}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Golden Oriole, one of the best-known witcher potions, increases resistance to special attacks, such as Poisoning, Incineration and Bleeding. The brew also negates the side effects of the Lapwing and Brock potions, while producing no side effects of its own. The potion increases Toxicity slightly when imbibed."},
+                {ModLanguage.Chinese, "金莺药剂是最著名的猎魔人魔药之一，能增强对特殊攻击的抵抗力，如中毒、焚烧和流血。此外，它还能抵消田凫药剂与獾药剂的副作用，且自身几乎无副作用，仅在服用时略微增加毒性。"}
+            }
+        );
+
         Msl.InjectTableItemsLocalization(potion_texts.ToArray());
+
+        // Add attribute data to crafting menu list
+        Msl.LoadGML("gml_Object_o_craftingMenuRecipeButton_Other_25")
+            .MatchAll()
+            .InsertBelow(@$"
+switch (idName)
+{{
+    {string.Join("\n", attribute_codes)}
+}}
+            ")
+            .Peek()
+            .Save();
     }
 
     private int potion_idx = 0;
     private List<LocalizationItem> potion_texts = new List<LocalizationItem>();
+    private List<string> attribute_codes = new List<string>();
     private void AddWitcherPotionObject(
         string id, Dictionary<string, int> effects, Dictionary<ModLanguage, string> name,
         Dictionary<ModLanguage, string> midtext, Dictionary<ModLanguage, string> description,
@@ -246,6 +367,12 @@ public partial class TheWitcher : Mod
         string effects_string = string.Join(
             "\n", effects.Select(kv => $"scr_consum_set_attribute(\"{kv.Key}\", {kv.Value})")
         );
+
+        attribute_codes.Add(@$"
+case ""{id}"":
+{effects_string}
+break;
+");
 
         inv.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @$"

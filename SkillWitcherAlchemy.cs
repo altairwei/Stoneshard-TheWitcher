@@ -21,7 +21,7 @@ public partial class TheWitcher : Mod
                 },
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @"Opens the menu for ~w~crafting weapon coating oil~/~."},
-                    {ModLanguage.Chinese, @"能够打开~w~猎魔人炼金术~/~界面，学会制作~w~剑油~/~。"}
+                    {ModLanguage.Chinese, @"能够打开~w~猎魔人炼金术~/~界面，学会制作~w~剑油~/~和~w~魔药~/~。"}
                 }
             )
         );
@@ -91,16 +91,28 @@ public partial class TheWitcher : Mod
                 event_perform_object(child_skill, ev_create, 0)
             "),
 
+            // 每次游戏加载成功，这个事件就会执行一次。
             new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
                 event_inherited()
+                scr_actionsLogUpdate(""=====>o_skill_witcher_alchemy_ico_other_18"")
                 var _list = scr_atr(""recipesWitcherAlchemyOpened"")
-                ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"", ""necrophage_oil"",
-                                    ""specter_oil"", ""insectoid_oil"", ""hybrid_oil"", ""ogroid_oil"")
+                if (ds_list_find_index(_list, ""hanged_man_venom"") < 0)
+                {
+                    ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"", ""necrophage_oil"",
+                                        ""specter_oil"", ""insectoid_oil"", ""hybrid_oil"", ""ogroid_oil"")
+                    scr_actionsLogUpdate(""Witcher_Weapon_Oil_Recipes_Added"")
+                }
+                if (ds_list_find_index(_list, ""thunderbolt_potion"") < 0)
+                {
+                    ds_list_add(_list, ""thunderbolt_potion"", ""blizzard_potion"", ""petri_philter"", ""swallow_potion"",
+                                        ""tawny_owl"", ""golden_oriole"")
+                    scr_actionsLogUpdate(""Witcher_Potion_Recipes_Added"")
+                }
                 with (o_craftingMenu)
                 {
-                    event_user(11);
-                    event_user(13);
-                    event_user(12);
+                    event_user(11)
+                    event_user(13)
+                    event_user(12)
                 }
             ")
         );
@@ -112,6 +124,10 @@ public partial class TheWitcher : Mod
             new LocalizationCraftingCategory("weapon_oil", new Dictionary<ModLanguage, string>{
                 {ModLanguage.English, "Weapon Oil"},
                 {ModLanguage.Chinese, "剑油"}
+            }),
+            new LocalizationCraftingCategory("witcher_potion", new Dictionary<ModLanguage, string>{
+                {ModLanguage.English, "Potion"},
+                {ModLanguage.Chinese, "魔药"}
             })
         );
 
