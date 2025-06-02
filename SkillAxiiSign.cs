@@ -64,7 +64,6 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 skill = ""Axii_Sign""
                 scr_skill_atr(""Axii_Sign"")
-                can_learn = true
                 ds_list_add(attribute,
                     ds_map_find_value(global.attribute, ""Magic_Power""),
                     ds_map_find_value(global.attribute, ""Psimantic_Power""),

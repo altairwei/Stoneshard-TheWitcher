@@ -322,7 +322,6 @@ switch (idName)
     {string.Join("\n", attribute_codes)}
 }}
             ")
-            .Peek()
             .Save();
     }
 

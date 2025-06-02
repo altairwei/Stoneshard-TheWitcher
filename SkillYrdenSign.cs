@@ -76,7 +76,6 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 skill = ""Yrden_Sign""
                 scr_skill_atr(""Yrden_Sign"")
-                can_learn = true
                 ds_list_add(attribute,
                     ds_map_find_value(global.attribute, ""Magic_Power""),
                     ds_map_find_value(global.attribute, ""Arcanistic_Power""),

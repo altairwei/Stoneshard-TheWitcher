@@ -53,21 +53,12 @@ public partial class TheWitcher : Mod
                 skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico,
                          o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
                 branch_sprite = s_witcher_branch
-                owner = gml_Script_scr_GetMobParametr
-            "),
-            new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
-                event_inherited()
-                // Tier 1
-                scr_guiLayoutOffsetUpdate(o_skill_witcher_alchemy_ico, 24, 55, 1)
-                scr_guiLayoutOffsetUpdate(o_skill_quen_sign_ico, 62, 55, 1)
-                scr_guiLayoutOffsetUpdate(o_skill_axii_sign_ico, 100, 55, 1)
-                scr_guiLayoutOffsetUpdate(o_skill_yrden_sign_ico, 138, 55, 1)
-                // Tier 2
-                scr_guiLayoutOffsetUpdate(o_skill_trial_of_grasses, 24, 118, 1)
-                scr_guiLayoutOffsetUpdate(o_skill_aard_sign_ico, 81, 118, 1)
-                scr_guiLayoutOffsetUpdate(o_skill_igni_sign_ico, 138, 118, 1)
+                alarm[1] = 2
             ")
         );
+
+        Msl.AddNewEvent(o_skill_category_witcher,
+            ModFiles.GetCode("o_skill_category_witcher_other_24.asm"), EventType.Other, 24, true);
 
         Msl.LoadGML("gml_Object_o_skillmenu_Create_0")
             .MatchFrom("var _metaCategoriesArray = ")

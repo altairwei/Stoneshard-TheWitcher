@@ -49,7 +49,6 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 skill = ""Witcher_Alchemy""
                 scr_skill_atr(""Witcher_Alchemy"")
-                can_learn = true
             "),
             new MslEvent(eventType: EventType.Other, subtype: 13, code: @"
                 with (o_player)

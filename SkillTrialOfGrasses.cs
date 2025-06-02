@@ -46,7 +46,6 @@ public partial class TheWitcher : Mod
                     ds_map_find_value(global.attribute, ""AGL""),
                     ds_map_find_value(global.attribute, ""Vitality"")
                 )
-                can_learn = true
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 17, code: @"
