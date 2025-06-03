@@ -345,7 +345,7 @@ switch (idName)
         UndertaleGameObject loot = Msl.AddObject(
             name: $"o_loot_{id}",
             parentName: "o_loot_witcher_potion",
-            spriteName: "s_loot_weapon_oil",
+            spriteName: "s_loot_witcher_potion",
             isVisible: true,
             isPersistent: false,
             isAwake: true

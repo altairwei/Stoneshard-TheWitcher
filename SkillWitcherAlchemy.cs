@@ -93,8 +93,16 @@ public partial class TheWitcher : Mod
             // 每次游戏加载成功，这个事件就会执行一次。
             new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
                 event_inherited()
+
                 scr_actionsLogUpdate(""=====>o_skill_witcher_alchemy_ico_other_18"")
+
                 var _list = scr_atr(""recipesWitcherAlchemyOpened"")
+                if (is_undefined(_list))
+                {
+                    _list = __dsDebuggerListCreate()
+                    scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
+                }
+
                 if (ds_list_find_index(_list, ""hanged_man_venom"") < 0)
                 {
                     ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"", ""necrophage_oil"",
