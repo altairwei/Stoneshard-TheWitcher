@@ -127,6 +127,9 @@ public partial class TheWitcher : Mod
                 buff_snd = noone
                 snd_loop = noone
                 stack = 1
+                stage = 1
+                max_stage = 6
+                have_stages = true
                 scr_buff_atr()
             "),
 
@@ -137,6 +140,11 @@ public partial class TheWitcher : Mod
                 {
                     // scr_effect_create(o_db_weak, 600, target, target)
                 }
+            "),
+
+            new MslEvent(eventType: EventType.Alarm, subtype: 2, code: @"
+                event_inherited()
+                event_user(5)
             ")
         );
 
@@ -167,18 +175,13 @@ public partial class TheWitcher : Mod
 
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                stack = 1
-                stage = 1
-                max_stage = 6
-                have_stages = true
                 turn_count = 0
                 max_hp_record = 0
             "),
 
             new MslEvent(eventType: EventType.Alarm, subtype: 2, code: @"
-                event_inherited()
                 max_hp_record = target.max_hp
-                event_user(5)
+                event_inherited()
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 15, code: @$"
@@ -266,11 +269,73 @@ public partial class TheWitcher : Mod
             .InsertBelow(@"
                 with (o_b_decoction_buff)
                 {
-                    if (is_player(target))
+                    if (other.owner == target)
                     {
                         attacker_target = other.id
                         event_user(9)
                         attacker_target = -4
+                    }
+                }
+            ")
+            .Save();
+
+
+        AddWitcherDecoctionObject(
+            id: "crawler_decoction",
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Crawler Decoction"},
+                {ModLanguage.Chinese, "巨蛛煎药"}
+            },
+            midtext: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "No Translation"},
+                {ModLanguage.Chinese, string.Join("##",
+                    "每层煎药效果使~cg~腐蚀伤害+1~/~，精力吸取~lg~+5%~/~，准度~lg~+5%~/~。",
+                    "释放咒法或使用兵器技能会令煎药效果叠加~lg~1~/~层（最多叠到六层）。~r~失误~/~，~r~失手~/~或者~r~攻击被格挡~/~会使煎药效果消减~r~1~/~层。",
+                    "当叠加至第六层，煎药会使暴击几率和奇观几率~lg~+25%~/~。如果发生暴击或奇观，则消耗所有煎药效果层数。"
+                )}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "WIP"},
+                {ModLanguage.Chinese, "WIP"}
+            },
+
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 15, code: @$"
+                event_inherited()
+
+                ds_map_clear(data)
+                ds_map_add(data, ""Caustic_Damage"", stage * 1)
+                ds_map_add(data, ""Manasteal"", stage * 5)
+                ds_map_add(data, ""Accuracy"", stage * 5)
+
+                if (stage == 6)
+                {{
+                    ds_map_add(data, ""CRT"", 25)
+                    ds_map_add(data, ""Miracle_Chance"", 25)
+                }}
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 12, code: @"
+                if (stage == 6 && is_crit)
+                {
+                    stage = 1
+                    event_user(5)   
+                }
+            ")
+        );
+
+        Msl.LoadGML("gml_GlobalScript_scr_skill_damage")
+            .MatchFrom("return dmg")
+            .InsertAbove(@"
+                with (o_b_decoction_buff)
+                {
+                    if (other.owner == target)
+                    {
+                        is_crit = is_crit
+                        event_user(2)
                     }
                 }
             ")
