@@ -402,4 +402,63 @@ break;
 
         potion_idx++;
     }
+
+    private void AddTestPotionObject()
+    {
+        UndertaleGameObject inv = Msl.AddObject(
+            name: "o_inv_witcher_test_potion",
+            parentName: "o_inv_dishes_beverage",
+            spriteName: "s_inv_witcher_test_potion",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject loot = Msl.AddObject(
+            name: $"o_loot_witcher_test_potion",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_witcher_test_potion",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        Msl.InjectTableItemStats(
+            id: "witcher_test_potion",
+            Price: 200,
+            Cat: Msl.ItemStatsCategory.beverage,
+            Subcat: Msl.ItemStatsSubcategory.potion,
+            Material: Msl.ItemStatsMaterial.glass,
+            Weight: Msl.ItemStatsWeight.Light,
+            Duration: 20,
+            tags: Msl.ItemStatsTags.special,
+            bottle: true
+        );
+
+        inv.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @$"
+                event_inherited()
+                scr_consum_atr(""witcher_test_potion"")
+                charge = 2
+                drop_gui_sound = snd_beverage_drop
+                pickup_sound = snd_beverage_pick
+                max_charge = charge
+                sec_charge = charge
+                draw_charges = false
+                bar_color = make_color_rgb(88, 175, 19)
+                ds_map_set(data, ""quality"", (3 << 0))
+                ds_map_set(data, ""Colour"", make_colour_rgb(76, 127, 255))
+                dishes_object = o_inv_potion02_empty
+            "),
+
+            new MslEvent(eventType: EventType.Draw, subtype: 0, code: "scr_draw_consum_scale()")
+        );
+
+        loot.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @$"
+                event_inherited()
+                inv_object = o_inv_witcher_test_potion
+            ")
+        );
+    }
 }

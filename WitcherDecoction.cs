@@ -264,21 +264,6 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        Msl.LoadGML("gml_Object_o_NPC_Other_16")
-            .MatchFrom("is_life = false")
-            .InsertBelow(@"
-                with (o_b_decoction_buff)
-                {
-                    if (other.owner == target)
-                    {
-                        attacker_target = other.id
-                        event_user(9)
-                        attacker_target = -4
-                    }
-                }
-            ")
-            .Save();
-
 
         AddWitcherDecoctionObject(
             id: "crawler_decoction",
@@ -290,8 +275,9 @@ public partial class TheWitcher : Mod
                 {ModLanguage.English, "No Translation"},
                 {ModLanguage.Chinese, string.Join("##",
                     "每层煎药效果使~cg~腐蚀伤害+1~/~，精力吸取~lg~+5%~/~，准度~lg~+5%~/~。",
-                    "释放咒法或使用兵器技能会令煎药效果叠加~lg~1~/~层（最多叠到六层）。~r~失误~/~，~r~失手~/~或者~r~攻击被格挡~/~会使煎药效果消减~r~1~/~层。",
-                    "当叠加至第六层，煎药会使暴击几率和奇观几率~lg~+25%~/~。如果发生暴击或奇观，则消耗所有煎药效果层数。"
+                    "发动攻击技能或咒法会令煎药效果叠加~lg~1~/~层（最多叠到六层）。击打或射击失手或法咒失误会令会使煎药效果消减~r~1~/~层，并使所有能力当前剩余冷却时间缩短~lg~1~/~个回合。",
+                    "从~sy~第四层~/~开始，每层使限制移动几率~lg~+15%~/~。",
+                    "当叠加至~sy~第六层~/~，煎药会使暴击几率和奇观几率~lg~+25%~/~，如果发生暴击或奇观，则消耗~r~3~/~层煎药效果，并使所有能力当前剩余冷却时间缩短~lg~3~/~个回合。"
                 )}
             },
             description: new Dictionary<ModLanguage, string>() {
@@ -309,7 +295,12 @@ public partial class TheWitcher : Mod
                 ds_map_clear(data)
                 ds_map_add(data, ""Caustic_Damage"", stage * 1)
                 ds_map_add(data, ""Manasteal"", stage * 5)
-                ds_map_add(data, ""Accuracy"", stage * 5)
+                ds_map_add(data, ""Hit_Chance"", stage * 5)
+
+                if (stage >3)
+                {{
+                    ds_map_add(data, ""Immob_Chance"", (stage - 3) * 15)
+                }}
 
                 if (stage == 6)
                 {{
@@ -318,31 +309,115 @@ public partial class TheWitcher : Mod
                 }}
             "),
 
+            // 近战攻击
             new MslEvent(eventType: EventType.Other, subtype: 12, code: @"
-                if (stage == 6 && is_crit)
+                event_inherited()
+
+                scr_actionsLogUpdate(""o_b_decoction_buff_other_12===>"" + attack_text)
+
+                var _kd = 0
+                if (attack_text == ""fumble"" || attack_text == ""fumbleBlock"")
                 {
-                    stage = 1
-                    event_user(5)   
+                    _kd = 1
+                }
+                else if (stage == 6 && attack_text == ""crit"")
+                {
+                    _kd = 3
+                }
+
+                if (_kd && stage > 1)
+                {
+                    stage -= _kd
+
+                    with (target)
+                    {
+                        if (is_player())
+                            scr_skill_category_change_KD(o_skill_category, _kd)
+                        else
+                            scr_skill_category_change_KD_enemy(id, -_kd)
+                    }
+
+                    event_user(5)
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
+                var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
+                var _is_attack_skill = ds_list_find_index(_category, ""Attack"") >= 0
+                var _is_spell = ds_list_find_index(_category, ""Spell"") >= 0
+                if (_category != 0 && (_is_attack_skill || _is_spell))
+                {
+                    scr_actionsLogUpdate(""o_b_crawler_decoction_other_14"")
+                    stage++
+                    event_user(5)
+                }
+
+                if (_category != 0 && _is_spell)
+                {
+                    if (other.is_fumble)
+                    {
+                        attack_text = ""fumble""
+                        event_user(2)
+                    }
+                    else if (other.is_crit)
+                    {
+                        attack_text = ""crit""
+                        event_user(2)
+                    }
                 }
             ")
         );
 
-        Msl.LoadGML("gml_GlobalScript_scr_skill_damage")
-            .MatchFrom("return dmg")
-            .InsertAbove(@"
+        AddHooksForDecoctionBuff();
+
+        Msl.InjectTableItemsLocalization(decoction_texts.ToArray());
+        Msl.InjectTableModifiersLocalization(decoction_buff_texts.ToArray());
+    }
+
+    private void AddHooksForDecoctionBuff()
+    {
+        // NPC 的昏迷将会触发 event_user(9)
+        Msl.LoadGML("gml_Object_o_NPC_Other_16")
+            .MatchFrom("is_life = false")
+            .InsertBelow(@"
                 with (o_b_decoction_buff)
                 {
                     if (other.owner == target)
                     {
-                        is_crit = is_crit
-                        event_user(2)
+                        attacker_target = other.id
+                        event_user(9)
+                        attacker_target = -4
                     }
                 }
             ")
             .Save();
 
-        Msl.InjectTableItemsLocalization(decoction_texts.ToArray());
-        Msl.InjectTableModifiersLocalization(decoction_buff_texts.ToArray());
+        // 使用能力（包括技能和咒法）将会触发 event_user(4)
+        Msl.LoadAssemblyAsString("gml_Object_o_skill_Other_13")
+            .MatchFrom("bf [end]")
+            .ReplaceBy("bf [1093]")
+            .MatchFrom(":[end]")
+            .InsertAbove(@"
+:[1093]
+pushi.e o_b_decoction_buff
+pushenv [1096]
+
+:[1094]
+push.v other.owner
+push.v self.target
+cmp.v.v EQ
+bf [1096]
+
+:[1095]
+pushi.e 4
+conv.i.v
+call.i event_user(argc=1)
+popz.v
+
+:[1096]
+popenv [1094]
+")
+            .Save();
     }
 
     private int decoction_idx = 0;

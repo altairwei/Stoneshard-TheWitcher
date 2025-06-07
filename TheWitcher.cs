@@ -28,6 +28,7 @@ public partial class TheWitcher : Mod
         AddWeaponOil();
         AddWitcherPotion();
         AddWitcherDecoction();
+        AddTestPotionObject();
     }
 
     private void PatchWeaponCoatingSkill()
