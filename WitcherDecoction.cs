@@ -521,6 +521,77 @@ public partial class TheWitcher : Mod
             ")
         );
 
+        AddWitcherDecoctionObject(
+            id: "troll_decoction",
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Troll Decoction"},
+                {ModLanguage.Chinese, "巨魔煎药"}
+            },
+            midtext: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "No Translation"},
+                {ModLanguage.Chinese, string.Join("##",
+                    "每层煎药效果使生命上限~lg~+10~/~，所受伤害~lg~-5%~/~，位移抗性~lg~+5%~/~，击退几率~lg~+10%~/~，肢体伤害~lg~+5%~/~，饥饿抗性~r~-10%~/~。",
+                    "运用~sy~机动~/~技能、~sy~站姿~/~技能、跳过一个回合或者切换武器可令煎药效果叠加~lg~1~/~层（最多叠到六层）。",
+                    "从~sy~第四层~/~开始，如果获得~r~出血~/~、~r~硬直~/~、~r~眩晕~/~、~r~失衡~/~或~r~移动受限~/~，那么立刻移除所获状态，并使煎药效果消减~r~1~/~层。",
+                    "吃的再多也不会~r~呕吐~/~，只会延长~lg~满足~/~效果的持续时间。"
+                )}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "WIP"},
+                {ModLanguage.Chinese, "WIP"}
+            },
+
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                buff_id = noone
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 15, code: @"
+                event_inherited()
+
+                ds_map_clear(data)
+                ds_map_add(data, ""max_hp"", stage * 10)
+                ds_map_add(data, ""Damage_Received"", stage * -5)
+                ds_map_add(data, ""Knockback_Resistance"", stage * 5)
+                ds_map_add(data, ""Knockback_Chance"", stage * 10)
+                ds_map_add(data, ""Bodypart_Damage"", stage * 5)
+                ds_map_add(data, ""Hunger_Resistance"", stage * -10)
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
+                if (object_is_ancestor(other, o_skill))
+                {
+                    var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
+                    var _is_maneuver = ds_list_find_index(_category, ""Maneuver"") >= 0
+                    var _is_Stance = ds_list_find_index(_category, ""Stance"") >= 0
+                    if (_category != 0 && (_is_maneuver || _is_Stance))
+                    {
+                        stage++
+                        event_user(5)
+                    }
+                }
+                else
+                {
+                    stage++
+                    event_user(5)
+                }
+
+                if (buff_id != noone && instance_exists(buff_id))
+                {
+                    if (stage > 3)
+                    {
+                        with (buff_id)
+                            instance_destroy()
+                        
+                        buff_id = noone
+                        stage--
+                        event_user(5)
+                    }
+                }
+            ")
+
+        );
+
         AddHooksForDecoctionBuff();
 
         Msl.InjectTableItemsLocalization(decoction_texts.ToArray());
@@ -570,6 +641,83 @@ popz.v
 :[1096]
 popenv [1094]
 ")
+            .Save();
+
+        // 巨魔煎药的叠层
+        Msl.LoadAssemblyAsString("gml_GlobalScript_scr_skip_turn")
+            .MatchFromUntil("call.i gml_Script_scr_unitTurnGetTime", "bf [")
+            .InsertBelow(@"
+:[1000]
+push.v self.id
+pushi.e o_b_troll_decoction
+conv.i.v
+call.i gml_Script_scr_skill_call_buff(argc=2)
+popz.v
+")
+            .Save();
+
+        Msl.LoadAssemblyAsString("gml_Object_o_inv_switch_Other_10")
+            .MatchFromUntil("call.i gml_Script_scr_skill_call_passive", "popz.v")
+            .InsertBelow(@"
+pushi.e o_player
+conv.i.v
+pushi.e o_b_troll_decoction
+conv.i.v
+call.i gml_Script_scr_skill_call_buff(argc=2)
+popz.v
+")
+            .Save();
+
+        // 巨魔煎药的效果触发
+        foreach (string buff in new string[] { "o_db_daze", "o_db_immob", "o_db_stagger", "o_db_stun" })
+        {
+            Msl.LoadGML($"gml_Object_{buff}_Alarm_1")
+                .MatchAll()
+                .InsertBelow(@"
+                    if (!is_load && instance_exists(target))
+                    {
+                        with (o_b_troll_decoction)
+                        {
+                            if (target.id == other.target.id)
+                            {
+                                buff_id = other.id
+                                event_user(4)
+                            }
+                        }
+                    }
+                ")
+                .Save();
+        }
+
+        Msl.AddNewEvent("o_db_bleed_parent", eventType: EventType.Alarm, subtype: 1, eventCode: @"
+            if (!is_load && instance_exists(target))
+            {
+                with (o_b_troll_decoction)
+                {
+                    if (target.id == other.target.id)
+                    {
+                        buff_id = other.id
+                        event_user(4)
+                    }
+                }
+            }
+        ");
+
+        Msl.LoadGML("gml_GlobalScript_scr_hunger_incr")
+            .MatchFrom("scr_effect_create(o_db_nause, o_damage_dealer)")
+            .ReplaceBy(@"
+        {
+            if (!scr_instance_exists_in_list(o_b_troll_decoction, o_player.buffs))
+                scr_effect_create(o_db_nause, o_damage_dealer)
+            else
+            {
+                with (o_db_hunger0)
+                {
+                    duration += max(1, (dur * 4))
+                    stage = max(stage, argument1)
+                }
+            }
+        }")
             .Save();
     }
 
