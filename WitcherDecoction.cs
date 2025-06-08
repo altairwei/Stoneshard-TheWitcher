@@ -163,7 +163,7 @@ public partial class TheWitcher : Mod
                 {ModLanguage.English, "No Translation"},
                 {ModLanguage.Chinese, string.Join("##",
                     $"允许在战斗中~lg~自动恢复~/~生命值，并且每一层煎药效果使生命自动恢复~lg~+{HP_Restoration}%~/~。",
-                    "击杀敌人会令煎药效果叠加~lg~1~/~层（最多叠到~w~六~/~层）。每过~r~90~/~回合，煎药效果消减~r~1~/~层。",
+                    "击杀目标会令煎药效果叠加~lg~1~/~层（最多叠到~w~六~/~层）。每过~r~90~/~回合，煎药效果消减~r~1~/~层。",
                     $"从第~w~二~/~层开始，如果生命目前少于~r~20%~/~，则会消耗煎药效果的~r~所有层数~/~以恢复生命。每消耗一层煎药效果恢复生命上限~lg~{HP_Got}%~/~的生命，并使煎药效果持续时间变为缩短~r~20~/~回合。",
                     $"从第~w~四~/~层开始，每一层煎药效果令兵器伤害~lg~+{Weapon_Damage}%~/~，法力~lg~+{Magic_Power}%~/~。"
                 )}
@@ -368,6 +368,159 @@ public partial class TheWitcher : Mod
             ")
         );
 
+        AddWitcherDecoctionObject(
+            id: "harpy_decoction",
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Harpy Decoction"},
+                {ModLanguage.Chinese, "哈比煎药"}
+            },
+            midtext: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "No Translation"},
+                {ModLanguage.Chinese, string.Join("##",
+                    "每层煎药效果使闪躲几率~lg~+5%~/~，暴击几率~lg~+5%~/~，冷却时间~lg~-5%~/~。",
+                    "主手近身主动攻击命中目标（没有失手）会令煎药效果叠加~lg~1~/~层。击杀目标则叠加~lg~3~/~层（最多叠到六层）。受到近身攻击~r~伤害~/~或者每过~r~90~/~回合，煎药效果消减~r~1~/~层。",
+                    "所有邻近敌人每回合有~lg~3%~/~的几率咳嗽，并且每一层煎药效果使此几率~lg~+3%~/~。",
+                    "从~sy~第四层~/~开始，每一层煎药效果令所有~w~突进~/~技能距离~lg~+1~/~。"
+                )}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "WIP"},
+                {ModLanguage.Chinese, "WIP"}
+            },
+
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                turn_count = 0
+
+                with (o_skill_ico)
+                {
+                    if (!passive)
+                    {
+                        var _category = scr_get_value_Dmap(skill, ""Category"")
+                        
+                        if (_category != 0)
+                        {
+                            if (ds_list_find_index(_category, ""Charge"") >= 0)
+                                Original_Special_Bonus_Range = Special_Bonus_Range
+                        }
+                    }
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
+                event_inherited()
+                scr_onUnitAnimationDestroy(stink)
+
+                with (o_skill_ico)
+                {
+                    if (!passive)
+                    {
+                        var _category = scr_get_value_Dmap(skill, ""Category"")
+                        
+                        if (_category != 0)
+                        {
+                            if (ds_list_find_index(_category, ""Charge"") >= 0)
+                                Special_Bonus_Range = Original_Special_Bonus_Range
+                        }
+                    }
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Alarm, subtype: 2, code: @"
+                event_inherited();
+
+                with (target)
+                    other.stink = scr_onUnitAnimationCreate(s_undead_stink, s_undead_stink, s_empty, -1)
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 15, code: @"
+                event_inherited()
+
+                ds_map_clear(data)
+                ds_map_add(data, ""EVS"", stage * 5)
+                ds_map_add(data, ""CRT"", stage * 5)
+                ds_map_add(data, ""Cooldown_Reduction"", stage * -5)
+
+                if (stage > 3)
+                {
+                    with (o_skill_ico)
+                    {
+                        if (!passive)
+                        {
+                            var _category = scr_get_value_Dmap(skill, ""Category"")
+                            
+                            if (_category != 0)
+                            {
+                                if (ds_list_find_index(_category, ""Charge"") >= 0)
+                                    Special_Bonus_Range = Original_Special_Bonus_Range + other.stage - 3
+                            }
+                        }
+                    }
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 10, code: @"
+                event_inherited()
+
+                var _chance = 3 * stage
+                with (target)
+                {
+                    var _enemy_array = [];
+                    if (is_player())
+                        _enemy_array = scr_enemy_count_player(1, true)
+                    else
+                        _enemy_array = scr_enemy_count_around(1, false, false, true)
+
+                    for (var i = 0; i < array_length(_enemy_array); i++)
+                    {
+                        with (_enemy_array[i])
+                        {
+                            if (!scr_instance_exists_in_list(o_b_drug_paregoric) && scr_chance_value(_chance))
+                                scr_effect_create(o_db_cough, 1, id, id)
+                        }
+                    }
+                }
+
+                turn_count++
+
+                if (turn_count == 90)
+                {
+                    turn_count = 0
+                    stage--
+                    event_user(5)
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 12, code: @"
+                event_inherited()
+
+                if (!global.contrattack && !target.is_offhand_attack
+                        && !o_inv_left_hand.children.equipped
+                        && attack_text != ""miss"" && attack_text != ""fumble""
+                        && attack_text != ""fumbleBlock"")
+                {
+                    stage++
+                    event_user(5)
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 13, code: @"
+                event_inherited()
+
+                if (damage > 0)
+                {
+                    stage--
+                    event_user(5)
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 19, code: @"
+                event_inherited()
+                stage += 3
+                event_user(5)
+            ")
+        );
+
         AddHooksForDecoctionBuff();
 
         Msl.InjectTableItemsLocalization(decoction_texts.ToArray());
@@ -382,7 +535,7 @@ public partial class TheWitcher : Mod
             .InsertBelow(@"
                 with (o_b_decoction_buff)
                 {
-                    if (other.owner == target)
+                    if (other.last_attacker == target.id)
                     {
                         attacker_target = other.id
                         event_user(9)
