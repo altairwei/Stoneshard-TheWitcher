@@ -138,7 +138,7 @@ public partial class TheWitcher : Mod
 
                 if (duration <= 0)
                 {
-                    // scr_effect_create(o_db_weak, 600, target, target)
+                    scr_effect_create(o_db_weak, 600, target, target)
                 }
             "),
 
@@ -147,6 +147,27 @@ public partial class TheWitcher : Mod
                 event_user(5)
             ")
         );
+
+        Msl.LoadGML("gml_Object_o_inv_antivenom_Other_24")
+            .MatchAll()
+            .InsertBelow(@"
+                with (o_b_decoction_buff)
+                {
+                    if (is_player(target))
+                        instance_destroy()
+                }
+            ")
+            .Save();
+
+        Msl.LoadAssemblyAsString("gml_Object_o_inv_antitoxin_Other_24")
+            .MatchFromUntil("call.i gml_Script_scr_effect_create", "popz.v")
+            .InsertBelow(@"pushi.e o_b_decoction_buff
+conv.i.v
+call.i @@This@@(argc=0)
+pushloc.v local._duration_dec
+callv.v 1
+popz.v")
+            .Save();
 
         string HP_Restoration = "5";
         string HP_Got = "20";
@@ -530,7 +551,7 @@ public partial class TheWitcher : Mod
             midtext: new Dictionary<ModLanguage, string>() {
                 {ModLanguage.English, "No Translation"},
                 {ModLanguage.Chinese, string.Join("##",
-                    "每层煎药效果使生命上限~lg~+10~/~，所受伤害~lg~-5%~/~，位移抗性~lg~+5%~/~，击退几率~lg~+10%~/~，肢体伤害~lg~+5%~/~，饥饿抗性~r~-10%~/~。",
+                    "每层煎药效果使生命上限~lg~+10~/~，所受伤害~lg~-5%~/~，位移抗性~lg~+5%~/~，击退几率~lg~+10%~/~，坚忍~lg~+10%~/~，饥饿抗性~r~-10%~/~。",
                     "运用~sy~机动~/~技能、~sy~站姿~/~技能、跳过一个回合或者切换武器可令煎药效果叠加~lg~1~/~层（最多叠到六层）。",
                     "从~sy~第四层~/~开始，如果获得~r~出血~/~、~r~硬直~/~、~r~眩晕~/~、~r~失衡~/~或~r~移动受限~/~，那么立刻移除所获状态，并使煎药效果消减~r~1~/~层。",
                     "吃的再多也不会~r~呕吐~/~，只会延长~lg~满足~/~效果的持续时间。"
@@ -554,7 +575,7 @@ public partial class TheWitcher : Mod
                 ds_map_add(data, ""Damage_Received"", stage * -5)
                 ds_map_add(data, ""Knockback_Resistance"", stage * 5)
                 ds_map_add(data, ""Knockback_Chance"", stage * 10)
-                ds_map_add(data, ""Bodypart_Damage"", stage * 5)
+                ds_map_add(data, ""Fortitude"", stage * 10)
                 ds_map_add(data, ""Hunger_Resistance"", stage * -10)
             "),
 
@@ -590,6 +611,81 @@ public partial class TheWitcher : Mod
                 }
             ")
 
+        );
+
+        AddWitcherDecoctionObject(
+            id: "gulon_decoction",
+            name: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "Gulon Decoction"},
+                {ModLanguage.Chinese, "谷隆煎药"}
+            },
+            midtext: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "No Translation"},
+                {ModLanguage.Chinese, string.Join("##",
+                    "每层煎药效果令生命吸取~lg~+5%~/~，出血几率~lg~+10%~/~，肢体伤害~lg~+10%~/~，护甲穿透~lg~+10%~/~。",
+                    "发动攻击技能会令煎药效果叠加~lg~1~/~层（最多叠到六层），并恢复该技能所耗精力~lg~30%~/~的生命值，每层煎药效果使恢复量~lg~+30%~/~。",
+                    "从~sy~第二层~/~开始：如果本次击打造成~r~出血~/~，依据当前煎药效果层数，立刻令所有身体部位状态改善~lg~10%~/~，所有能力当前剩余冷却时间缩短~lg~1~/~个回合，并使煎药效果消减~r~1~/~层。"
+                )}
+            },
+            description: new Dictionary<ModLanguage, string>() {
+                {ModLanguage.English, "WIP"},
+                {ModLanguage.Chinese, "WIP"}
+            },
+
+            new MslEvent(eventType: EventType.Other, subtype: 15, code: @$"
+                event_inherited()
+
+                ds_map_clear(data)
+                ds_map_add(data, ""Lifesteal"", stage * 5)
+                ds_map_add(data, ""Bleeding_Chance"", stage * 10)
+                ds_map_add(data, ""Bodypart_Damage"", stage * 10)
+                ds_map_add(data, ""Armor_Piercing"", stage * 10)
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
+                var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
+                var _is_attack_skill = ds_list_find_index(_category, ""Attack"") >= 0
+                if (_category != 0 && _is_attack_skill)
+                {
+                    var _mp_res = MP_Increase * 0.3 * stage
+                    with (target)
+                        scr_restore_hp(id, _mp_res, other.name)
+
+                    stage++
+                    event_user(5)
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 12, code: @"
+                event_inherited()
+
+                if (stage > 1 && is_bleeding)
+                {
+                    with (target)
+                    {
+                        if (is_player())
+                            scr_skill_category_change_KD(o_skill_category, other.stage)
+                        else
+                            scr_skill_category_change_KD_enemy(id, -other.stage)
+                    }
+
+                    with (o_player)
+                    {
+                        var key = ds_map_find_first(Body_Parts_map)
+                        var _size = ds_map_size(Body_Parts_map)
+
+                        repeat (_size)
+                        {
+                            var _condition = ds_map_find_value(Body_Parts_map, key)
+                            ds_map_set(Body_Parts_map, key, min(100, _condition + 10 * other.stage))
+                            key = ds_map_find_next(Body_Parts_map, key)
+                        }
+                    }
+
+                    stage--
+                    event_user(5)
+                }
+            ")
         );
 
         AddHooksForDecoctionBuff();
@@ -633,6 +729,8 @@ cmp.v.v EQ
 bf [1096]
 
 :[1095]
+pushloc.v local._mp_increase
+pop.v.v self.MP_Increase
 pushi.e 4
 conv.i.v
 call.i event_user(argc=1)
