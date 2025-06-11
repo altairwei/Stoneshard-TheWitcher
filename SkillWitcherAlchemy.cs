@@ -115,6 +115,12 @@ public partial class TheWitcher : Mod
                                         ""tawny_owl"", ""golden_oriole"")
                     scr_actionsLogUpdate(""Witcher_Potion_Recipes_Added"")
                 }
+                if (ds_list_find_index(_list, ""ghoul_decoction"") < 0)
+                {
+                    ds_list_add(_list, ""ghoul_decoction"", ""crawler_decoction"", ""harpy_decoction"", ""troll_decoction"",
+                                        ""gulon_decoction"")
+                    scr_actionsLogUpdate(""Witcher_Decoction_Recipes_Added"")
+                }
                 with (o_craftingMenu)
                 {
                     event_user(11)
@@ -135,6 +141,10 @@ public partial class TheWitcher : Mod
             new LocalizationCraftingCategory("witcher_potion", new Dictionary<ModLanguage, string>{
                 {ModLanguage.English, "Potion"},
                 {ModLanguage.Chinese, "魔药"}
+            }),
+            new LocalizationCraftingCategory("witcher_decoction", new Dictionary<ModLanguage, string>{
+                {ModLanguage.English, "Decoction"},
+                {ModLanguage.Chinese, "煎药"}
             })
         );
 

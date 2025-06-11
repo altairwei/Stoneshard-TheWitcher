@@ -20,7 +20,7 @@ public partial class TheWitcher : Mod
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @"No translation"},
                     {ModLanguage.Chinese, string.Join("##",
-                        "解锁~w~煎药~/~制作和~w~突变~/~提取。",
+                        "解锁~w~煎药~/~制作。",
                         "此外，令猎魔人：",
                         "免疫变化幅度~lg~+0.02~/~#生命上限~lg~+/*MAXHP*/~/~#生命自动恢复~lg~+/*HR*/%~/~#视野~lg~+2~/~#距离加成~lg~+1~/~#反击几率~lg~+/*CTA*/%~/~#闪躲几率~lg~+/*EVS*/%~/~"
                     )}

@@ -6,3 +6,6 @@
 
 obj
 bin
+
+*.pdf
+*.pptx
