@@ -334,8 +334,6 @@ popz.v")
             new MslEvent(eventType: EventType.Other, subtype: 12, code: @"
                 event_inherited()
 
-                scr_actionsLogUpdate(""o_b_decoction_buff_other_12===>"" + attack_text)
-
                 var _kd = 0
                 if (attack_text == ""fumble"" || attack_text == ""fumbleBlock"")
                 {
@@ -368,7 +366,6 @@ popz.v")
                 var _is_spell = ds_list_find_index(_category, ""Spell"") >= 0
                 if (_category != 0 && (_is_attack_skill || _is_spell))
                 {
-                    scr_actionsLogUpdate(""o_b_crawler_decoction_other_14"")
                     stage++
                     event_user(5)
                 }

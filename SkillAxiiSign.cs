@@ -154,9 +154,6 @@ public partial class TheWitcher : Mod
                             || scr_instance_exists_in_list(o_db_daze, target.buffs))
                         _charm_proc = true
 
-                    scr_actionsLogUpdate(""Psionic_Resistance:"" + string(target.Psionic_Resistance))
-                    scr_actionsLogUpdate(""Charm_Chance:"" + string(_charm_chance))
-
                     if (_charm_proc)
                         scr_effect_create(o_db_axii_charm, {Charm_Time}, target, owner)
                     else
@@ -259,7 +256,6 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 13, code: @"
                 if (attacker.id == owner.id)
                 {
-                    scr_actionsLogUpdate(""YourAttackWakeItUp"")
                     instance_destroy()
                 }
             ")

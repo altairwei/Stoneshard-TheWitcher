@@ -62,8 +62,5 @@ function scr_coating_oil_damage_calc()
             break;
     }
 
-    if (_oil_damage > 1)
-        scr_actionsLogUpdate("Target:" + object_get_name(_target.object_index))
-
     return math_round(_oil_damage)
 }
