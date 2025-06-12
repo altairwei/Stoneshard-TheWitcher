@@ -14,8 +14,8 @@ public partial class TheWitcher : Mod
 
         UndertaleGameObject o_skill_category_witcher = Msl.AddObject(
             name: "o_skill_category_witcher", 
-            spriteName: "", 
-            parentName: "o_skill_category_weapon", 
+            spriteName: "",
+            parentName: "o_skill_category_utility", // affect o_perk_might_and_magic
             isVisible: true, 
             isPersistent: false, 
             isAwake: true,
