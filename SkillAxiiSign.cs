@@ -146,6 +146,9 @@ public partial class TheWitcher : Mod
                 {{
                     var _charm_chance = {Charm_Chance} - target.Psionic_Resistance
 
+                    if (is_crit)
+                        _charm_chance *= max(1, owner.Miracle_Power / 100)
+
                     if (scr_instance_exists_in_list(o_db_confuse, target.buffs))
                         _charm_chance += 20
 
@@ -154,11 +157,15 @@ public partial class TheWitcher : Mod
                             || scr_instance_exists_in_list(o_db_daze, target.buffs))
                         _charm_proc = true
 
+                    var _charm_time = {Charm_Time}
+                    if (is_crit)
+                        _charm_time = round(_charm_time * max(1, owner.Miracle_Power / 100))
+
                     if (_charm_proc)
                         scr_effect_create(o_db_axii_charm, {Charm_Time}, target, owner)
                     else
                     {{
-                        scr_effect_create(o_db_confuse, 12, target, target)
+                        scr_effect_create(o_db_confuse, is_crit ? 12 * max(1, owner.Miracle_Power / 100) : 12, target, target)
                         with (target)
                         {{
                             if (is_player())

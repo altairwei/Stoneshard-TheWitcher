@@ -64,8 +64,8 @@ public partial class TheWitcher : Mod
                 scr_stop_player()
                 if instance_exists(owner)
                 {{
-                    var _chance = {Cure_Chance}
-                    if (scr_chance_value(_chance))
+                    var _cure = is_crit ? 1 : scr_chance_value({Cure_Chance})
+                    if (_cure)
                     {{
                         with (scr_instance_exists_in_list(o_db_bleed_parent, owner.buffs))
                             instance_destroy()
@@ -134,6 +134,10 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 stack = 1
                 duration = 6
+                should_execute = false
+                Damage_Got = 0
+                Part_Normalizer = 1
+                Damage_After = 0
                 Max_Duration = 25
                 Shield_Duration = Max_Duration
                 scr_buff_atr()
@@ -155,16 +159,30 @@ public partial class TheWitcher : Mod
                 if instance_exists(owner)
                 {{
                     Max_Duration = {Shield_Duration}
+
+                    if (is_crit)
+                        Max_Duration *= max(1, owner.Miracle_Power / 100)
+
                     Shield_Duration = Max_Duration
                 }}
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
                 event_inherited()
-                with (target)
-                    scr_guiAnimation_ext(x, y, s_magical_shield_proc)
-                if (Shield_Duration <= 0)
-                    instance_destroy()
+                if (should_execute)
+                {
+                    should_execute = false
+
+                    with (target)
+                        scr_guiAnimation_ext(x, y, s_magical_shield_proc)
+
+                    var _durReduc = min(Damage_Got, (Shield_Duration * Part_Normalizer))
+                    Damage_After = math_round(max(Damage_Got - Shield_Duration * Part_Normalizer, 0))
+                    Shield_Duration -= _durReduc
+
+                    if (Shield_Duration <= 0)
+                        instance_destroy()
+                }
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 25, code: @"
@@ -183,6 +201,7 @@ public partial class TheWitcher : Mod
             .InsertAbove(@"
                 with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
                 {
+                    should_execute = true
                     P_proc = true
                 }
             ")
@@ -194,7 +213,10 @@ public partial class TheWitcher : Mod
             .InsertBelow(@"
     var _magic_shield = false
     with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
-        _magic_shield = true")
+    {
+        should_execute = true
+        _magic_shield = true
+    }")
             .MatchFrom("    if _need_log")
             .InsertAbove(@"
     if (_magic_shield && scr_actionsLogVisible(_target))
@@ -210,6 +232,7 @@ public partial class TheWitcher : Mod
             .InsertAbove(@"
             with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
             {
+                should_execute = true
                 P_proc = true
             }")
             .Save();
@@ -220,9 +243,9 @@ public partial class TheWitcher : Mod
             .InsertAbove(@"
             with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
             {
+                should_execute = true
                 P_proc = true
-            }
-            ")
+            }")
             .Save();
 
         // Damage reduction by magical shield
@@ -231,20 +254,20 @@ public partial class TheWitcher : Mod
             .InsertAbove(@"
         with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
         {
-            var _durReduc = min(argument1, (Shield_Duration * _partDamageNormalizer))
-            argument1 = math_round(max(argument1 - Shield_Duration * _partDamageNormalizer, 0))
-            Shield_Duration -= _durReduc
+            Damage_Got = argument1
+            Part_Normalizer = _partDamageNormalizer
             event_user(4)
+            argument1 = Damage_After            
         }
             ")
             .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - argument0.tmpDEF * 0.5 * argument6) * (1 - argument2 / 100)), 0)))")
             .InsertAbove(@"
         with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
         {
-            var _durReduc = min(argument1, (Shield_Duration * _partDamageNormalizer))
-            argument1 = math_round(max(argument1 - Shield_Duration * _partDamageNormalizer, 0))
-            Shield_Duration -= _durReduc
+            Damage_Got = argument1
+            Part_Normalizer = _partDamageNormalizer
             event_user(4)
+            argument1 = Damage_After            
         }
             ")
             .Save();

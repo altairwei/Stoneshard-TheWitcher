@@ -171,6 +171,9 @@ public partial class TheWitcher : Mod
                 {{
                     Fire_Damage = {Fire_Damage}
 
+                    if (is_crit)
+                        Fire_Damage *= max(1, owner.Miracle_Power / 100)
+
                     if (object_is_ancestor(target.object_index, o_unit))
                     {{
                         if (target.ArmorDurability <= 0)

@@ -382,11 +382,12 @@ public partial class TheWitcher : Mod
                                 
                                 with (instance_create_depth(xx, yy, 0, spell))
                                 {
-                                    damage = other.damage
-                                    direction = point_direction(x, y, _point[0], _point[1])
                                     name = other.name
                                     owner = other.owner
                                     is_crit = other.is_crit
+
+                                    damage = is_crit ? other.damage * max(1, owner.Miracle_Power / 100) : other.damage
+                                    direction = point_direction(x, y, _point[0], _point[1])
                                     duration = scr_skill_get_duration(9) + ((is_crit * owner.Miracle_Power) / 100)
                                 }
                             }
