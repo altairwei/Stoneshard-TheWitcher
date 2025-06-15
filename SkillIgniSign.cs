@@ -23,8 +23,7 @@ public partial class TheWitcher : Mod
                         "对方圆~w~2~/~格之内一片区域造成~o~/*Fire_Damage*/点灼烧伤害~/~，~o~点燃~/~没有物体和生灵的方格。",
                         "有~w~/*Ignition_Chance*/%~/~的几率~o~点燃~/~所有受到影响的目标，燃烧持续~w~2-3~/~个回合；令他们~w~10~/~个回合之内灼烧抗性~r~/*Fire_Resistance*/%~/~，这个效果可以叠加，最多~w~5~/~层。",
                         "对~o~着火~/~目标的灼烧伤害~r~+30%~/~，并使其护甲耐久~r~减半~/~。如果目标~w~没有护甲~/~或者护甲耐久为~w~0%~/~，那么灼烧伤害~r~+50%~/~。",
-                        "每有一个目标未被~o~点燃~/~，伊格尼法印当前剩余冷却时间便缩短~lg~3~/~个回合。",
-                        "法印释放的火焰射流有~w~/*Knockback_Chance*/%~/~几率击退敌人。"
+                        "每有一个目标未被~o~点燃~/~，伊格尼法印当前剩余冷却时间便缩短~lg~3~/~个回合。"
                     )}
                 }
             )
@@ -90,9 +89,7 @@ public partial class TheWitcher : Mod
 
         string Fire_Damage = "13 * ((owner.Magic_Power + owner.Pyromantic_Power) / 100)";
         string Fire_Resistance = "math_round((-15 * (owner.Magic_Power + owner.Pyromantic_Power)) / 100)";
-        string Ignition_Chance = "8 * owner.WIL * (owner.Magic_Power + owner.Pyromantic_Power) / 100";
-        string Knockback_Chance = "15 * (owner.Magic_Power + owner.Pyromantic_Power) / 100";
-        string Armor_Damage = "250 * (owner.Magic_Power + owner.Pyromantic_Power) / 100";
+        string Ignition_Chance = "7 * owner.WIL * (owner.Magic_Power + owner.Pyromantic_Power) / 100";
 
         o_skill_igni_sign.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -116,8 +113,6 @@ public partial class TheWitcher : Mod
                     ds_map_replace(data, ""Fire_Damage"", {Fire_Damage})
                     ds_map_replace(data, ""Fire_Resistance"", {Fire_Resistance})
                     ds_map_replace(data, ""Ignition_Chance"", {Ignition_Chance})
-                    ds_map_replace(data, ""Armor_Damage"", {Armor_Damage})
-                    ds_map_replace(data, ""Knockback_Chance"", {Knockback_Chance})
                 }}
 
                 event_inherited()
@@ -175,7 +170,6 @@ public partial class TheWitcher : Mod
                 if (instance_exists(owner) && instance_exists(target))
                 {{
                     Fire_Damage = {Fire_Damage}
-                    Armor_Damage = {Armor_Damage}
 
                     if (object_is_ancestor(target.object_index, o_unit))
                     {{
@@ -241,9 +235,6 @@ public partial class TheWitcher : Mod
                                     {{
                                         scr_skill_change_KD(o_skill_igni_sign_ico, -3)
                                     }}
-
-                                    if (scr_chance_value(({Knockback_Chance}) - target.Knockback_Resistance))
-                                        scr_cast_knockback(owner, target)
                                 }}
                             }}
                             else if (scr_water_filter(target.x, target.y, target.x, target.y))

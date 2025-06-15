@@ -29,7 +29,7 @@ public partial class TheWitcher : Mod
             Object: "o_b_magical_shield",
             hook: Msl.SkillsStatsHook.MAGICMASTERY,
             Range: "0",
-            KD: 6,
+            KD: 8,
             MP: 20,
             Duration: 6,
             Class: Msl.SkillsStatsClass.spell,
@@ -47,6 +47,9 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
+        string Shield_Duration = "40 * power(owner.Magic_Power / 100, 3)";
+        string Cure_Chance = "45 * owner.Magic_Power / 100";
+
         o_skill_quen_sign.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
@@ -56,29 +59,29 @@ public partial class TheWitcher : Mod
                 ignore_interact = true
                 is_moving = false
             "),
-            new MslEvent(eventType: EventType.Other, subtype: 13, code: @"
+            new MslEvent(eventType: EventType.Other, subtype: 13, code: @$"
                 event_inherited()
                 scr_stop_player()
                 if instance_exists(owner)
-                {
-                    var _chance = 45 * owner.Magic_Power / 100
+                {{
+                    var _chance = {Cure_Chance}
                     if (scr_chance_value(_chance))
-                    {
+                    {{
                         with (scr_instance_exists_in_list(o_db_bleed_parent, owner.buffs))
                             instance_destroy()
                         with (scr_instance_exists_in_list(o_db_gaping_wound, owner.buffs))
                             instance_destroy()
                         with (scr_instance_exists_in_list(o_db_fire, owner.buffs))
                             instance_destroy()
-                    }
-                }
+                    }}
+                }}
             "),
-            new MslEvent(eventType: EventType.Other, subtype: 17, code: @"
+            new MslEvent(eventType: EventType.Other, subtype: 17, code: @$"
                 if instance_exists(owner)
-                {
-                    ds_map_replace(data, ""Shield_Duration"", 25 + 40 * power(owner.Magic_Power / 100, 3))
-                    ds_map_replace(data, ""Cure_Chance"", (45 * owner.Magic_Power / 100))
-                }
+                {{
+                    ds_map_replace(data, ""Shield_Duration"", {Shield_Duration})
+                    ds_map_replace(data, ""Cure_Chance"", {Cure_Chance})
+                }}
                 event_inherited()
             ")
         );
@@ -129,6 +132,7 @@ public partial class TheWitcher : Mod
         o_b_magical_shield.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
+                stack = 1
                 duration = 6
                 Max_Duration = 25
                 Shield_Duration = Max_Duration
@@ -144,15 +148,15 @@ public partial class TheWitcher : Mod
                 }
             "),
 
-            new MslEvent(eventType: EventType.Alarm, subtype: 2, code: @"
+            new MslEvent(eventType: EventType.Alarm, subtype: 2, code: @$"
                 event_inherited()
                 ds_map_clear(data)
                 ds_map_add(data, ""MP_Restoration"", -25)
                 if instance_exists(owner)
-                {
-                    Max_Duration = 25 + 40 * power(owner.Magic_Power / 100, 3)
+                {{
+                    Max_Duration = {Shield_Duration}
                     Shield_Duration = Max_Duration
-                }
+                }}
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"

@@ -34,8 +34,8 @@ public partial class TheWitcher : Mod
 
     private void AddWitcherSkillBook()
     {
-        UndertaleGameObject o_inv_book_witcher = Msl.AddObject(
-            name: "o_inv_book_witcher",
+        UndertaleGameObject o_inv_book_witcher1 = Msl.AddObject(
+            name: "o_inv_book_witcher1",
             spriteName: "s_inv_bookG",
             parentName: "o_inv_treatise",
             isVisible: true,
@@ -44,8 +44,18 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
-        UndertaleGameObject o_loot_book_witcher = Msl.AddObject(
-            name: "o_loot_book_witcher",
+        UndertaleGameObject o_inv_book_witcher2 = Msl.AddObject(
+            name: "o_inv_book_witcher2",
+            spriteName: "s_inv_bookB",
+            parentName: "o_inv_treatise",
+            isVisible: true,
+            isAwake: true,
+            isPersistent: true,
+            collisionShapeFlags: CollisionShapeFlags.Circle
+        );
+
+        UndertaleGameObject o_loot_book_witcher1 = Msl.AddObject(
+            name: "o_loot_book_witcher1",
             spriteName: "s_loot_BookG",
             parentName: "o_loot_treatise",
             isVisible: true,
@@ -54,28 +64,54 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
-        o_inv_book_witcher.ApplyEvent(
+        UndertaleGameObject o_loot_book_witcher2 = Msl.AddObject(
+            name: "o_loot_book_witcher2",
+            spriteName: "s_loot_BookB",
+            parentName: "o_loot_treatise",
+            isVisible: true,
+            isAwake: true,
+            isPersistent: false,
+            collisionShapeFlags: CollisionShapeFlags.Circle
+        );
+
+        o_inv_book_witcher1.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
                 gain_xp = 50
                 skills_array = [
-                    ""Pyromancy"", o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico,
-                    o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
+                    ""Witcher"", o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico]
             ")
         );
 
-        o_loot_book_witcher.ApplyEvent(
+        o_inv_book_witcher2.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                inv_object = o_inv_book_witcher
+                gain_xp = 50
+                skills_array = [
+                    ""Witcher"", o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
+            ")
+        );
+
+        o_loot_book_witcher1.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                inv_object = o_inv_book_witcher1
+                number = 0
+            ")
+        );
+
+        o_loot_book_witcher2.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                inv_object = o_inv_book_witcher2
                 number = 0
             ")
         );
 
         Msl.InjectTableItemStats(
-            id: "book_witcher",
-            Price: 150,
-            EffPrice: 25,
+            id: "book_witcher1",
+            Price: 250,
+            EffPrice: 50,
             Material: Msl.ItemStatsMaterial.paper,
             tier: Msl.ItemStatsTier.Tier1,
             Subcat: Msl.ItemStatsSubcategory.treatise,
@@ -83,13 +119,24 @@ public partial class TheWitcher : Mod
             tags: Msl.ItemStatsTags.special
         );
 
+        Msl.InjectTableItemStats(
+            id: "book_witcher2",
+            Price: 1200,
+            EffPrice: 250,
+            Material: Msl.ItemStatsMaterial.paper,
+            tier: Msl.ItemStatsTier.Tier2,
+            Subcat: Msl.ItemStatsSubcategory.treatise,
+            Weight: Msl.ItemStatsWeight.Light,
+            tags: Msl.ItemStatsTags.special
+        );
+
         Msl.InjectTableBooksLocalization(
             new LocalizationBook(
-                id: "book_witcher",
+                id: "book_witcher1",
                 name: new Dictionary<ModLanguage, string>
                 {
-                    { ModLanguage.English, "The Witcher Notes" },
-                    { ModLanguage.Chinese, "猎魔人笔记" }
+                    { ModLanguage.English, "Witcher Notes I" },
+                    { ModLanguage.Chinese, "猎魔人笔记一" }
                 },
                 content: new Dictionary<ModLanguage, string>
                 {
@@ -105,27 +152,87 @@ public partial class TheWitcher : Mod
                         "我的探索尚未终结，艾尔多大陆的深处依旧充满未知的挑战。我希望此册笔记能为日后误入此界的猎魔人提供参考，也作为自己继续探索未知的见证。"
                     )}
                 },
-               midText: new Dictionary<ModLanguage, string>
+                midText: new Dictionary<ModLanguage, string>
                 {
-                    { ModLanguage.English, "\"Chronicles of Exploration in a Foreign Realm\"##~gr~Allows you to learn the following Witcher abilities:~/~##~lg~The Witcher's Alchemy~/~#~y~Trial Of Grasses~/~#~lg~Quen Sign~/~#~lg~Axii Sign~/~#~lg~Yrden Sign~/~#~lg~Aard Sign~/~#~lg~Igni Sign~/~##Reading this book grants some ~y~Experience~/~." },
-                    { ModLanguage.Chinese, "《迷途异境的探索手札》##~gr~可以学习若干猎魔人能力：~/~##~lg~猎魔人炼金术~/~#~y~青草试炼~/~#~lg~昆恩法印~/~#~lg~亚克西法印~/~#~lg~亚登法印~/~#~lg~阿尔德法印~/~#~lg~伊格尼法印~/~##阅读本书可以获得一定的~y~经验~/~。" }
+                    { ModLanguage.English, "\"Chronicles of Exploration in a Foreign Realm\"##~gr~Allows you to learn the following Witcher abilities:~/~##~lg~The Witcher's Alchemy~/~#~lg~Quen Sign~/~#~lg~Axii Sign~/~#~lg~Yrden Sign~/~##Reading this book grants some ~y~Experience~/~." },
+                    { ModLanguage.Chinese, "《迷途异境的探索手札》##~gr~可以学习若干猎魔人能力：~/~##~lg~猎魔人炼金术~/~#~lg~昆恩法印~/~#~lg~亚克西法印~/~#~lg~亚登法印~/~##阅读本书可以获得一定的~y~经验~/~。" }
                 },
                 description: new Dictionary<ModLanguage, string>
                 {
                     { ModLanguage.English, "A book on the Witcher skills and abilities." },
-                    { ModLanguage.Chinese, "这本书详细猎魔人的技能、剑油、魔药以及煎药的制作。此手札的原作者已不可考，但据其内容推测可能是异世界来客。" }
+                    { ModLanguage.Chinese, "这本书详细介绍了猎魔人的剑油、魔药以及煎药的制作，以及那些名为“法印”的奇怪咒法。作者杰隆·莫吕不知从何而来，在奥尔多游历多年，据手札内容推测可能是异世界来客。" }
                 },
                 type: new Dictionary<ModLanguage, string>
                 {
-                    { ModLanguage.English, "Written by an unknown author" },
-                    { ModLanguage.Chinese, "作者：佚名" }
+                    { ModLanguage.English, "Written by Jerome Moreau" },
+                    { ModLanguage.Chinese, "作者：杰隆·莫吕" }
+                }
+            ),
+            new LocalizationBook(
+                id: "book_witcher2",
+                name: new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Witcher Notes II" },
+                    { ModLanguage.Chinese, "猎魔人笔记二" }
+                },
+                content: new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, string.Join("##",
+                        "（ . . . ）",
+                        "When the fabric of reality tore during the Conjunction of the Spheres, two entirely distinct magic systems encountered each other—one from my homeland, harnessing natural forces and alchemical traditions, and the other from Aldor, relying upon the enigmatic energy called \"Aether.\"",
+                        "（ . . . ）",
+                        "This encounter posed profound challenges yet unprecedented opportunities. By exploring both systems, I discovered ways to blend their strengths, forming entirely new techniques for combat, survival, and alchemy.",
+                        "（ . . . ）",
+                        "Combining alchemical techniques with Aether significantly enhances potion potency.",
+                        "（ . . . ）",
+                        "Blending local herbs with my homeland’s alchemical catalysts created sword oils effective against previously resilient creatures.",
+                        "（ . . . ）",
+                        "Mastering both magic systems provided strategic flexibility, greatly improving combat adaptability.",
+                        "（ . . . ）",
+                        "This encounter of magics is just the beginning, the possibilities ahead are endless."
+                    ) },
+                    { ModLanguage.Chinese, string.Join("##",
+                        "（ . . . ）",
+                        "在天球交汇时现实之幕撕裂开来，两种截然不同的魔法体系相互碰撞——一个来自我的家乡，依靠自然之力与炼金术传统；另一个则来自奥尔多大陆，依靠神秘的以太能量。",
+                        "（ . . . ）",
+                        "这次碰撞带来了深刻的挑战，也创造了前所未有的机遇。通过探索这两种体系，我找到了融合二者优势的方法，开发出全新的战斗技巧、生存之道以及炼金术。",
+                        "（ . . . ）",
+                        "将炼金术技巧与以太能量相结合，可显著提高药剂的效力。",
+                        "（ . . . ）",
+                        "本地草药与家乡的炼金催化剂结合，创造出的剑油对以往难以应对的生物效果显著。",
+                        "（ . . . ）",
+                        "同时掌握两种魔法体系提供了战略上的灵活性，大幅提升战斗适应能力。",
+                        "（ . . . ）",
+                        "魔法体系的碰撞只是开始，前方的可能性无限宽广。"
+                    )}
+                },
+                midText: new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "\"Encounter Between Two Magics\"##~gr~Allows you to learn the following Witcher abilities:~/~##~lg~Trial Of Grasses~/~#~lg~Aard Sign~/~#~lg~Igni Sign~/~##Reading this book grants some ~y~Experience~/~." },
+                    { ModLanguage.Chinese, "《两个魔法体系的碰撞》##~gr~可以学习若干猎魔人能力：~/~##~lg~青草试炼~/~#~lg~阿尔德法印~/~#~lg~伊格尼法印~/~##阅读本书可以获得一定的~y~经验~/~。" }
+                },
+                description: new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "A book on the Witcher skills and abilities." },
+                    { ModLanguage.Chinese, "本书详细记录了宇宙裂隙中两种独特魔法传统的交汇，探讨了炼金术与以太融合后创造出的强大新技巧。" }
+                },
+                type: new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Written by Jerome Moreau" },
+                    { ModLanguage.Chinese, "作者：杰隆·莫吕" }
                 }
             )
         );
 
-        Msl.LoadGML("gml_Object_o_player_chest_Alarm_1")
-            .MatchFromUntil("if (scr_user_owns_dlc", "}")
-            .InsertBelow("scr_inventory_add_item(o_inv_book_witcher)")
+
+        Msl.LoadGML("gml_Object_o_npc_herbalist_osbrook_Other_19")
+            .MatchFrom("ds_list_add(singular_stock_list")
+            .InsertBelow("ds_list_add(singular_stock_list, o_inv_book_witcher1)")
+            .Save();
+
+        Msl.LoadGML("gml_Object_o_npc_lowcrey_Other_19")
+            .MatchAll()
+            .InsertBelow("ds_list_add(singular_stock_list, o_inv_book_witcher2)")
             .Save();
     }
 

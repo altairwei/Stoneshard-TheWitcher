@@ -38,7 +38,7 @@ public partial class TheWitcher : Mod
             AOE_Lenght: 2,
             AOE_Width: 3,
             Pattern: Msl.SkillsStatsPattern.pyramid,
-            KD: 6,
+            KD: 8,
             MP: 16,
             Reserv: 18,
             Duration: 0,
