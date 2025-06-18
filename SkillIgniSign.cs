@@ -29,6 +29,26 @@ public partial class TheWitcher : Mod
             )
         );
 
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "Igni_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "IGNI!"},
+                    {ModLanguage.Chinese, "伊格尼！"}
+                }
+            )
+        );
+
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "MC_Igni_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "I...IGNE..."},
+                    {ModLanguage.Chinese, "伊...哥尼..."}
+                }
+            )
+        );
+
         Msl.InjectTableSkillsStats(
             id: "Igni_Sign",
             Object: "o_igni_sign_birth",

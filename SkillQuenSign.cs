@@ -24,6 +24,26 @@ public partial class TheWitcher : Mod
             )
         );
 
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "Quen_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "QUEN!"},
+                    {ModLanguage.Chinese, "昆恩！"}
+                }
+            )
+        );
+
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "MC_Quen_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "QU...EN..."},
+                    {ModLanguage.Chinese, "昆...恩..."}
+                }
+            )
+        );
+
         Msl.InjectTableSkillsStats(
             id: "Quen_Sign",
             Object: "o_b_magical_shield",

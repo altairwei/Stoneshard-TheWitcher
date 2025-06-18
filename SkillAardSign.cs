@@ -29,6 +29,26 @@ public partial class TheWitcher : Mod
             )
         );
 
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "Aard_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "AARD!"},
+                    {ModLanguage.Chinese, "阿尔德！"}
+                }
+            )
+        );
+
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "MC_Aard_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "A...ERD..."},
+                    {ModLanguage.Chinese, "奥...儿得..."}
+                }
+            )
+        );
+
         Msl.InjectTableSkillsStats(
             id: "Aard_Sign",
             Object: "o_aard_sign_birth",

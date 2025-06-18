@@ -31,6 +31,26 @@ public partial class TheWitcher : Mod
             )
         );
 
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "Yrden_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "YRDEN!"},
+                    {ModLanguage.Chinese, "亚登！"}
+                }
+            )
+        );
+
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "MC_Yrden_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "YR...DEN..."},
+                    {ModLanguage.Chinese, "亚...等..."}
+                }
+            )
+        );
+
         string Immob_Chance = "(25 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
         string Arcane_Damage = "(2 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
         string Bleed_Chance = "(15 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";

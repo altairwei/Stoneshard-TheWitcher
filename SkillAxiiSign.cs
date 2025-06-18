@@ -29,6 +29,26 @@ public partial class TheWitcher : Mod
             )
         );
 
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "Axii_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "AXII!"},
+                    {ModLanguage.Chinese, "亚克西！"}
+                }
+            )
+        );
+
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "MC_Axii_Sign",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "A...KI..."},
+                    {ModLanguage.Chinese, "雅克...西..."}
+                }
+            )
+        );
+
         Msl.InjectTableSkillsStats(
             id: "Axii_Sign",
             Object: "o_axii_charm_birth",
@@ -142,7 +162,7 @@ public partial class TheWitcher : Mod
 
             // Control the chance of charm
             new MslEvent(eventType: EventType.Alarm, subtype: 0, code: @$"
-                if (target.ai_is_on)
+                if (instance_exists(target) && target.ai_is_on)
                 {{
                     var _charm_chance = {Charm_Chance} - target.Psionic_Resistance
 
