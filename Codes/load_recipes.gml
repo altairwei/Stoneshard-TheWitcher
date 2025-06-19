@@ -110,8 +110,8 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     "petri_philter": {
         "CAT":      "witcher_potion",
         "Recipe1":  "coffee",
-        "Recipe2":  "sapphire",
-        "Recipe3":  "mindwort",
+        "Recipe2":  "mindwort",
+        "Recipe3":  "agrimony",
         "Recipe4":  "agrimony",
         "Recipe5":  "-",
         "Recipe6":  "-",

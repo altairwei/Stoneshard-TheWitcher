@@ -20,7 +20,7 @@ public partial class TheWitcher : Mod
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @""},
                     {ModLanguage.Chinese, string.Join("##",
-                        "在地面放置~w~3~/~个持续~w~9~/~回合的~lg~亚登法印~/~：",
+                        "依据指定的位置，在地面放置~w~3~/~个持续~w~9~/~回合的~lg~亚登法印~/~：",
                         "法印被触发前处于隐蔽状态，触发后每回合对敌人造成~p~/*Arcane_Damage*/点秘术伤害~/~。",
                         "造成伤害后有~lg~/*Bleed_Chance*/%~/~几率使敌人腿部出血，有~lg~/*Immob_Chance*/%~/~几率使敌人移动受限~w~2~/~回合（受敌人的击退抗性影响）。",
                         "每与一个~lg~亚登法印~/~相邻，当前法印的出血几率~lg~+/*Bleed_Chance*/%~/~，移动受限几率~lg~+/*Immob_Chance*/%~/~。",
@@ -400,6 +400,17 @@ public partial class TheWitcher : Mod
                                 var xx = _point[0]
                                 var yy = _point[1]
                                 
+                                // Prevent overlapping Yrden signs
+                                if (scr_tile_mark_get_instance(xx div 26, yy div 26))
+                                {
+                                    var _array = scr_free_tile_array(xx, yy, 1, true)
+                                    if (is_array(_array) && array_length(_array) > 0)
+                                    {
+                                        xx += _array[0]
+                                        yy += _array[1]
+                                    }
+                                }
+
                                 with (instance_create_depth(xx, yy, 0, spell))
                                 {
                                     name = other.name
