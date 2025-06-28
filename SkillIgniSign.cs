@@ -21,9 +21,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.English, @"No translation"},
                     {ModLanguage.Chinese, string.Join("##",
                         "对方圆~w~2~/~格之内一片区域造成~o~/*Fire_Damage*/点灼烧伤害~/~，~o~点燃~/~没有物体和生灵的方格。",
-                        "有~w~/*Ignition_Chance*/%~/~的几率~o~点燃~/~所有受到影响的目标，燃烧持续~w~2-3~/~个回合；令他们~w~10~/~个回合之内灼烧抗性~r~/*Fire_Resistance*/%~/~，这个效果可以叠加，最多~w~5~/~层。",
-                        "对~o~着火~/~目标的灼烧伤害~r~+30%~/~，并使其护甲耐久~r~减半~/~。如果目标~w~没有护甲~/~或者护甲耐久为~w~0%~/~，那么灼烧伤害~r~+50%~/~。",
-                        "每有一个目标未被~o~点燃~/~，伊格尼法印当前剩余冷却时间便缩短~lg~3~/~个回合。"
+                        "有~w~/*Ignition_Chance*/%~/~的几率~o~点燃~/~所有受到影响的目标，燃烧持续~w~2-3~/~个回合；令他们~w~10~/~个回合之内灼烧抗性~r~/*Fire_Resistance*/%~/~，这个效果可以叠加，最多~w~3~/~层。",
+                        "对~o~着火~/~目标的灼烧伤害~r~+30%~/~，并使其护甲耐久~r~减半~/~。每有一个目标未被~o~点燃~/~，伊格尼法印当前剩余冷却时间便缩短~lg~3~/~个回合。"
                     )}
                 }
             )
@@ -108,7 +107,7 @@ public partial class TheWitcher : Mod
         );
 
         string Fire_Damage = "13 * ((owner.Magic_Power + owner.Pyromantic_Power) / 100)";
-        string Fire_Resistance = "math_round((-15 * (owner.Magic_Power + owner.Pyromantic_Power)) / 100)";
+        string Fire_Resistance = "math_round((-10 * (owner.Magic_Power + owner.Pyromantic_Power)) / 100)";
         string Ignition_Chance = "7 * owner.WIL * (owner.Magic_Power + owner.Pyromantic_Power) / 100";
 
         o_skill_igni_sign.ApplyEvent(
@@ -191,14 +190,8 @@ public partial class TheWitcher : Mod
                 {{
                     Fire_Damage = {Fire_Damage}
 
-                    if (is_crit)
-                        Fire_Damage *= max(1, owner.Miracle_Power / 100)
-
                     if (object_is_ancestor(target.object_index, o_unit))
                     {{
-                        if (target.ArmorDurability <= 0)
-                            Fire_Damage *= 1.5
-
                         if (scr_instance_exists_in_list(o_db_fire, target.buffs))
                             Fire_Damage *= 1.3
                     }}
@@ -239,7 +232,7 @@ public partial class TheWitcher : Mod
                             {{
                                 if (object_is_ancestor(target.object_index, o_unit))
                                 {{
-                                    scr_temp_effect_update(object_index, target, ""Fire_Resistance"", {Fire_Resistance}, 10, 5)
+                                    scr_temp_effect_update(object_index, target, ""Fire_Resistance"", {Fire_Resistance}, 10, 3)
 
                                     if (scr_chance_value({Ignition_Chance} - target.Fire_Resistance))
                                     {{

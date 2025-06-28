@@ -242,17 +242,12 @@ public partial class TheWitcher : Mod
                     {{
                         Blunt_Damage = {Blunt_Damage}
 
-                        if (is_crit)
-                            Blunt_Damage *= max(1, owner.Miracle_Power / 100)
-
                         if (object_is_ancestor(target.object_index, o_enemy))
                         {{
                             if (scr_instance_exists_in_list(o_db_confuse, target.buffs)
                                     && scr_instance_exists_in_list(o_db_daze, target.buffs))
                             {{
                                 Psionic_Damage = {Psionic_Damage}
-                                if (is_crit)
-                                    Psionic_Damage *= max(1, owner.Miracle_Power / 100)
                             }}
 
                             event_inherited()
