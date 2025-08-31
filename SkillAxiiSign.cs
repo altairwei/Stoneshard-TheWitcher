@@ -245,7 +245,7 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
                 event_inherited()
                 audio_stop_sound(sign_loop)
-                scr_onUnitAnimationDestroy(signTarget)
+                scr_onUnitEffectDestroy(signTarget)
 
                 with (target)
                 {
@@ -270,7 +270,7 @@ public partial class TheWitcher : Mod
                 var _id = id
                 with (target)
                 {
-                    other.signTarget = scr_onUnitAnimationCreate(
+                    other.signTarget = scr_onUnitEffectCreate(
                         s_axiicharm_start, s_axiicharm_loop, s_axiicharm_end, -1, true)
                     with (other.signTarget)
                         _id.sigil_loop = scr_audio_play_at_loop(snd_skill_sigil_of_binding_loop)
@@ -326,15 +326,19 @@ public partial class TheWitcher : Mod
 
         // Use Axii Sign in dialogues
         UndertaleGameObject ob = Msl.AddObject("o_axii_dialog_initializer", isPersistent: true);
-        Msl.AddNewEvent(ob, "", EventType.Create, 0);
+        Msl.AddNewEvent(ob, "", EventType.Other, 10);
         UndertaleRoom room = Msl.GetRoom("START");
         room.AddGameObject("Instances", ob);
 
         Msl.AddFunction(ModFiles.GetCode("scr_mod_apply_axii_charm_in_dialog.gml"), "scr_mod_apply_axii_charm_in_dialog");
         Msl.AddFunction(ModFiles.GetCode("scr_mod_is_charmed_within.gml"), "scr_mod_is_charmed_within");
-        Msl.LoadGML(Msl.EventName("o_axii_dialog_initializer", EventType.Create, 0))
+        Msl.LoadGML(Msl.EventName("o_axii_dialog_initializer", EventType.Other, 10))
             .MatchAll()
             .InsertBelow(ModFiles, "o_axii_dialog_initializer.gml")
+            .Save();
+        Msl.LoadGML("gml_Object_o_dataLoader_Other_10")
+            .MatchFrom("scr_dialogue_loader_init")
+            .InsertBelow("with (o_axii_dialog_initializer) { event_user(0) }")
             .Save();
 
         Msl.InjectTableDialogLocalization(

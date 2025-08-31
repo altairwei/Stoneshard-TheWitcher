@@ -270,7 +270,7 @@ public partial class TheWitcher : Mod
 
         // Damage reduction by magical shield
         Msl.LoadGML("gml_GlobalScript_scr_damage_physical_calc")
-            .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - argument0.tmpDEF * (1 - Armor_Piercing / 100)) * (1 - argument2 / 100)), 0)))")
+            .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - argument0.tmpDEF * _partDamageNormalizer * (1 - Armor_Piercing / 100)) * (1 - argument2 / 100)), 0)))")
             .InsertAbove(@"
         with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
         {
@@ -280,7 +280,7 @@ public partial class TheWitcher : Mod
             argument1 = Damage_After            
         }
             ")
-            .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - argument0.tmpDEF * 0.5 * argument6) * (1 - argument2 / 100)), 0)))")
+            .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - 0.5 * argument0.tmpDEF * _partDamageNormalizer * argument6) * (1 - argument2 / 100)), 0)))")
             .InsertAbove(@"
         with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
         {

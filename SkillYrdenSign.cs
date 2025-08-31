@@ -85,7 +85,7 @@ public partial class TheWitcher : Mod
         UndertaleGameObject o_yrden_sign_birth = Msl.AddObject(
             name: "o_yrden_sign_birth",
             spriteName: "s_signofyrden_cast",
-            parentName: "o_spelllbirth",
+            parentName: "o_spellbirth",
             isVisible: true,
             isPersistent: false,
             isAwake: true
@@ -126,7 +126,7 @@ public partial class TheWitcher : Mod
                 use_count = max_use
 
                 for (var i = 0; i < array_length(mark_array); i++)
-                    scr_onUnitAnimationDestroy(mark_array[i])
+                    scr_onUnitEffectDestroy(mark_array[i])
 
                 with (o_yrden_sign_birth)
                     target_array = other.target_array
@@ -140,7 +140,7 @@ public partial class TheWitcher : Mod
                 use_count = max_use
 
                 for (var i = 0; i < array_length(mark_array); i++)
-                    scr_onUnitAnimationDestroy(mark_array[i])
+                    scr_onUnitEffectDestroy(mark_array[i])
 
                 mark_array = []
                 target_array = []
@@ -217,7 +217,7 @@ public partial class TheWitcher : Mod
                         {
                             if (object_is_ancestor(object_index, o_unit) || object_index == o_attacked_target)
                             {
-                                with (scr_onUnitAnimationCreate(s_groundmarker_start, s_groundmarker_loop, s_groundmarker_end, -1, true))
+                                with (scr_onUnitEffectCreate(s_groundmarker_start, s_groundmarker_loop, s_groundmarker_end, -1, true))
                                     array_push(_id.mark_array, id)
                             }
                         }

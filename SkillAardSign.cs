@@ -92,7 +92,7 @@ public partial class TheWitcher : Mod
 
         UndertaleGameObject o_aard_sign_birth = Msl.AddObject(
             name: "o_aard_sign_birth",
-            parentName: "o_spelllbirth",
+            parentName: "o_spellbirth",
             isVisible: true,
             isPersistent: false,
             isAwake: true

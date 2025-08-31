@@ -427,7 +427,7 @@ popz.v")
 
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
                 event_inherited()
-                scr_onUnitAnimationDestroy(stink)
+                scr_onUnitEffectDestroy(stink)
 
                 with (o_skill_ico)
                 {
@@ -448,7 +448,7 @@ popz.v")
                 event_inherited();
 
                 with (target)
-                    other.stink = scr_onUnitAnimationCreate(s_undead_stink, s_undead_stink, s_empty, -1)
+                    other.stink = scr_onUnitEffectCreate(s_undead_stink, s_undead_stink, s_empty, -1)
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 15, code: @"

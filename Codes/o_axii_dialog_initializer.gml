@@ -1,6 +1,6 @@
-var _Fragments = variable_struct_get(global.DialogueData_val.npc_bandit_fence, "Fragments")
-var _Scripts = variable_struct_get(global.DialogueData_val.npc_bandit_fence, "Scripts")
-var _Specs = variable_struct_get(global.DialogueData_val.npc_bandit_fence, "Specs")
+var _Fragments = variable_struct_get(global.__dialogue_flow_data.npc_bandit_fence, "Fragments")
+var _Scripts = variable_struct_get(global.__dialogue_flow_data.npc_bandit_fence, "Scripts")
+var _Specs = variable_struct_get(global.__dialogue_flow_data.npc_bandit_fence, "Specs")
 
 _Fragments.npc_bandit_fence = "condition_CND_inspection"
 _Fragments.condition_CND_inspection = ["Cnd_inspection_positive", "Cnd_inspection_negative"]
@@ -31,9 +31,9 @@ _Scripts.instruction_INS_openTheDoor = function() { scr_smoothRoomChange(r_Fence
 
 
 // Skinflint Homs
-_Fragments = variable_struct_get(global.DialogueData_val.npc_fence, "Fragments")
-_Scripts = variable_struct_get(global.DialogueData_val.npc_fence, "Scripts")
-_Specs = variable_struct_get(global.DialogueData_val.npc_fence, "Specs")
+_Fragments = variable_struct_get(global.__dialogue_flow_data.npc_fence, "Fragments")
+_Scripts = variable_struct_get(global.__dialogue_flow_data.npc_fence, "Scripts")
+_Specs = variable_struct_get(global.__dialogue_flow_data.npc_fence, "Specs")
 
 _Fragments.npc_fence = "condition_CND_alreadyCharmed"
 _Fragments.condition_CND_alreadyCharmed = ["Cnd_alreadyCharmed_true", "Cnd_alreadyCharmed_false"]
@@ -62,9 +62,9 @@ _Specs.instruction_INS_openTrade = { action: true }
 _Scripts.instruction_INS_openTrade = function() { scr_dialogue_open_trade() }
 
 // Steal
-_Fragments = variable_struct_get(global.DialogueData_val.npc_spot_steal_loot, "Fragments")
-_Scripts = variable_struct_get(global.DialogueData_val.npc_spot_steal_loot, "Scripts")
-_Specs = variable_struct_get(global.DialogueData_val.npc_spot_steal_loot, "Specs")
+_Fragments = variable_struct_get(global.__dialogue_flow_data.npc_spot_steal_loot, "Fragments")
+_Scripts = variable_struct_get(global.__dialogue_flow_data.npc_spot_steal_loot, "Scripts")
+_Specs = variable_struct_get(global.__dialogue_flow_data.npc_spot_steal_loot, "Specs")
 
 array_push(_Fragments.player_thieveryReaction, "player_thieveryReaction_axii_charm_pc")
 _Fragments.player_thieveryReaction_axii_charm_pc = "instruction_INS_applyAxiiSign"
@@ -74,9 +74,9 @@ _Fragments.instruction_INS_applyAxiiSign = "player_thieveryReaction_axii_charm"
 _Fragments.player_thieveryReaction_axii_charm = "@dialogue_end"
 
 // Check you inventory
-_Fragments = variable_struct_get(global.DialogueData_val.npc_guard_crime_inv_check, "Fragments")
-_Scripts = variable_struct_get(global.DialogueData_val.npc_guard_crime_inv_check, "Scripts")
-_Specs = variable_struct_get(global.DialogueData_val.npc_guard_crime_inv_check, "Specs")
+_Fragments = variable_struct_get(global.__dialogue_flow_data.npc_guard_crime_inv_check, "Fragments")
+_Scripts = variable_struct_get(global.__dialogue_flow_data.npc_guard_crime_inv_check, "Scripts")
+_Specs = variable_struct_get(global.__dialogue_flow_data.npc_guard_crime_inv_check, "Specs")
 
 array_push(_Fragments.player_crimeInvCheck, "player_thieveryReaction_axii_charm_pc")
 _Fragments.player_thieveryReaction_axii_charm_pc = "instruction_INS_applyAxiiSign"
@@ -89,7 +89,7 @@ _Fragments.player_thieveryReaction_axii_charm = "@dialogue_end"
 var _vogts = ["brynn_vogt_smith", "brynn_vogt_tailor", "brynn_vogt_carpenter"]
 for (var i = 0; i < array_length(_vogts); i++)
 {
-    var _vogt_data = variable_struct_get(global.DialogueData_val, _vogts[i])
+    var _vogt_data = variable_struct_get(global.__dialogue_flow_data, _vogts[i])
     _Fragments = variable_struct_get(_vogt_data, "Fragments")
     _Scripts = variable_struct_get(_vogt_data, "Scripts")
     _Specs = variable_struct_get(_vogt_data, "Specs")
