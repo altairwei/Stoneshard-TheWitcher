@@ -268,6 +268,18 @@ public partial class TheWitcher : Mod
             }")
             .Save();
 
+        // Throwed net
+        Msl.LoadGML("gml_Object_o_net_throw_Alarm_0")
+            .MatchFrom("_shield = scr_instance_exists_in_list")
+            .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
+            .Save();
+
+        // Throwed web
+        Msl.LoadGML("gml_Object_o_web_spit_Alarm_0")
+            .MatchFrom("_shield = scr_instance_exists_in_list")
+            .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
+            .Save();
+
         // Damage reduction by magical shield
         Msl.LoadGML("gml_GlobalScript_scr_damage_physical_calc")
             .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - argument0.tmpDEF * _partDamageNormalizer * (1 - Armor_Piercing / 100)) * (1 - argument2 / 100)), 0)))")
