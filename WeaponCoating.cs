@@ -186,8 +186,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "吊死鬼之毒"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to humanoids by ~lg~20%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对类人生物造成的伤害增加~lg~20%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to humanoids by ~lg~10%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对类人生物造成的伤害增加~lg~10%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Hanged Man's Venom is a toxin that is equally lethal to humans, elves and dwarves. Applied to a blade, it deals more damage than any other coating. This oil is ineffective against monsters."},
@@ -202,8 +202,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "吸血鬼油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to vampires by ~lg~20%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对变节信徒造成的伤害增加~lg~20%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to vampires by ~lg~10%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对变节信徒造成的伤害增加~lg~10%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Whosoever seeks to destroy a vampire, to banish it from this world forever, should prepare St. Gregory's Oil, called Vampire Oil by witchers. No fleder or bruxa can withstand it."},
@@ -218,8 +218,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "死灵油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to undead by ~lg~20%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对不死生灵造成的伤害增加~lg~20%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to undead by ~lg~10%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对不死生灵造成的伤害增加~lg~10%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Necrophages are accustomed to poisonous vapours. Yet even the most rancid ghouls and graveirs cannot withstand the poison wounds inflicted by a blade coated with Necrophage oil."},
@@ -234,8 +234,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "鬼灵油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to spectres by ~lg~40%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对幽魂造成的伤害增加~lg~40%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to spectres by ~lg~20%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对幽魂造成的伤害增加~lg~20%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "There is a mysterious boundary between the worlds of the dead and the living, one which is easier to cross for restless specters than for humans. To injure a spectral opponent, first anoint a blade with this oil. Only then will the weapon truly part the curtain dividing the worlds, thereby damaging the specter."},
@@ -250,8 +250,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "类虫生物油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to insectoid (such as crawler, swarm, etc.) by ~lg~40%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对类虫生物（比如巨蜘、亡蜂等）造成的伤害增加~lg~40%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to insectoid (such as crawler, swarm, etc.) by ~lg~20%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对类虫生物（比如巨蜘、亡蜂等）造成的伤害增加~lg~20%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "This blade grease increases damage dealt to arachnids and creatures similar to insects in their physiology. It is the most effective oil against monsters of this type. Witchers also use Insectoid oil to rid their fortresses of bugs and parasites."},
@@ -266,8 +266,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "混种兽油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to hybrids (such as Harpy and Gulon) by ~lg~30%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对混种兽（比如哈比和谷隆）造成的伤害增加~lg~30%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to hybrids (such as Harpy and Gulon) by ~lg~15%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对混种兽（比如哈比和谷隆）造成的伤害增加~lg~15%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Hybrids combine the capabilities, the strengths, and the weaknesses of different creatures, so they should never be taken lightly. However, this oil is very effective against monsters of this type."},
@@ -282,8 +282,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "食人魔油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to trolls by ~lg~30%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对巨魔造成的伤害增加~lg~30%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to trolls by ~lg~15%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对巨魔造成的伤害增加~lg~15%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Trolls are giant, eat or ate human flesh. This oil is very effective against trolls."},

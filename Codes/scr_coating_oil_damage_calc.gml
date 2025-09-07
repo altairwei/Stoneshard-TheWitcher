@@ -32,35 +32,35 @@ function scr_coating_oil_damage_calc()
                 case "human":
                 case "elf":
                 case "dwarf":
-                    _oil_damage = _damage * 0.2
+                    _oil_damage = _damage * 0.1
                 break;
             }
             break;
         case "vampire_oil":
             if (_target.typeID == "vampire")
-                _oil_damage = _damage * 0.2
+                _oil_damage = _damage * 0.1
             break;
         case "necrophage_oil":
             if (_target.typeID == "undead")
-                _oil_damage = _damage * 0.2
+                _oil_damage = _damage * 0.1
             break;
         case "specter_oil":
             if (_target.typeID == "spectre")
-                _oil_damage = _damage * 0.4
+                _oil_damage = _damage * 0.2
             break;
         case "insectoid_oil":
             if (_target.object_index == o_crawler || _target.object_index == o_hornets)
-                _oil_damage = _damage * 0.4
+                _oil_damage = _damage * 0.2
             break;
         case "hybrid_oil":
             if (_target.object_index == o_crawler || _target.object_index == o_hornets)
-                _oil_damage = _damage * 0.3
+                _oil_damage = _damage * 0.15
             break;
         case "ogroid_oil":
             if (_target.object_index == o_small_troll || _target.object_index == o_ancientTroll)
-                _oil_damage = _damage * 0.3
+                _oil_damage = _damage * 0.15
             break;
     }
 
-    return math_round(_oil_damage)
+    return ceil(_oil_damage)
 }
