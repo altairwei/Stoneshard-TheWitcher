@@ -320,7 +320,7 @@ function scr_crafting_recipe_get_map()
 dup.v 0
 pushi.e {DataLoader.data.GameObjects.IndexOf(o_witcherAlchemyCraftingMenu)}
 cmp.i.v EQ
-bt [196]")
+bt [203]")
             .Save();
         
     }

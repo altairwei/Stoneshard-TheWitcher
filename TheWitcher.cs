@@ -13,7 +13,7 @@ public partial class TheWitcher : Mod
     public override string Author => "Altair";
     public override string Name => "The Witcher";
     public override string Description => "The Witcher";
-    public override string Version => "0.2.4";
+    public override string Version => "0.2.5";
     public override string TargetVersion => "0.9.2.13";
 
     public override void PatchMod()
