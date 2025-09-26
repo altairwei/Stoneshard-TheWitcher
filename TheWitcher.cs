@@ -10,7 +10,7 @@ using UndertaleModLib.Models;
 namespace TheWitcher;
 public partial class TheWitcher : Mod
 {
-    public override string Author => "Altair";
+    public override string Author => "Altair & 北境的救世主";
     public override string Name => "The Witcher";
     public override string Description => "The Witcher";
     public override string Version => "0.2.5";
@@ -30,6 +30,7 @@ public partial class TheWitcher : Mod
         AddWitcherDecoction();
         AddTestPotionObject();
         AddWitcherSkillBook();
+        AddWitcherItems();
     }
 
     private void AddWitcherSkillBook()
