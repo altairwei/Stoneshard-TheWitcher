@@ -31,6 +31,7 @@ public partial class TheWitcher : Mod
         AddTestPotionObject();
         AddWitcherSkillBook();
         AddWitcherItems();
+        AddCharacters();
     }
 
     private void AddWitcherSkillBook()

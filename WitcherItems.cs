@@ -93,6 +93,7 @@ public partial class TheWitcher : Mod
                 
                 slot = ""Amulet""
                 can_equip = true
+                is_execute = false
             ")
         );
 
