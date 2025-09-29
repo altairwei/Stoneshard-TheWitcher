@@ -53,7 +53,7 @@ function scr_coating_oil_damage_calc()
                 _oil_damage = _damage * 0.2
             break;
         case "hybrid_oil":
-            if (_target.object_index == o_crawler || _target.object_index == o_hornets)
+            if (_target.object_index == o_gulon || _target.object_index == o_harpy)
                 _oil_damage = _damage * 0.15
             break;
         case "ogroid_oil":
