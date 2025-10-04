@@ -35,6 +35,106 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
                 event_inherited()
                 scr_skill_map_processor(1, 10)
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 16, code: @"
+                var _enchant_name = """"
+                var _enchant_value = 0
+                var _boss_id = """"
+                with (EnemyId)
+                {
+                    _boss_id = object_get_name(object_index)
+                    switch (string_join("";"", faction_key, Pattern))
+                    {
+                        case ""Brigand;Mage"":
+                        case ""Undead;Mage"":
+                            _enchant_name = ""Miracle_Chance""
+                            _enchant_value = 2 * Tier
+                            break;
+                        case ""Vampire;Melee"":
+                            _enchant_name = ""Lifesteal""
+                            _enchant_value = 2 * Tier
+                            break;
+                        case ""Undead;Melee"":
+                            _enchant_name = ""Manasteal""
+                            _enchant_value = 2 * Tier
+                            break;
+                        case ""Brigand;Melee"":
+                            _enchant_name = ""CRT""
+                            _enchant_value = 2 * Tier
+                            break;
+                        case ""Brigand;Ranger"":
+                        case ""Vampire;Ranger"":
+                            _enchant_name = ""Cooldown_Reduction""
+                            _enchant_value = 5 * Tier
+                            break;
+                        case ""Hive;Melee"":
+                        case ""carnivore;Melee"":
+                            _enchant_name = ""Physical_Resistance""
+                            _enchant_value = 5 * Tier
+                            break;
+                    }
+                }
+
+                if (_enchant_value == 0)
+                    exit;
+
+                with (o_inv_witcher_medallion_wolf)
+                {
+                    if (!equipped)
+                        exit;
+
+                    if (ds_list_find_index(ds_map_find_value(data, ""uniqueBossKill""), _boss_id) != -1)
+                        exit;
+                    else
+                        ds_list_add(ds_map_find_value(data, ""uniqueBossKill""), _boss_id)
+
+                    var _char_index = -1
+                    var _current_char_count = 0
+
+                    i = 0
+                    while (i < 5)
+                    {
+                        if (!(__is_undefined(ds_map_find_value(data, (""Char"" + string(i))))))
+                        {
+                            _current_char_count++
+                            i++
+                        }
+                        else
+                            break
+                    }
+
+                    if (!(__is_undefined(ds_map_find_value(data, _enchant_name))))
+                    {
+                        var j = 0
+                        while (j < 5)
+                        {
+                            var _key = ""Char"" + string(j)
+                            var _char = ds_map_find_value(data, _key)
+
+                            if __is_undefined(_char)
+                                break
+                            else if (string_pos(_enchant_name, _char) != 0)
+                            {
+                                var _ov = ds_map_find_value(data, _enchant_name)
+                                ds_map_delete(data, _enchant_name)
+                                ds_map_delete(data, _key)
+                                _char_index = j
+                                scr_consum_char_add(_enchant_name, _ov + _enchant_value, _char_index, false)
+                                break
+                            }
+                            else
+                                j++
+                        }
+                    }
+                    else
+                    {
+                        _char_index = _current_char_count
+                        scr_consum_char_add(_enchant_name, _enchant_value, _char_index, false)
+                    }
+
+                    scr_random_speech(""killBossGeralt"", 100)
+                }
             ")
         );
 
@@ -46,11 +146,45 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "布拉维坎的屠夫"}
                 },
                 description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "For each enemy killed, receive ~lg~+10%~/~ Weapon Damage and Magic Power, ~lg~+20%~/~ Crit Efficiency and Miracle Power, ~r~-5%~/~ Piercing Resistance for ~w~10~/~ turns.##This effect stacks."},
-                    {ModLanguage.Chinese, "每杀一个敌人，兵器伤害与法力便~lg~+10%~/~，暴击效果与奇观效果便~lg~+20%~/~，同时穿刺抗性~r~-5%~/~，效果存续~w~10~/~回合。##这个效果可以叠加。"}
+                    {ModLanguage.English, "For each enemy killed, receive ~lg~+10%~/~ Weapon Damage and Magic Power, ~lg~+20%~/~ Crit Efficiency and Miracle Power, ~r~-5%~/~ Piercing Resistance for ~w~10~/~ turns. This effect stacks.##" +
+                        "Allows ~w~\"Butchering\"~/~ to harvest various ~w~trophies~/~ from Mini-Bosses. Having a ~y~Wolf School Medallion~/~ that allows the character to sacrifice ~w~trophies~/~.##" +
+                        "Sacrifices grants the ~y~Wolf School Medallion~/~ various ~lg~bonuses~/~ "},
+                    {ModLanguage.Chinese, "每杀一个敌人，兵器伤害与法力便~lg~+10%~/~，暴击效果与奇观效果便~lg~+20%~/~，同时穿刺抗性~r~-5%~/~，效果存续~w~10~/~回合。这个效果可以叠加。##" +
+                        "杰洛特有一个~y~狼学派徽章~/~，佩戴时首次击杀关底头目会令~y~狼学派徽章~/~获得各种~lg~加成~/~。"}
                 }
             )
         );
+
+        // Msl.LoadGML("gml_Object_o_enemy_Destroy_0")
+        //     .MatchFrom("with (o_perk_suum_cuique)")
+        //     .InsertAbove(@"
+        // with (o_perk_blaviken_butcher)
+        // {
+        //     EnemyId = other.id
+        //     event_user(6)
+        // }")
+        //     .Peek()
+        //     .Save();
+
+        int index = DataLoader.data.GameObjects.IndexOf(
+            DataLoader.data.GameObjects.First(x => x.Name.Content == "o_perk_suum_cuique"));
+        Msl.LoadAssemblyAsString("gml_Object_o_enemy_Destroy_0")
+            .MatchFrom($"pushi.e {index}")
+            .InsertAbove(@"
+pushi.e o_perk_blaviken_butcher
+pushenv [1001]
+
+:[1000]
+push.v other.id
+pop.v.v self.EnemyId
+pushi.e 6
+conv.i.v
+call.i event_user(argc=1)
+popz.v
+
+:[1001]
+popenv [44]")
+            .Save();
     }
 
     private void AddGeralt()
@@ -93,8 +227,12 @@ public partial class TheWitcher : Mod
                             scr_atr_set_simple(""Head"", ""s_GeraltHead"")
                             scr_atr_set_simple(""CorpseSprite"", sprite_get_name(s_Geralt_dead))
                             scr_atr_set_simple(""BodySprite"", sprite_get_name(s_human_male))
-                            with(scr_equip(""Wolf School Medallion""))
-                                scr_inv_atr_set(""Duration"", 100)
+                            with(scr_inventory_add_item(o_inv_witcher_medallion_wolf))
+                            {
+                                onStart_equipped = true
+                                if (!equipped)
+                                    event_user(5)
+                            }
                             with (scr_equip(""Worn Cloak"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
                             with (scr_equip(""Peasant Pitchfork"", (3 << 0)))
@@ -144,13 +282,10 @@ public partial class TheWitcher : Mod
                 medallion_turns = 24
 
                 var _equipped = false
-                with (o_inv_slot)
+                with (o_inv_witcher_medallion_wolf)
                 {
                     if (equipped)
-                    {
-                        if (is_weapon && ds_map_find_value(data, ""idName"") == ""Wolf School Medallion"")
-                            _equipped = true
-                    }
+                        _equipped = true
                 }
 
                 if (_equipped)
@@ -178,7 +313,33 @@ public partial class TheWitcher : Mod
                         }
                     }
 
-                    if (_enemy_count >= 5)
+                    var _find_secret_room = false
+                    if (instance_exists(o_secret_door))
+                    {
+                        with (o_secret_door)
+                        {
+                            if (!o_secret_door.is_open)
+                            {
+                                if (scr_tile_distance(o_player, id) <= (o_player.VSN * 5))
+                                {
+                                    scr_characterStatsUpdateAdd(""secretRoomsFound"", 1)
+                                    o_secret_door.is_open = true
+                                    audio_play_sound(snd_secret_room_find, 4, 0)
+                                    event_user(1)
+                                    
+                                    with (o_fogrender)
+                                        event_user(2)
+                                    
+                                    scr_psy_change(""MoraleSituational"", 10, ""trap_find"")
+                                    _find_secret_room = true
+                                }
+                            }
+                        }
+                    }
+
+                    if (_find_secret_room)
+                        scr_random_speech(""perceiveSecretRoomGeralt"", 100)
+                    else if (_enemy_count >= 5)
                         scr_random_speech(""perceiveMassEnemyGeralt"", 100)
                     else if (_enemy_count >= 3)
                         scr_random_speech(""perceiveMediumEnemyGeralt"", 100)
@@ -214,8 +375,8 @@ public partial class TheWitcher : Mod
             new LocalizationSpeech(
                 id: "perceiveFewEnemyGeralt",
                 new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "The medallion is vibrating, something's nearby."},
-                    {ModLanguage.Chinese, "徽章有动静，看来周围有埋伏。"}
+                    {ModLanguage.English, "The medallion is vibrating."},
+                    {ModLanguage.Chinese, "徽章有动静。"}
                 },
                 new Dictionary<ModLanguage, string> {
                     {ModLanguage.English, "My medallion is vibrating."},
@@ -229,24 +390,24 @@ public partial class TheWitcher : Mod
             new LocalizationSpeech(
                 id: "perceiveMediumEnemyGeralt",
                 new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "The medallion is vibrating strongly, there are several enemies nearby."},
-                    {ModLanguage.Chinese, "徽章震动的真厉害！周围有不少敌人。"}
+                    {ModLanguage.English, "The medallion is vibrating strongly!"},
+                    {ModLanguage.Chinese, "徽章震动的真厉害！"}
                 },
                 new Dictionary<ModLanguage, string> {
                     {ModLanguage.English, "The medallion senses enemies all around it!"},
                     {ModLanguage.Chinese, "徽章感知到周围有不少敌人！"}
                 },
                 new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "Several enemies nearby, the medallion won't stop vibrating!"},
-                    {ModLanguage.Chinese, "周围有不少敌人，徽章跳个不停！"}
+                    {ModLanguage.English, "The medallion won't stop vibrating!"},
+                    {ModLanguage.Chinese, "徽章跳个不停！"}
                 }
 
             ),
             new LocalizationSpeech(
                 id: "perceiveMassEnemyGeralt",
                 new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "The medallion is vibrating violently, I seem to be in danger!"},
-                    {ModLanguage.Chinese, "徽章剧烈地震动着，我好像陷入了危险之中！"}
+                    {ModLanguage.English, "The medallion is vibrating violently!"},
+                    {ModLanguage.Chinese, "徽章剧烈地震动着！"}
                 },
                 new Dictionary<ModLanguage, string> {
                     {ModLanguage.English, "My medallion is vibrating violently."},
@@ -256,7 +417,58 @@ public partial class TheWitcher : Mod
                     {ModLanguage.English, "In danger! The medallion won't stop vibrating!"},
                     {ModLanguage.Chinese, "有危险！徽章跳个不停！"}
                 }
+            ),
+            new LocalizationSpeech(
+                id: "killBossGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "The medallion is burning hot."},
+                    {ModLanguage.Chinese, "徽章在发烫。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "It seems to be absorbing something?"},
+                    {ModLanguage.Chinese, "它似乎在吸收什么东西？"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "The medallion seems to have grown stronger?"},
+                    {ModLanguage.Chinese, "徽章好像变得更强了？"}
+                }
+            ),
+            new LocalizationSpeech(
+                id: "perceiveSecretRoomGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "There seems to be a hidden room nearby."},
+                    {ModLanguage.Chinese, "附近好像有隐蔽的房间。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "I can sense a surge of magic emanating from within the walls."},
+                    {ModLanguage.Chinese, "我感受到了墙壁中传来的魔力波动。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "There seems to be something behind the wall."},
+                    {ModLanguage.Chinese, "墙壁后面好像有东西。"}
+                }
             )
+        );
+
+        InjectItemsToTable(
+            table: "gml_GlobalScript_table_char_lines",
+            anchor: ";;// DEFAULT;// DEFAULT;",
+            new Dictionary<string, string>
+            {
+                ["tag"] = "Geralt_rent_room",
+                ["Русский"] = "Geralt_rent_room",
+                ["English"] = "Geralt_rent_room",
+                ["中文"] = "哈哈哈哈哈！~lg~[可以保存游戏进度]~/~",
+                ["Deutsch"] = "Geralt_rent_room",
+                ["Español (LATAM)"] = "Geralt_rent_room",
+                ["Français"] = "Geralt_rent_room",
+                ["Italiano"] = "Geralt_rent_room",
+                ["Português"] = "Geralt_rent_room",
+                ["Polski"] = "Geralt_rent_room",
+                ["Türkçe"] = "Geralt_rent_room",
+                ["日本語"] = "Geralt_rent_room",
+                [" 한국어"] = "Geralt_rent_room"
+            }
         );
     }
 

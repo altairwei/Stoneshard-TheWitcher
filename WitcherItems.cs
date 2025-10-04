@@ -63,81 +63,120 @@ public partial class TheWitcher : Mod
             tte.Texture.BoundingHeight = 18;
         }
 
-        // UndertaleGameObject o_inv_witcher_medallion_wolf = Msl.AddObject(
-        //     name: "o_inv_witcher_medallion_wolf",
-        //     parentName: "o_inv_consum_passive",
-        //     spriteName: "s_inv_witcher_medallion_wolf",
-        //     isVisible: true,
-        //     isPersistent: true,
-        //     isAwake: true
-        // );
-
-        // UndertaleGameObject o_loot_witcher_medallion_wolf = Msl.AddObject(
-        //     name: "o_loot_witcher_medallion_wolf",
-        //     parentName: "o_consument_loot",
-        //     spriteName: "s_loot_witcher_medallion_wolf",
-        //     isVisible: true,
-        //     isPersistent: false,
-        //     isAwake: true
-        // );
-
-        // o_inv_witcher_medallion_wolf.ApplyEvent(
-        //     new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
-        //         event_inherited()
-        //         scr_consum_atr(""witcher_medallion_wolf"")
-
-        //         ds_map_set(data, ""quality"", (7 << 0))
-        //         ds_map_set(data, ""Colour"", make_colour_rgb(229, 193, 85))
-        //         if object_is_ancestor(object_index, o_inv_slot_parent)
-        //             alarm[11] = shineDelay
-                
-        //         slot = ""Amulet""
-        //         can_equip = true
-        //         is_execute = false
-        //     ")
-        // );
-
-        // o_loot_witcher_medallion_wolf.ApplyEvent(
-        //     new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
-        //         event_inherited()
-        //         inv_object = o_inv_witcher_medallion_wolf
-        //         number = 0
-        //     ")
-        // );
-
-        Msl.InjectTableArmor(
-            hook: Msl.ArmorHook.NECKLACES,
-            name: "Wolf School Medallion",
-            Tier: Msl.ArmorTier.Tier5,
-            id: "witcher_medallion_wolf",
-            Slot: Msl.ArmorSlot.Amulet,
-            Class: Msl.ArmorClass.Light,
-            rarity: Msl.ArmorRarity.Unique,
-            Mat: Msl.ArmorMaterial.silver,
-            Price: 200,
-            MaxDuration: 80,
-            Nature_Resistance: 9,
-            Magic_Resistance: 9,
-            Received_XP: 6,
-            VSN: 1,
-            tags: Msl.ArmorTags.specialexc
+        UndertaleGameObject o_inv_witcher_medallion_wolf = Msl.AddObject(
+            name: "o_inv_witcher_medallion_wolf",
+            parentName: "o_inv_consum_passive",
+            spriteName: "s_inv_wolfschoolmedallion",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
         );
 
-        Msl.InjectTableWeaponTextsLocalization(
-            new LocalizationWeaponText(
-                id: "Wolf School Medallion",
+        UndertaleGameObject o_loot_witcher_medallion_wolf = Msl.AddObject(
+            name: "o_loot_witcher_medallion_wolf",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_wolfschoolmedallion",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_inv_witcher_medallion_wolf.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                scr_consum_atr(""witcher_medallion_wolf"")
+
+                ds_map_set(data, ""quality"", (7 << 0))
+                ds_map_set(data, ""Colour"", make_colour_rgb(229, 193, 85))
+                if object_is_ancestor(object_index, o_inv_slot_parent)
+                    alarm[11] = shineDelay
+
+                ds_map_add_list(data, ""uniqueBossKill"", __dsDebuggerListCreate())
+
+                scr_consum_attribute_simple_add(""Nature_Resistance"", 9);
+                scr_consum_attribute_simple_add(""Magic_Resistance"", 9);
+                scr_consum_attribute_simple_add(""Received_XP"", 6);
+                scr_consum_attribute_simple_add(""VSN"", 1);
+
+                slot = ""Amulet""
+                isOpen = 1
+                can_equip = true
+                is_execute = false
+            ")
+        );
+
+        o_loot_witcher_medallion_wolf.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                inv_object = o_inv_witcher_medallion_wolf
+                number = 0
+            ")
+        );
+
+        Msl.InjectTableItemStats(
+            id: "witcher_medallion_wolf",
+            Price: 200,
+            EffPrice: 45,
+            Cat: Msl.ItemStatsCategory.treasure,
+            Material: Msl.ItemStatsMaterial.silver,
+            Weight: Msl.ItemStatsWeight.Light,
+            tags: Msl.ItemStatsTags.special
+        );
+
+        Msl.InjectTableItemsLocalization(
+            new LocalizationItem(
+                id: "witcher_medallion_wolf",
                 name: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Wolf School Medallion"},
                     {ModLanguage.Chinese, "狼学派徽章"}
                 },
+                effect: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, it vibrates and yanks sharply on its chain.##" +
+                        "~lg~Trophies~/~ placed into the witcher’s alchemy interface together with the ~y~Wolf School Medallion~/~ can grant it corresponding enhancements." },
+                    {ModLanguage.Chinese, "每~lg~12~/~回合，徽章会在~lg~5~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。##" +
+                        "佩戴~y~狼学派徽章~/~首次击杀关底头目时，可以获得相应的加成。"}
+                },
                 description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "A witcher medallion is a silver symbol of the witchers' profession. " +
-                        "Each one is shaped to represent the school a witcher comes from. " +
-                        "The medallions vibrate in response to magic in all its forms." },
-                    {ModLanguage.Chinese, "猎魔人徽章是一个银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。" +
-                        "猎魔人徽章对所有魔法形式敏感，当侦测到魔法存在时徽章就会震动并且猛拉挂着它的链子。" }
+                    {ModLanguage.English, "The Witcher’s medallion is a silver amulet, crafted in different shapes to represent the various witcher schools. " +
+                        "Geralt’s wolf-school medallion, however, for some unknown reason, has become tainted with the path of “sacrifice” in this new world..." },
+                    {ModLanguage.Chinese, "猎魔人徽章是一种银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。杰洛特的这枚狼学派徽章，却不知为何在新世界沾染上了“献祭”之道..."}
                 }
             )
         );
+
+        // Msl.InjectTableArmor(
+        //     hook: Msl.ArmorHook.NECKLACES,
+        //     name: "Wolf School Medallion",
+        //     Tier: Msl.ArmorTier.Tier5,
+        //     id: "witcher_medallion_wolf",
+        //     Slot: Msl.ArmorSlot.Amulet,
+        //     Class: Msl.ArmorClass.Light,
+        //     rarity: Msl.ArmorRarity.Unique,
+        //     Mat: Msl.ArmorMaterial.silver,
+        //     Price: 200,
+        //     MaxDuration: 80,
+        //     Nature_Resistance: 9,
+        //     Magic_Resistance: 9,
+        //     Received_XP: 6,
+        //     VSN: 1,
+        //     tags: Msl.ArmorTags.specialexc
+        // );
+
+        // Msl.InjectTableWeaponTextsLocalization(
+        //     new LocalizationWeaponText(
+        //         id: "Wolf School Medallion",
+        //         name: new Dictionary<ModLanguage, string>() {
+        //             {ModLanguage.English, "Wolf School Medallion"},
+        //             {ModLanguage.Chinese, "狼学派徽章"}
+        //         },
+        //         description: new Dictionary<ModLanguage, string>() {
+        //             {ModLanguage.English, "A witcher medallion is a silver symbol of the witchers' profession. " +
+        //                 "Each one is shaped to represent the school a witcher comes from. " +
+        //                 "The medallions vibrate in response to magic in all its forms." },
+        //             {ModLanguage.Chinese, "猎魔人徽章是一个银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。" +
+        //                 "猎魔人徽章对所有魔法形式敏感，当侦测到魔法存在时徽章就会震动并且猛拉挂着它的链子。" }
+        //         }
+        //     )
+        // );
     }
 }
