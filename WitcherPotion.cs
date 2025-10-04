@@ -89,6 +89,7 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
                 event_inherited()
                 audio_play_sound(snd_gui_drink_potion, 3, 0)
+                scr_random_speech(""useWitcherPotion"", 100)
 
                 with (o_player)
                     scr_guiAnimation(s_drinking, 1, 1, 0)

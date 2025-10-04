@@ -38,45 +38,35 @@ public partial class TheWitcher : Mod
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 16, code: @"
-                var _enchant_name = """"
-                var _enchant_value = 0
+                var _enchant_names = []
+                var _enchant_values = []
                 var _boss_id = """"
                 with (EnemyId)
                 {
                     _boss_id = object_get_name(object_index)
-                    switch (string_join("";"", faction_key, Pattern))
+                    switch (faction_key)
                     {
-                        case ""Brigand;Mage"":
-                        case ""Undead;Mage"":
-                            _enchant_name = ""Miracle_Chance""
-                            _enchant_value = 2 * Tier
+                        case ""Brigand"":
+                            array_push(_enchant_names, ""CRT"", ""Cooldown_Reduction"")
+                            array_push(_enchant_values, 2, -2)
                             break;
-                        case ""Vampire;Melee"":
-                            _enchant_name = ""Lifesteal""
-                            _enchant_value = 2 * Tier
+                        case ""Vampire"":
+                            array_push(_enchant_names, ""Miracle_Chance"", ""Lifesteal"")
+                            array_push(_enchant_values, 5, 5)
                             break;
-                        case ""Undead;Melee"":
-                            _enchant_name = ""Manasteal""
-                            _enchant_value = 2 * Tier
+                        case ""Undead"":
+                            array_push(_enchant_names, ""PRR"", ""Manasteal"")
+                            array_push(_enchant_values, 2.5, 2.5)
                             break;
-                        case ""Brigand;Melee"":
-                            _enchant_name = ""CRT""
-                            _enchant_value = 2 * Tier
-                            break;
-                        case ""Brigand;Ranger"":
-                        case ""Vampire;Ranger"":
-                            _enchant_name = ""Cooldown_Reduction""
-                            _enchant_value = 5 * Tier
-                            break;
-                        case ""Hive;Melee"":
-                        case ""carnivore;Melee"":
-                            _enchant_name = ""Physical_Resistance""
-                            _enchant_value = 5 * Tier
+                        case ""Hive"":
+                        case ""carnivore"":
+                            array_push(_enchant_names, ""Damage_Received"")
+                            array_push(_enchant_values, -5)
                             break;
                     }
                 }
 
-                if (_enchant_value == 0)
+                if (array_length(_enchant_names) == 0)
                     exit;
 
                 with (o_inv_witcher_medallion_wolf)
@@ -89,48 +79,54 @@ public partial class TheWitcher : Mod
                     else
                         ds_list_add(ds_map_find_value(data, ""uniqueBossKill""), _boss_id)
 
-                    var _char_index = -1
-                    var _current_char_count = 0
-
-                    i = 0
-                    while (i < 5)
+                    for (var m = 0; m < array_length(_enchant_names); m++)
                     {
-                        if (!(__is_undefined(ds_map_find_value(data, (""Char"" + string(i))))))
-                        {
-                            _current_char_count++
-                            i++
-                        }
-                        else
-                            break
-                    }
+                        var _name = _enchant_names[m]
+                        var _value = _enchant_values[m]
 
-                    if (!(__is_undefined(ds_map_find_value(data, _enchant_name))))
-                    {
-                        var j = 0
-                        while (j < 5)
-                        {
-                            var _key = ""Char"" + string(j)
-                            var _char = ds_map_find_value(data, _key)
+                        var _char_index = -1
+                        var _current_char_count = 0
 
-                            if __is_undefined(_char)
-                                break
-                            else if (string_pos(_enchant_name, _char) != 0)
+                        i = 0
+                        while (i < 10)
+                        {
+                            if (!(__is_undefined(ds_map_find_value(data, (""Char"" + string(i))))))
                             {
-                                var _ov = ds_map_find_value(data, _enchant_name)
-                                ds_map_delete(data, _enchant_name)
-                                ds_map_delete(data, _key)
-                                _char_index = j
-                                scr_consum_char_add(_enchant_name, _ov + _enchant_value, _char_index, false)
-                                break
+                                _current_char_count++
+                                i++
                             }
                             else
-                                j++
+                                break
                         }
-                    }
-                    else
-                    {
-                        _char_index = _current_char_count
-                        scr_consum_char_add(_enchant_name, _enchant_value, _char_index, false)
+
+                        if (!(__is_undefined(ds_map_find_value(data, _name))))
+                        {
+                            var j = 0
+                            while (j < 10)
+                            {
+                                var _key = ""Char"" + string(j)
+                                var _char = ds_map_find_value(data, _key)
+
+                                if __is_undefined(_char)
+                                    break
+                                else if (string_pos(_name, _char) != 0)
+                                {
+                                    var _ov = ds_map_find_value(data, _name)
+                                    ds_map_delete(data, _name)
+                                    ds_map_delete(data, _key)
+                                    _char_index = j
+                                    scr_consum_char_add(_name, _ov + _value, _char_index, false)
+                                    break
+                                }
+                                else
+                                    j++
+                            }
+                        }
+                        else
+                        {
+                            _char_index = _current_char_count
+                            scr_consum_char_add(_name, _value, _char_index, false)
+                        }
                     }
 
                     scr_random_speech(""killBossGeralt"", 100)
@@ -421,16 +417,20 @@ popenv [44]")
             new LocalizationSpeech(
                 id: "killBossGeralt",
                 new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "The medallion is burning hot."},
-                    {ModLanguage.Chinese, "徽章在发烫。"}
+                    {ModLanguage.English, "Hmm, the medallion’s reacting."},
+                    {ModLanguage.Chinese, "唔，徽章有动静。"}
                 },
                 new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "It seems to be absorbing something?"},
-                    {ModLanguage.Chinese, "它似乎在吸收什么东西？"}
+                    {ModLanguage.English, "The magic is being absorbed."},
+                    {ModLanguage.Chinese, "魔力正在被吸收。"}
                 },
                 new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "The medallion seems to have grown stronger?"},
-                    {ModLanguage.Chinese, "徽章好像变得更强了？"}
+                    {ModLanguage.English, "Soul harvesting? The medallion never had that ability before."},
+                    {ModLanguage.Chinese, "掠夺灵魂？这徽章以前可没这种能力。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Would love to have Yennefer take a look at this."},
+                    {ModLanguage.Chinese, "真想让叶奈法拿去研究研究。"}
                 }
             ),
             new LocalizationSpeech(
@@ -451,24 +451,380 @@ popenv [44]")
         );
 
         InjectItemsToTable(
-            table: "gml_GlobalScript_table_char_lines",
-            anchor: ";;// DEFAULT;// DEFAULT;",
+            table: "gml_GlobalScript_table_lines",
+            anchor: ";;;;;;;[CHARACTERS] BASIC LINES;;;;;;;;;;;",
             new Dictionary<string, string>
             {
-                ["tag"] = "Geralt_rent_room",
-                ["Русский"] = "Geralt_rent_room",
-                ["English"] = "Geralt_rent_room",
-                ["中文"] = "哈哈哈哈哈！~lg~[可以保存游戏进度]~/~",
-                ["Deutsch"] = "Geralt_rent_room",
-                ["Español (LATAM)"] = "Geralt_rent_room",
-                ["Français"] = "Geralt_rent_room",
-                ["Italiano"] = "Geralt_rent_room",
-                ["Português"] = "Geralt_rent_room",
-                ["Polski"] = "Geralt_rent_room",
-                ["Türkçe"] = "Geralt_rent_room",
-                ["日本語"] = "Geralt_rent_room",
-                [" 한국어"] = "Geralt_rent_room"
+                ["id"] = "custom_rent_room",
+                ["Type"] = "geralt",
+                ["English"] = "Do you have a room available for the night? ~lg~[allows to save the game]~/~",
+                ["中文"] = "可有房间留宿？~lg~[可以保存游戏进度]~/~"
+            },
+            new Dictionary<string, string>
+            {
+                ["id"] = "custom_chat",
+                ["Type"] = "geralt",
+                ["English"] = "Let’s talk about the latest news you have heard.",
+                ["中文"] = "聊聊最近听说的事。"
+            },
+            new Dictionary<string, string>
+            {
+                ["id"] = "custom_trade",
+                ["Type"] = "geralt",
+                ["English"] = "Let’s do some trading.",
+                ["中文"] = "来做点买卖。"
+            },
+            new Dictionary<string, string>
+            {
+                ["id"] = "custom_leave",
+                ["Type"] = "geralt",
+                ["English"] = "Farewell.",
+                ["中文"] = "再会。"
+            },
+            new Dictionary<string, string>
+            {
+                ["id"] = "custom_back",
+                ["Type"] = "geralt",
+                ["English"] = "*Nods in greeting*",
+                ["中文"] = "*点头致意*"
+            },
+            new Dictionary<string, string>
+            {
+                ["id"] = "contractGet_pc",
+                ["Type"] = "geralt",
+                ["English"] = "Got any tricky business that needs taking care of?",
+                ["中文"] = "有什么棘手的事要处理么？"
             }
+        );
+
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "enemyGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Challenging a fully armed witcher...interesting."},
+                    {ModLanguage.Chinese, "挑衅一位全副武装的猎魔人么...有趣"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Alright then, looks like you lot are tired of living..."},
+                    {ModLanguage.Chinese, "好吧，看来你们活得不耐烦了..."}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "In the name of the Gwynbleidd!"},
+                    {ModLanguage.Chinese, "以白狼之名！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Good time to stretch my muscles!"},
+                    {ModLanguage.Chinese, "正好活动筋骨！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Since you’re so eager to spar with me..."},
+                    {ModLanguage.Chinese, "既然你这么想和我练练手..."}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "killGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Job’s done!"},
+                    {ModLanguage.Chinese, "收工！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Hope the next one lasts a bit longer."},
+                    {ModLanguage.Chinese, "希望下一个能多撑一会。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Next time, stay clear of witchers."},
+                    {ModLanguage.Chinese, "下辈子，记得躲着猎魔人走。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "See? Even your blood admits I’m faster!"},
+                    {ModLanguage.Chinese, "看，你的血都承认我更快！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "No harder than slaying a ghoul."},
+                    {ModLanguage.Chinese, "不比杀一头孽鬼费劲多少。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Warm-up’s over!"},
+                    {ModLanguage.Chinese, "热身完毕！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Don’t stain my medallion."},
+                    {ModLanguage.Chinese, "别弄脏我的徽章。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Was that really necessary?"},
+                    {ModLanguage.Chinese, "何必呢？"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "fatigueGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Damn... my bones are about to fall apart."},
+                    {ModLanguage.Chinese, "该死...这身骨头快散架了。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Give me a bed now, and I could sleep till the next century."},
+                    {ModLanguage.Chinese, "现在给我张床，我能睡到下个世纪。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "I need a vacation back at Kaer Morhen."},
+                    {ModLanguage.Chinese, "我需要回凯尔莫罕休个假。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Even Vesemir’s training wasn’t this exhausting."},
+                    {ModLanguage.Chinese, "当年在维瑟米尔手下训练都没这么累。"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "painInjuryGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Pain... proof that I’m still alive."},
+                    {ModLanguage.Chinese, "疼痛……是我还活着的证明。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Damn it, my insides are all messed up..."},
+                    {ModLanguage.Chinese, "该死，五脏六腑都在……"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Need a White Honey. No—make that two!"},
+                    {ModLanguage.Chinese, "得来瓶白蜂蜜，不，两瓶！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "This pain... not nearly enough."},
+                    {ModLanguage.Chinese, "这点疼痛，还不够……"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "My blood’s boiling..."},
+                    {ModLanguage.Chinese, "血液在沸腾……"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "attackMagicBuffGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "In Aedd Gynvael, magic was never this stingy."},
+                    {ModLanguage.Chinese, "在奥尔多，魔法可没那么吝啬。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Who says witchers only fight with swords!"},
+                    {ModLanguage.Chinese, "谁说猎魔人只会用剑！"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "critGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Too slow!"},
+                    {ModLanguage.Chinese, "太慢了！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Try dodging this!"},
+                    {ModLanguage.Chinese, "试着躲躲我这一记！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Free lesson!"},
+                    {ModLanguage.Chinese, "这招免费教学！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Lambert should’ve seen that!"},
+                    {ModLanguage.Chinese, "真该让兰伯特观摩观摩！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Crippled!"},
+                    {ModLanguage.Chinese, "残废！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Still not dead?!"},
+                    {ModLanguage.Chinese, "这都没死透么？！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "On your knees!"},
+                    {ModLanguage.Chinese, "跪下！"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "attackChargeGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Form a line, everyone—your turn will come!"},
+                    {ModLanguage.Chinese, "排好队各位，按顺序上路！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Come on, let’s see what you’ve got!"},
+                    {ModLanguage.Chinese, "来啊，让你们见识下！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Looks like another fine day... for a hot bath afterward."},
+                    {ModLanguage.Chinese, "看来今天…又是个适合洗热水澡的日子。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Time to loosen up!"},
+                    {ModLanguage.Chinese, "是该活动活动了！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "I’m done holding back!"},
+                    {ModLanguage.Chinese, "我要动真格了！"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "injuryGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "You’ll never break a witcher..."},
+                    {ModLanguage.Chinese, "别妄想击垮一个猎魔人……"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Not even Vilgefortz hit that hard..."},
+                    {ModLanguage.Chinese, "还不如威戈弗特兹敲我的几棍子……"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Heh... walked right into that one."},
+                    {ModLanguage.Chinese, "呵……是我着了道"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Dumber than getting skewered by a pitchfork..."},
+                    {ModLanguage.Chinese, "这比被草叉捅死还要蠢……"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "maneuverGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Flawless!"},
+                    {ModLanguage.Chinese, "无懈可击！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Defend, just for a moment!"},
+                    {ModLanguage.Chinese, "稍作防御！"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "counterCritGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Block... and strike!"},
+                    {ModLanguage.Chinese, "守……转攻！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Stop struggling."},
+                    {ModLanguage.Chinese, "别再挣扎了。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Too slow, too sloppy!"},
+                    {ModLanguage.Chinese, "动作太慢，准头太差！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "That hit’s weaker than a drowner’s swipe!"},
+                    {ModLanguage.Chinese, "这力度，尚不如一头水鬼！"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "killCrit_Geralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Pathetic!"},
+                    {ModLanguage.Chinese, "不堪一击！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Next!"},
+                    {ModLanguage.Chinese, "再来几个！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Leave none alive!"},
+                    {ModLanguage.Chinese, "一个不留！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Next life, pick an easier target!"},
+                    {ModLanguage.Chinese, "下辈子挑个软柿子捏！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Lesson learned? Shame about the cost..."},
+                    {ModLanguage.Chinese, "学到教训了么，至于代价……"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "That’s what you get for provoking a witcher!"},
+                    {ModLanguage.Chinese, "挑衅猎魔人的下场！"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "killCritShot_Geralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "One shot... straight through the heart!"},
+                    {ModLanguage.Chinese, "一箭……穿心！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Bullseye!"},
+                    {ModLanguage.Chinese, "正中目标！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Lesson learned? Shame about the cost..."},
+                    {ModLanguage.Chinese, "学到教训了么，至于代价……"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "That’s what you get for provoking a witcher!"},
+                    {ModLanguage.Chinese, "挑衅猎魔人的下场！"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "useWitcherPotion",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Huh, this brew will do... barely."},
+                    {ModLanguage.Chinese, "呼，这个配方勉强够用。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Could use another bottle."},
+                    {ModLanguage.Chinese, "应该还能再来一瓶。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Good effect."},
+                    {ModLanguage.Chinese, "效果不错！"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "All set. Time to begin."},
+                    {ModLanguage.Chinese, "准备充分，可以开始了。"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "useTrapGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Hope this actually works..."},
+                    {ModLanguage.Chinese, "希望能有点作用……"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Witchers rarely rely on these..."},
+                    {ModLanguage.Chinese, "猎魔人很少用这些……"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "prayGeralt",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Will the Holy One bless even a stranger like me..."},
+                    {ModLanguage.Chinese, "圣主也会庇佑我等异乡的客人么……"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "prayGeraltCD",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "Generous Holy One, my thanks for Your protection."},
+                    {ModLanguage.Chinese, "慷慨的圣主，感谢您的庇佑。"}
+                }
+            ),
+
+            new LocalizationSpeech(
+                id: "prayGeraltDwarfAltar",
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "A magical fluctuation? Hm... can’t absorb it."},
+                    {ModLanguage.Chinese, "魔力的波动？唔，没法吸收。"}
+                }
+            )
         );
     }
 
