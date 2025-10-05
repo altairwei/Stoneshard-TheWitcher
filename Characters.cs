@@ -8,185 +8,12 @@ public partial class TheWitcher : Mod
 {
     private void AddCharacters()
     {
+        AddPerkBlavikenButcher();
         AddGeralt();
-    }
-
-    private void AddPerkBlavikenButcher()
-    {
-        UndertaleGameObject o_perk_blaviken_butcher = Msl.AddObject(
-            name: "o_perk_blaviken_butcher",
-            parentName: "o_perks",
-            spriteName: "s_skills_passive_power_rune",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
-
-        o_perk_blaviken_butcher.ApplyEvent(
-            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
-                event_inherited()
-                ds_map_add(data, ""Weapon_Damage"", 10)
-                ds_map_add(data, ""CRTD"", 20)
-                ds_map_add(data, ""Magic_Power"", 10)
-                ds_map_add(data, ""Miracle_Power"", 20)
-                ds_map_add(data, ""Piercing_Resistance"", -5)
-            "),
-
-            new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
-                event_inherited()
-                scr_skill_map_processor(1, 10)
-            "),
-
-            new MslEvent(eventType: EventType.Other, subtype: 16, code: @"
-                var _enchant_names = []
-                var _enchant_values = []
-                var _boss_id = """"
-                with (EnemyId)
-                {
-                    _boss_id = object_get_name(object_index)
-                    switch (faction_key)
-                    {
-                        case ""Brigand"":
-                            array_push(_enchant_names, ""CRT"", ""Cooldown_Reduction"")
-                            array_push(_enchant_values, 2, -2)
-                            break;
-                        case ""Vampire"":
-                            array_push(_enchant_names, ""Miracle_Chance"", ""Lifesteal"")
-                            array_push(_enchant_values, 5, 5)
-                            break;
-                        case ""Undead"":
-                            array_push(_enchant_names, ""PRR"", ""Manasteal"")
-                            array_push(_enchant_values, 2.5, 2.5)
-                            break;
-                        case ""Hive"":
-                        case ""carnivore"":
-                            array_push(_enchant_names, ""Damage_Received"")
-                            array_push(_enchant_values, -5)
-                            break;
-                    }
-                }
-
-                if (array_length(_enchant_names) == 0)
-                    exit;
-
-                with (o_inv_witcher_medallion_wolf)
-                {
-                    if (!equipped)
-                        exit;
-
-                    if (ds_list_find_index(ds_map_find_value(data, ""uniqueBossKill""), _boss_id) != -1)
-                        exit;
-                    else
-                        ds_list_add(ds_map_find_value(data, ""uniqueBossKill""), _boss_id)
-
-                    for (var m = 0; m < array_length(_enchant_names); m++)
-                    {
-                        var _name = _enchant_names[m]
-                        var _value = _enchant_values[m]
-
-                        var _char_index = -1
-                        var _current_char_count = 0
-
-                        i = 0
-                        while (i < 10)
-                        {
-                            if (!(__is_undefined(ds_map_find_value(data, (""Char"" + string(i))))))
-                            {
-                                _current_char_count++
-                                i++
-                            }
-                            else
-                                break
-                        }
-
-                        if (!(__is_undefined(ds_map_find_value(data, _name))))
-                        {
-                            var j = 0
-                            while (j < 10)
-                            {
-                                var _key = ""Char"" + string(j)
-                                var _char = ds_map_find_value(data, _key)
-
-                                if __is_undefined(_char)
-                                    break
-                                else if (string_pos(_name, _char) != 0)
-                                {
-                                    var _ov = ds_map_find_value(data, _name)
-                                    ds_map_delete(data, _name)
-                                    ds_map_delete(data, _key)
-                                    _char_index = j
-                                    scr_consum_char_add(_name, _ov + _value, _char_index, false)
-                                    break
-                                }
-                                else
-                                    j++
-                            }
-                        }
-                        else
-                        {
-                            _char_index = _current_char_count
-                            scr_consum_char_add(_name, _value, _char_index, false)
-                        }
-                    }
-
-                    scr_random_speech(""killBossGeralt"", 100)
-                }
-            ")
-        );
-
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "blaviken_butcher",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Blaviken Butcher"},
-                    {ModLanguage.Chinese, "布拉维坎的屠夫"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "For each enemy killed, receive ~lg~+10%~/~ Weapon Damage and Magic Power, ~lg~+20%~/~ Crit Efficiency and Miracle Power, ~r~-5%~/~ Piercing Resistance for ~w~10~/~ turns. This effect stacks.##" +
-                        "Allows ~w~\"Butchering\"~/~ to harvest various ~w~trophies~/~ from Mini-Bosses. Having a ~y~Wolf School Medallion~/~ that allows the character to sacrifice ~w~trophies~/~.##" +
-                        "Sacrifices grants the ~y~Wolf School Medallion~/~ various ~lg~bonuses~/~ "},
-                    {ModLanguage.Chinese, "每杀一个敌人，兵器伤害与法力便~lg~+10%~/~，暴击效果与奇观效果便~lg~+20%~/~，同时穿刺抗性~r~-5%~/~，效果存续~w~10~/~回合。这个效果可以叠加。##" +
-                        "杰洛特有一个~y~狼学派徽章~/~，佩戴时首次击杀关底头目会令~y~狼学派徽章~/~获得各种~lg~加成~/~。"}
-                }
-            )
-        );
-
-        // Msl.LoadGML("gml_Object_o_enemy_Destroy_0")
-        //     .MatchFrom("with (o_perk_suum_cuique)")
-        //     .InsertAbove(@"
-        // with (o_perk_blaviken_butcher)
-        // {
-        //     EnemyId = other.id
-        //     event_user(6)
-        // }")
-        //     .Peek()
-        //     .Save();
-
-        int index = DataLoader.data.GameObjects.IndexOf(
-            DataLoader.data.GameObjects.First(x => x.Name.Content == "o_perk_suum_cuique"));
-        Msl.LoadAssemblyAsString("gml_Object_o_enemy_Destroy_0")
-            .MatchFrom($"pushi.e {index}")
-            .InsertAbove(@"
-pushi.e o_perk_blaviken_butcher
-pushenv [1001]
-
-:[1000]
-push.v other.id
-pop.v.v self.EnemyId
-pushi.e 6
-conv.i.v
-call.i event_user(argc=1)
-popz.v
-
-:[1001]
-popenv [44]")
-            .Save();
     }
 
     private void AddGeralt()
     {
-        AddPerkBlavikenButcher();
-
         string[] sprites = new string[4] {
             "s_GeraltHead_normal",
             "s_GeraltHead_helmet_normal",
@@ -266,7 +93,7 @@ popenv [44]")
                     is_start_equipment = true
                 }
                 sprite_index = __asset_get_index(scr_atr(""BodySprite""))
-                medallion_turns = 24
+                medallion_turns = 120
             "),
 
             new MslEvent(eventType: EventType.Alarm, subtype: 4, code: @"
@@ -275,7 +102,7 @@ popenv [44]")
                 if (--medallion_turns > 0)
                     exit;
 
-                medallion_turns = 24
+                medallion_turns = 120
 
                 var _equipped = false
                 with (o_inv_witcher_medallion_wolf)
@@ -289,7 +116,10 @@ popenv [44]")
                     var _enemy_count = 0
                     with (o_enemy)
                     {
-                        if (!visible && scr_tile_distance(o_player, id) <= (o_player.VSN * 5))
+                        if (scr_is_prey_animal())
+                            continue
+
+                        if (!visible && scr_tile_distance(o_player, id) <= (o_player.VSN * 3))
                         {
                             // 非 NPC 敌人
                             if (!is_o_NPC_ancestor)
@@ -316,7 +146,7 @@ popenv [44]")
                         {
                             if (!o_secret_door.is_open)
                             {
-                                if (scr_tile_distance(o_player, id) <= (o_player.VSN * 5))
+                                if (scr_tile_distance(o_player, id) <= (o_player.VSN * 3))
                                 {
                                     scr_characterStatsUpdateAdd(""secretRoomsFound"", 1)
                                     o_secret_door.is_open = true
@@ -336,11 +166,11 @@ popenv [44]")
                     if (_find_secret_room)
                         scr_random_speech(""perceiveSecretRoomGeralt"", 100)
                     else if (_enemy_count >= 5)
-                        scr_random_speech(""perceiveMassEnemyGeralt"", 100)
+                        scr_random_speech(""perceiveMassEnemyGeralt"", 35)
                     else if (_enemy_count >= 3)
-                        scr_random_speech(""perceiveMediumEnemyGeralt"", 100)
+                        scr_random_speech(""perceiveMediumEnemyGeralt"", 35)
                     else if (_enemy_count >= 1)
-                        scr_random_speech(""perceiveFewEnemyGeralt"", 100)
+                        scr_random_speech(""perceiveFewEnemyGeralt"", 35)
                 }
             ")
         );
@@ -350,8 +180,10 @@ popenv [44]")
             .InsertAbove(@"scr_classCreate(
                 o_white_wolf, s_Geralt, ""Geralt"", ""Male"", ""Human"", ""Aldor"", ""WhiteWolf"",
                 10, 11, 10, 11, 11,
-                [global.swords_tier1, global.swords2h_tier1, global.daggers_tier1, global.bows_tier1, global.armor_tier1, global.athletics_tier1, global.combat_tier1,
-                    [""Witcher"", o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico]],
+                [
+                    global.swords_tier1, global.swords2h_tier1, global.daggers_tier1, global.bows_tier1, global.armor_tier1, global.athletics_tier1, global.combat_tier1,
+                    [""Witcher"", o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico, o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
+                ],
                 [o_perk_blaviken_butcher], (1 << 0), false)")
             .Save();
 
@@ -465,7 +297,7 @@ popenv [44]")
                 ["id"] = "custom_chat",
                 ["Type"] = "geralt",
                 ["English"] = "Let’s talk about the latest news you have heard.",
-                ["中文"] = "聊聊最近听说的事。"
+                ["中文"] = "聊聊你最近听说的事。"
             },
             new Dictionary<string, string>
             {
@@ -494,6 +326,83 @@ popenv [44]")
                 ["Type"] = "geralt",
                 ["English"] = "Got any tricky business that needs taking care of?",
                 ["中文"] = "有什么棘手的事要处理么？"
+            },
+
+            new Dictionary<string, string>
+            {
+                ["id"] = "greeting",
+                ["Tags"] = "any",
+                ["Role"] = "trader_skadia",
+                ["Type"] = "geralt",
+                ["Settlement"] = "Brynn",
+                ["English"] = "Welmy radowy striye.",
+                ["中文"] = "韦尔迷'拉多以'斯特莱耶。"
+            },
+
+            new Dictionary<string, string>
+            {
+                ["id"] = "greeting",
+                ["Tags"] = "any",
+                ["Role"] = "trader_skadia",
+                ["Type"] = "geralt",
+                ["Settlement"] = "Brynn",
+                ["English"] = "Jak zmohu razpomosc?",
+                ["中文"] = "亚克'兹莫乌'拉兹泼莫茨？"
+            },
+
+            new Dictionary<string, string>
+            {
+                ["id"] = "greeting",
+                ["Tags"] = "any",
+                ["Role"] = "trader_nistra",
+                ["Type"] = "geralt",
+                ["Settlement"] = "Brynn",
+                ["English"] = "Emporia apodi Nistiria!",
+                ["中文"] = "恩泼利亚'阿泼蒂'尼斯特利亚！"
+            },
+
+            new Dictionary<string, string>
+            {
+                ["id"] = "greeting",
+                ["Tags"] = "any",
+                ["Role"] = "trader_nistra",
+                ["Type"] = "geralt",
+                ["Settlement"] = "Brynn",
+                ["English"] = "Nistrijeve dobro!",
+                ["中文"] = "尼斯特里耶维'多布洛！"
+            },
+
+            new Dictionary<string, string>
+            {
+                ["id"] = "greeting",
+                ["Tags"] = "any",
+                ["Role"] = "trader_jibey",
+                ["Type"] = "geralt",
+                ["Settlement"] = "Brynn",
+                ["English"] = "Nezi erzulu, arzeci?",
+                ["中文"] = "涅齐'厄祖鲁，阿切斯？"
+            },
+
+            new Dictionary<string, string>
+            {
+                ["id"] = "greeting",
+                ["Tags"] = "any",
+                ["Role"] = "trader_fjall",
+                ["Type"] = "geralt",
+                ["Settlement"] = "Brynn",
+                ["English"] = "Var vra Fjall! Skad ar hodt!",
+                ["中文"] = "瓦尔'弗勒'弗约！斯加得'阿'霍特！"
+            },
+
+            new Dictionary<string, string>
+            {
+                ["id"] = "greeting",
+                ["Tags"] = "any",
+                ["Role"] = "trader_fjall",
+                ["Type"] = "geralt",
+                ["Settlement"] = "Brynn",
+                ["English"] = "Har du tvagir?",
+                ["中文"] = "哈尔'杜'特瓦基尔？"
             }
         );
 

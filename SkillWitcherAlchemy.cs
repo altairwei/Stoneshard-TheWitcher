@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 using ModShardLauncher;
 using ModShardLauncher.Mods;
 using UndertaleModLib.Models;
@@ -311,8 +313,18 @@ function scr_crafting_recipe_get_map()
             .InsertBelow("                case o_witcherAlchemyCraftingMenu:")
             .Save();
 
+        // It seems we need to update this ASM codes every Stoneshard updates.
         int index_menu = DataLoader.data.GameObjects.IndexOf(
             DataLoader.data.GameObjects.First(x => x.Name.Content == "o_craftingConsumsMenu"));
+
+        var fe0 = Msl.LoadAssemblyAsString("gml_Object_o_inv_slot_Mouse_4");
+        var matched = fe0.MatchFromUntil($"pushi.e {index}", "bt [");
+        var btNum = matched.ienumerable
+            .Where(t => t.Item1 == ModShardLauncher.Match.Matching)
+            .Select(t => Regex.Match(t.Item2, @"\bbt\s*\[(\d+)\]"))
+            .FirstOrDefault(r => r.Success)?
+            .Groups[1].Value.ThrowIfNull();
+
         Msl.LoadAssemblyAsString("gml_Object_o_inv_slot_Mouse_4")
             .MatchFromUntil($"pushi.e {index}", "bt [")
             .InsertBelow(@$"
@@ -320,7 +332,8 @@ function scr_crafting_recipe_get_map()
 dup.v 0
 pushi.e {DataLoader.data.GameObjects.IndexOf(o_witcherAlchemyCraftingMenu)}
 cmp.i.v EQ
-bt [203]")
+bt [{btNum}]")
+            .Peek()
             .Save();
         
     }

@@ -162,7 +162,7 @@ public partial class TheWitcher : Mod
 
             // Control the chance of charm
             new MslEvent(eventType: EventType.Alarm, subtype: 0, code: @$"
-                if (instance_exists(target) && target.ai_is_on)
+                if (instance_exists(target) && variable_instance_exists(target, ""ai_is_on"") && target.ai_is_on)
                 {{
                     var _charm_chance = {Charm_Chance} - target.Psionic_Resistance
 

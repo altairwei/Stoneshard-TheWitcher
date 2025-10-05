@@ -109,7 +109,7 @@ for (var i = 0; i < array_length(_vogts); i++)
     _Fragments.instruction_CND_applyAxiiSign = "skinflint_homs_was_charmed"
     _Specs.instruction_CND_applyAxiiSign = { action: true }
     _Scripts.instruction_CND_applyAxiiSign = asset_get_index("scr_mod_apply_axii_charm_in_dialog")
-    _Scripts.embedded_skinflint_homs_charm_pc = function() { return !(room == r_Brynn_SW) }
+    _Scripts.embedded_skinflint_homs_charm_pc = function() { return o_skill_axii_sign_ico.is_open && !(room == r_Brynn_SW) }
 
     _Fragments.skinflint_homs_was_charmed = "instruction_INS_openTrade"
     _Fragments.instruction_INS_openTrade = "@dialogue_end"

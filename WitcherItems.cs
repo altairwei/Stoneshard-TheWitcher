@@ -133,7 +133,7 @@ public partial class TheWitcher : Mod
                 effect: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, it vibrates and yanks sharply on its chain.##" +
                         "~lg~Trophies~/~ placed into the witcher’s alchemy interface together with the ~y~Wolf School Medallion~/~ can grant it corresponding enhancements." },
-                    {ModLanguage.Chinese, "每~lg~12~/~回合，徽章会在~lg~5~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。##" +
+                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。##" +
                         "佩戴~y~狼学派徽章~/~首次击杀关底头目时，可以获得相应的加成。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
