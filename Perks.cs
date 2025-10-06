@@ -151,17 +151,6 @@ public partial class TheWitcher : Mod
             )
         );
 
-        // Msl.LoadGML("gml_Object_o_enemy_Destroy_0")
-        //     .MatchFrom("with (o_perk_suum_cuique)")
-        //     .InsertAbove(@"
-        // with (o_perk_blaviken_butcher)
-        // {
-        //     EnemyId = other.id
-        //     event_user(6)
-        // }")
-        //     .Peek()
-        //     .Save();
-
         int index = DataLoader.data.GameObjects.IndexOf(
             DataLoader.data.GameObjects.First(x => x.Name.Content == "o_perk_suum_cuique"));
         Msl.LoadAssemblyAsString("gml_Object_o_enemy_Destroy_0")

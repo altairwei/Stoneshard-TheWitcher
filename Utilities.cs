@@ -6,61 +6,6 @@ namespace TheWitcher;
 
 public partial class TheWitcher : Mod
 {
-    /*
-    private void InjectItemsToTable(string table, string? anchor = null, params Dictionary<string, string>[] items)
-    {
-        List<string> lines = Msl.ThrowIfNull(ModLoader.GetTable(table));
-        List<string> header = lines[0].Split(';').ToList();
-
-        List<string> targets = new(items.Length);
-        foreach (var item in items)
-        {
-            string[] record = new string[header.Count];
-            foreach (var kv in item)
-            {
-                int idx = header.FindIndex(h => h == kv.Key);
-
-                if (idx == -1)
-                    continue;
-
-                record[idx] = kv.Value;
-            }
-
-            targets.Add(string.Join(';', record));
-        }
-
-        if (anchor != null)
-            lines.InsertRange(lines.FindIndex(l => l.StartsWith(anchor)), targets);
-        else
-            lines.AddRange(targets);
-
-        ModLoader.SetTable(lines, table);
-    }
-
-    private void InjectItemsToTable(string table, string? anchor = null, params Dictionary<int, string>[] items)
-    {
-        List<string> lines = Msl.ThrowIfNull(ModLoader.GetTable(table));
-        List<string> header = lines[0].Split(';').ToList();
-
-        List<string> targets = new(items.Length);
-        foreach (var item in items)
-        {
-            string[] record = new string[header.Count];
-            foreach (var kv in item)
-                record[kv.Key] = kv.Value;
-
-            targets.Add(string.Join(';', record));
-        }
-
-        if (anchor != null)
-            lines.InsertRange(lines.FindIndex(l => l.StartsWith(anchor)), targets);
-        else
-            lines.AddRange(targets);
-
-        ModLoader.SetTable(lines, table);
-    }
-    */
-
     private void InjectItemsToTable(string table, string? anchor = null, params Dictionary<int, string>[] items)
     {
         List<string> lines = Msl.ThrowIfNull(ModLoader.GetTable(table));
@@ -113,5 +58,4 @@ public partial class TheWitcher : Mod
 
         InjectItemsToTable(table, anchor, mapped);
     }
-
 }

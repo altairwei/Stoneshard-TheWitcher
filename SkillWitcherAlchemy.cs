@@ -333,7 +333,6 @@ dup.v 0
 pushi.e {DataLoader.data.GameObjects.IndexOf(o_witcherAlchemyCraftingMenu)}
 cmp.i.v EQ
 bt [{btNum}]")
-            .Peek()
             .Save();
         
     }
