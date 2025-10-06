@@ -140,6 +140,57 @@ public partial class TheWitcher : Mod
             )
         );
 
+        UndertaleGameObject o_onUnitEffect_MagicalShield_BG = Msl.AddObject(
+            name: "o_onUnitEffect_MagicalShield_BG",
+            parentName: "o_onUnitEffectSprite",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_onUnitEffect_MagicalShield_BG.ApplyEvent(
+            new MslEvent(eventType: EventType.Other, subtype: 25, code: @"
+                event_inherited();
+                spriteIndexStart = s_magical_shield_bg_start
+                spriteIndexLoop = s_magical_shield_bg_loop
+                spriteIndexEnd = s_magical_shield_bg_end
+            ")
+        );
+
+        UndertaleGameObject o_onUnitEffect_MagicalShield = Msl.AddObject(
+            name: "o_onUnitEffect_MagicalShield",
+            parentName: "o_onUnitEffectSprite",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_onUnitEffect_MagicalShield.ApplyEvent(
+            new MslEvent(eventType: EventType.Other, subtype: 25, code: @"
+                event_inherited();
+                spriteIndexStart = s_magical_shield_start
+                spriteIndexLoop = s_magical_shield_loop
+                spriteIndexEnd = s_magical_shield_end
+            ")
+        );
+
+        UndertaleGameObject o_onUnitEffect_MagicalShieldo_Lighting = Msl.AddObject(
+            name: "o_onUnitEffect_MagicalShieldo_Lighting",
+            parentName: "o_onUnitEffectSprite",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_onUnitEffect_MagicalShieldo_Lighting.ApplyEvent(
+            new MslEvent(eventType: EventType.Other, subtype: 25, code: @"
+                event_inherited();
+                spriteIndexStart = s_magical_shield_lighting_start
+                spriteIndexLoop = s_magical_shield_lighting_loop
+                spriteIndexEnd = s_magical_shield_lighting_end
+            ")
+        );
+
         UndertaleGameObject o_b_magical_shield = Msl.AddObject(
             name: "o_b_magical_shield",
             parentName: "o_magical_buff",
@@ -162,6 +213,9 @@ public partial class TheWitcher : Mod
                 Shield_Duration = Max_Duration
                 scr_buff_atr()
                 buff_snd = snd_abillity_shield_block
+                magicalShieldAnimationBG = noone
+                magicalShieldAnimation = noone
+                magicalShieldAnimationLighting = noone
             "),
 
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
@@ -170,6 +224,10 @@ public partial class TheWitcher : Mod
                 {
                     scr_audio_play_at(choose(snd_spell_stone_armor_explode_1, snd_spell_stone_armor_explode_2))
                 }
+
+                magicalShieldAnimationBG = scr_onUnitEffectDestroy(magicalShieldAnimationBG)
+                magicalShieldAnimation = scr_onUnitEffectDestroy(magicalShieldAnimation)
+                magicalShieldAnimationLighting = scr_onUnitEffectDestroy(magicalShieldAnimationLighting)
             "),
 
             new MslEvent(eventType: EventType.Alarm, subtype: 2, code: @$"
@@ -178,6 +236,12 @@ public partial class TheWitcher : Mod
                 ds_map_add(data, ""MP_Restoration"", -25)
                 if instance_exists(owner)
                 {{
+                    magicalShieldAnimationBG = scr_onUnitEffectCreate(
+                        owner.id, o_onUnitEffect_MagicalShield_BG, 2, 0, 0, true)
+                    magicalShieldAnimation = scr_onUnitEffectCreate(
+                        owner.id, o_onUnitEffect_MagicalShield, -350, 0, 0, true)
+                    magicalShieldAnimationLighting = scr_onUnitEffectCreate(
+                        owner.id, o_onUnitEffect_MagicalShieldo_Lighting, -351, 0, 0, true)
                     Max_Duration = {Shield_Duration}
 
                     if (is_crit)
@@ -312,7 +376,25 @@ public partial class TheWitcher : Mod
         animation.SVersion = 3;
         animation.GMS2PlaybackSpeed = 0.5f;
         animation.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
-    
+
+        string[] sprites = {
+            "s_magical_shield_bg_start", "s_magical_shield_bg_loop", "s_magical_shield_bg_end",
+            "s_magical_shield_start", "s_magical_shield_loop", "s_magical_shield_end",
+            "s_magical_shield_lighting_start", "s_magical_shield_lighting_loop", "s_magical_shield_lighting_end"
+        };
+
+        foreach (var spr in sprites)
+        {
+            animation = Msl.GetSprite(spr);
+            animation.CollisionMasks.RemoveAt(0);
+            animation.OriginX = 41;
+            animation.OriginY = 51;
+            animation.IsSpecialType = true;
+            animation.SVersion = 3;
+            animation.GMS2PlaybackSpeed = 0.3f;
+            animation.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+        }
+
         AdjustBuffIcon("s_b_magical_shield");
     }
 
