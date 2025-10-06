@@ -65,7 +65,7 @@ public partial class TheWitcher : Mod
 
         UndertaleGameObject o_inv_witcher_medallion_wolf = Msl.AddObject(
             name: "o_inv_witcher_medallion_wolf",
-            parentName: "o_inv_consum_passive",
+            parentName: "o_inv_timer_consum",
             spriteName: "s_inv_wolfschoolmedallion",
             isVisible: true,
             isPersistent: true,
@@ -99,9 +99,68 @@ public partial class TheWitcher : Mod
                 scr_consum_attribute_simple_add(""VSN"", 1);
 
                 slot = ""Amulet""
-                isOpen = 1
                 can_equip = true
-                is_execute = false
+
+                enemy_count = 0
+                secret_room = 0
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
+                enemy_count = 0
+                secret_room = 0
+
+                audio_play_sound(snd_skill_search, 4, 0)
+
+                with (o_enemy)
+                {
+                    if (scr_is_prey_animal())
+                        continue
+
+                    if (!visible && scr_tile_distance(o_player, id) <= (o_player.VSN * 3))
+                    {
+                        // 非 NPC 敌人
+                        if (!is_o_NPC_ancestor)
+                        {
+                            if (!object_is_ancestor(object_index, o_bird_parent) && !object_is_ancestor(object_index, o_Hive))
+                            {
+                                other.enemy_count++
+                                scr_hearing_indicator_create()
+                            }
+                        }
+                        // NPC 敌人
+                        else if (!is_neutral)
+                        {
+                            other.enemy_count++
+                            scr_hearing_indicator_create()
+                        }
+                    }
+                }
+
+                if (instance_exists(o_secret_door))
+                {
+                    with (o_secret_door)
+                    {
+                        if (!o_secret_door.is_open)
+                        {
+                            if (scr_tile_distance(o_player, id) <= (o_player.VSN * 3))
+                            {
+                                scr_characterStatsUpdateAdd(""secretRoomsFound"", 1)
+                                o_secret_door.is_open = true
+                                audio_play_sound(snd_secret_room_find, 4, 0)
+                                event_user(1)
+                                
+                                with (o_fogrender)
+                                    event_user(2)
+                                
+                                scr_psy_change(""MoraleSituational"", 10, ""trap_find"")
+                                other.secret_room++
+                            }
+                        }
+                    }
+                }
+
+                charge++
+                event_inherited()
             ")
         );
 
@@ -131,9 +190,10 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "狼学派徽章"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, it vibrates and yanks sharply on its chain.##" +
+                    {ModLanguage.English, "Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, " +
+                        "it vibrates and yanks sharply on its chain. You can also ~lg~use~/~ the medallion actively to perform a scan.##" +
                         "~lg~Trophies~/~ placed into the witcher’s alchemy interface together with the ~y~Wolf School Medallion~/~ can grant it corresponding enhancements." },
-                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。##" +
+                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。也可主动~lg~使用~/~徽章进行侦测。##" +
                         "佩戴~y~狼学派徽章~/~首次击杀关底头目时，可以获得相应的加成。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {

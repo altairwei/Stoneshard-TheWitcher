@@ -93,84 +93,37 @@ public partial class TheWitcher : Mod
                     is_start_equipment = true
                 }
                 sprite_index = __asset_get_index(scr_atr(""BodySprite""))
-                medallion_turns = 120
+                medallion_turns = 60
             "),
 
-            new MslEvent(eventType: EventType.Alarm, subtype: 4, code: @"
+            new MslEvent(eventType: EventType.Other, subtype: 12, code: @"
                 event_inherited()
 
                 if (--medallion_turns > 0)
                     exit;
 
-                medallion_turns = 120
+                medallion_turns = 60
 
-                var _equipped = false
                 with (o_inv_witcher_medallion_wolf)
                 {
                     if (equipped)
-                        _equipped = true
-                }
-
-                if (_equipped)
-                {
-                    var _enemy_count = 0
-                    with (o_enemy)
                     {
-                        if (scr_is_prey_animal())
-                            continue
+                        event_user(14)
 
-                        if (!visible && scr_tile_distance(o_player, id) <= (o_player.VSN * 3))
-                        {
-                            // 非 NPC 敌人
-                            if (!is_o_NPC_ancestor)
-                            {
-                                if (!object_is_ancestor(object_index, o_bird_parent) && !object_is_ancestor(object_index, o_Hive))
-                                {
-                                    _enemy_count++
-                                    scr_hearing_indicator_create()
-                                }
-                            }
-                            // NPC 敌人
-                            else if (!is_neutral)
-                            {
-                                _enemy_count++
-                                scr_hearing_indicator_create()
-                            }
-                        }
+                        if (secret_room > 0)
+                            with (other)
+                                scr_random_speech(""perceiveSecretRoomGeralt"", 100)
+                        else if (enemy_count >= 5)
+                            with (other)
+                                scr_random_speech(""perceiveMassEnemyGeralt"", 35)
+                        else if (enemy_count >= 3)
+                            with (other)
+                                scr_random_speech(""perceiveMediumEnemyGeralt"", 35)
+                        else if (enemy_count >= 1)
+                            with (other)
+                                scr_random_speech(""perceiveFewEnemyGeralt"", 35)
+                        
                     }
-
-                    var _find_secret_room = false
-                    if (instance_exists(o_secret_door))
-                    {
-                        with (o_secret_door)
-                        {
-                            if (!o_secret_door.is_open)
-                            {
-                                if (scr_tile_distance(o_player, id) <= (o_player.VSN * 3))
-                                {
-                                    scr_characterStatsUpdateAdd(""secretRoomsFound"", 1)
-                                    o_secret_door.is_open = true
-                                    audio_play_sound(snd_secret_room_find, 4, 0)
-                                    event_user(1)
-                                    
-                                    with (o_fogrender)
-                                        event_user(2)
-                                    
-                                    scr_psy_change(""MoraleSituational"", 10, ""trap_find"")
-                                    _find_secret_room = true
-                                }
-                            }
-                        }
-                    }
-
-                    if (_find_secret_room)
-                        scr_random_speech(""perceiveSecretRoomGeralt"", 100)
-                    else if (_enemy_count >= 5)
-                        scr_random_speech(""perceiveMassEnemyGeralt"", 35)
-                    else if (_enemy_count >= 3)
-                        scr_random_speech(""perceiveMediumEnemyGeralt"", 35)
-                    else if (_enemy_count >= 1)
-                        scr_random_speech(""perceiveFewEnemyGeralt"", 35)
                 }
             ")
         );
