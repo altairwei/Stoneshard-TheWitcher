@@ -32,6 +32,7 @@ public partial class TheWitcher : Mod
         AddWitcherSkillBook();
         AddWitcherItems();
         AddCharacters();
+        AddNewNPCs();
     }
 
     private void AddWitcherSkillBook()

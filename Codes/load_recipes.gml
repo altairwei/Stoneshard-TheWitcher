@@ -133,7 +133,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "tawny_owl": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "mead",
+        "Recipe1":  "spirit, mead",
         "Recipe2":  "garlic",
         "Recipe3":  "thyme",
         "Recipe4":  "thyme",
@@ -169,7 +169,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "crawler_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "mead",
+        "Recipe1":  "spirit, mead",
         "Recipe2":  "spider_eye, mandibles",
         "Recipe3":  "henbane",
         "Recipe4":  "henbane",
@@ -181,7 +181,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "harpy_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "brandy",
+        "Recipe1":  "spirit, brandy",
         "Recipe2":  "harpy_egg_raw, harpy_stomach",
         "Recipe3":  "ginger",
         "Recipe4":  "poppy",
@@ -193,7 +193,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "troll_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "wine1",
+        "Recipe1":  "spirit, wine1",
         "Recipe2":  "troll_gland, tusks_troll",
         "Recipe3":  "burdock",
         "Recipe4":  "peppermint",
@@ -205,7 +205,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "gulon_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "wine",
+        "Recipe1":  "spirit, wine",
         "Recipe2":  "gulon_liver",
         "Recipe3":  "henbane",
         "Recipe4":  "henbane",
