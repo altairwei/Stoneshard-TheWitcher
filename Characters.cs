@@ -235,129 +235,130 @@ public partial class TheWitcher : Mod
             )
         );
 
-        InjectItemsToTable(
-            table: "gml_GlobalScript_table_lines",
-            anchor: ";;;;;;;[CHARACTERS] BASIC LINES;;;;;;;;;;;",
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_rent_room",
-                ["Type"] = "geralt",
-                ["English"] = "Do you have a room available for the night? ~lg~[allows to save the game]~/~",
-                ["中文"] = "可有房间留宿？~lg~[可以保存游戏进度]~/~"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_chat",
-                ["Type"] = "geralt",
-                ["English"] = "Let’s talk about the latest news you have heard.",
-                ["中文"] = "聊聊你最近听说的事。"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_trade",
-                ["Type"] = "geralt",
-                ["English"] = "Let’s do some trading.",
-                ["中文"] = "来做点买卖。"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_leave",
-                ["Type"] = "geralt",
-                ["English"] = "Farewell.",
-                ["中文"] = "再会。"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_back",
-                ["Type"] = "geralt",
-                ["English"] = "*Nods in greeting*",
-                ["中文"] = "*点头致意*"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "contractGet_pc",
-                ["Type"] = "geralt",
-                ["English"] = "Got any tricky business that needs taking care of?",
-                ["中文"] = "有什么棘手的事要处理么？"
-            },
+        Msl.InjectTableDialogLocalization(
+            // --- [CHARACTERS] BASIC LINES ---
+            new LocalizationSentence(
+                id: "custom_rent_room",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Do you have a room available for the night? ~lg~[allows to save the game]~/~" },
+                    { ModLanguage.Chinese, "可有房间留宿？~lg~[可以保存游戏进度]~/~" }
+                }
+            ) { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_skadia",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Welmy radowy striye.",
-                ["中文"] = "韦尔迷'拉多以'斯特莱耶。"
-            },
+            new LocalizationSentence(
+                "custom_chat",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Let’s talk about the latest news you have heard." },
+                    { ModLanguage.Chinese, "聊聊你最近听说的事。" }
+                }
+            ) { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_skadia",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Jak zmohu razpomosc?",
-                ["中文"] = "亚克'兹莫乌'拉兹泼莫茨？"
-            },
+            new LocalizationSentence(
+                "custom_trade",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Let’s do some trading." },
+                    { ModLanguage.Chinese, "来做点买卖。" }
+                }
+            ) { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_nistra",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Emporia apodi Nistiria!",
-                ["中文"] = "恩泼利亚'阿泼蒂'尼斯特利亚！"
-            },
+            new LocalizationSentence(
+                "custom_leave",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Farewell." },
+                    { ModLanguage.Chinese, "再会。" }
+                }
+            ) { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_nistra",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Nistrijeve dobro!",
-                ["中文"] = "尼斯特里耶维'多布洛！"
-            },
+            new LocalizationSentence(
+                "custom_back",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "*Nods in greeting*" },
+                    { ModLanguage.Chinese, "*点头致意*" }
+                }
+            ) { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_jibey",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Nezi erzulu, arzeci?",
-                ["中文"] = "涅齐'厄祖鲁，阿切斯？"
-            },
+            new LocalizationSentence(
+                "contractGet_pc",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Got any tricky business that needs taking care of?" },
+                    { ModLanguage.Chinese, "有什么棘手的事要处理么？" }
+                }
+            ) { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_fjall",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Var vra Fjall! Skad ar hodt!",
-                ["中文"] = "瓦尔'弗勒'弗约！斯加得'阿'霍特！"
-            },
+            // --- Trader Skadia ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Welmy radowy striye." },
+                    { ModLanguage.Chinese, "韦尔迷'拉多以'斯特莱耶。" }
+                }
+            ) { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_fjall",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Har du tvagir?",
-                ["中文"] = "哈尔'杜'特瓦基尔？"
-            }
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Jak zmohu razpomosc?" },
+                    { ModLanguage.Chinese, "亚克'兹莫乌'拉兹泼莫茨？" }
+                }
+            ) { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
+
+            // --- Trader Nistra ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Emporia apodi Nistiria!" },
+                    { ModLanguage.Chinese, "恩泼利亚'阿泼蒂'尼斯特利亚！" }
+                }
+            ) { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
+
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Nistrijeve dobro!" },
+                    { ModLanguage.Chinese, "尼斯特里耶维'多布洛！" }
+                }
+            ) { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
+
+            // --- Trader Jibey ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Nezi erzulu, arzeci?" },
+                    { ModLanguage.Chinese, "涅齐'厄祖鲁，阿切斯？" }
+                }
+            ) { Tags = "any", Role = "trader_jibey", Type = "geralt", Settlement = "Brynn" },
+
+            // --- Trader Fjall ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Var vra Fjall! Skad ar hodt!" },
+                    { ModLanguage.Chinese, "瓦尔'弗勒'弗约！斯加得'阿'霍特！" }
+                }
+            ) { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" },
+
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Har du tvagir?" },
+                    { ModLanguage.Chinese, "哈尔'杜'特瓦基尔？" }
+                }
+            ) { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" }
         );
+
 
         Msl.InjectTableSpeechesLocalization(
             new LocalizationSpeech(
