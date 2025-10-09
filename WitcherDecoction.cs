@@ -335,11 +335,11 @@ popz.v")
                 event_inherited()
 
                 var _kd = 0
-                if (attack_text == ""fumble"" || attack_text == ""fumbleBlock"")
+                if (attack_result == ""fumble"" || attack_result == ""fumbleBlock"")
                 {
                     _kd = 1
                 }
-                else if (stage == 6 && attack_text == ""crit"")
+                else if (stage == 6 && attack_result == ""crit"")
                 {
                     _kd = 3
                 }
@@ -374,12 +374,12 @@ popz.v")
                 {
                     if (other.is_fumble)
                     {
-                        attack_text = ""fumble""
+                        attack_result = ""fumble""
                         event_user(2)
                     }
                     else if (other.is_crit)
                     {
-                        attack_text = ""crit""
+                        attack_result = ""crit""
                         event_user(2)
                     }
                 }
@@ -514,8 +514,8 @@ popz.v")
 
                 if (!global.contrattack && !target.is_offhand_attack
                         && !o_inv_left_hand.children.equipped
-                        && attack_text != ""miss"" && attack_text != ""fumble""
-                        && attack_text != ""fumbleBlock"")
+                        && attack_result != ""miss"" && attack_result != ""fumble""
+                        && attack_result != ""fumbleBlock"")
                 {
                     stage++
                     event_user(5)
