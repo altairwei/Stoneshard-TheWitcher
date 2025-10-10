@@ -55,7 +55,7 @@ global.__dialogue_flow_data.geneticist_idarran =
         HUB_Cnd_isGeralt_negative: "introWitcherExperiment01",
 
         greeting_idarran: "hub",
-        hub: ["trade", "chat", "leave"],
+        hub: ["trade", "readyToTrialOfGrasses_pc", "chat", "leave"],
         trade: "@dialogue_end",
 
         chat: "condition_CND_haveChats",
@@ -66,7 +66,16 @@ global.__dialogue_flow_data.geneticist_idarran =
         HUB_Cnd_haveChats_negative: "idarran_no_chat",
         idarran_no_chat: "@dialogue_end",
 
-        introWitcherExperiment01: "",
+        introWitcherExperiment01: "introWitcherExperiment01_pc",
+        introWitcherExperiment01_pc: "introWitcherExperiment02",
+        introWitcherExperiment02: "introWitcherExperiment02_pc",
+        introWitcherExperiment02_pc: "introWitcherExperiment03",
+        introWitcherExperiment03: "introWitcherExperiment03_pc",
+        introWitcherExperiment03_pc: "introWitcherExperiment04",
+        introWitcherExperiment04: "introWitcherExperiment04_pc",
+        introWitcherExperiment04_pc: "introWitcherExperiment05",
+        introWitcherExperiment05: "introWitcherExperiment05_pc",
+        introWitcherExperiment05_pc: "introWitcherExperiment06",
 
         introGeralt01: "introGeralt01_pc",
         introGeralt01_pc: "introGeralt02",
@@ -79,7 +88,10 @@ global.__dialogue_flow_data.geneticist_idarran =
         introGeralt05_pc: "introGeralt06",
         introGeralt06: "introGeralt06_pc",
         introGeralt06_pc: "introGeralt07",
-        introGeralt07: "@dialogue_end"
+        introGeralt07: "@dialogue_end",
+
+        readyToTrialOfGrasses_pc: "instruction_INS_moveToBed",
+        instruction_INS_moveToBed: "@dialogue_end"
     },
 
     Specs:
@@ -97,7 +109,8 @@ global.__dialogue_flow_data.geneticist_idarran =
         HUB_Cnd_firstMeet_positive: { hub: true },
         HUB_Cnd_firstMeet_negative: { hub: true },
         HUB_Cnd_isGeralt_positive: { hub: true },
-        HUB_Cnd_isGeralt_negative: { hub: true }
+        HUB_Cnd_isGeralt_negative: { hub: true },
+        instruction_INS_moveToBed: { action: true, cutscene: true }
     },
 
     Scripts:
@@ -129,6 +142,15 @@ global.__dialogue_flow_data.geneticist_idarran =
             {
                 return is_rest
             }
+        },
+
+        embedded_readyToTrialOfGrasses_pc: function() {
+            return (scr_atr("nameKey") != "Geralt")
+                    && scr_dialogue_complete("introWitcherExperiment01")
+        },
+
+        instruction_INS_moveToBed: function() {
+            scr_dialogue_cutscene_seq_start_walk(o_player, 624, 546);
         }
     },
 
@@ -137,10 +159,14 @@ global.__dialogue_flow_data.geneticist_idarran =
         Player: [
             "trade", "chat", "leave",
             "introGeralt01_pc", "introGeralt02_pc", "introGeralt03_pc",
-            "introGeralt05_pc", "introGeralt06_pc"
+            "introGeralt05_pc", "introGeralt06_pc",
+            "introWitcherExperiment01_pc", "introWitcherExperiment02_pc", "introWitcherExperiment03_pc",
+            "introWitcherExperiment04_pc", "introWitcherExperiment05_pc"
         ],
         Idarran: [
             "introGeralt01", "introGeralt02", "introGeralt03",
-            "introGeralt04", "introGeralt05", "introGeralt06", "introGeralt07"]
+            "introGeralt04", "introGeralt05", "introGeralt06", "introGeralt07",
+            "introWitcherExperiment01", "introWitcherExperiment02", "introWitcherExperiment03",
+            "introWitcherExperiment04", "introWitcherExperiment05", "introWitcherExperiment06"]
     }
 }

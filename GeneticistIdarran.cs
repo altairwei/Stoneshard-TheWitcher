@@ -1097,6 +1097,189 @@ public partial class TheWitcher : Mod
                         "Heh... I’ve waited centuries to hear those words again.##" +
                         "Don’t worry, witcher—this time, I’m creating comprehension, not creatures."}
                 }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment01",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "你迟到了。##" +
+                        "不过没关系，时间在这里早已失去意义。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "You’re late.##" +
+                        "No matter—time lost its meaning down here long ago."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment01_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "……你就是那个教授？艾达兰？" +
+                        "听说你在找‘志愿者’。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "...You’re the professor? Idarran?" +
+                        "Heard you were looking for... volunteers."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment02",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "‘志愿者’……真是个礼貌的词。##" +
+                        "我更喜欢称呼你们为‘未完成的公式’。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "‘Volunteer’... such a polite word.##" +
+                        "I prefer calling you an ‘unfinished equation.’"
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment02_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "听上去不太让人安心。" +
+                        "我只是想要更强的身体，活得久一点。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Doesn’t sound very reassuring." +
+                        "I just want a stronger body—live a little longer, maybe."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment03",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "长久只是肉体的错觉。##" +
+                        "我能给你的，是一种被改写的存在方式。##" +
+                        "力量、感知、精准——以痛苦为代价的恩赐。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Longevity is merely the body’s illusion.##" +
+                        "What I offer is a rewritten way of being.##" +
+                        "Strength, perception, precision—gifts purchased through pain."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment03_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {ModLanguage.Chinese, "……我不会退缩。只希望这痛苦值得。"},
+                    {ModLanguage.English, "...I won’t run. Just hope the pain’s worth it."}
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment04",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "别紧张。深呼吸。##" +
+                        "你即将见证一次古老仪式的重生，它被称作‘突变试炼’。##" +
+                        "那时的人类还没准备好承受自己的进化。也许你可以。##" +
+                        "这些药剂会改变你的血液。你的身体会抗拒，你的神经会尖叫。##" +
+                        "但若你能熬过去，你将脱离人类的范畴。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Easy now. Breathe.##" +
+                        "You’re about to witness the rebirth of an ancient rite, they called it the Trial of the Grasses.##" +
+                        "Humanity wasn’t ready for its own evolution then. Perhaps you are.##" +
+                        "These elixirs will change your blood. Your body will resist, your nerves will scream.##" +
+                        "But if you survive, you’ll stand beyond the limits of man."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment04_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {ModLanguage.Chinese, "……我该害怕吗？"},
+                    {ModLanguage.English, "...Should I be afraid?"}
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment05",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "恐惧是旧人类的防御机制。##" +
+                        "若你想成为新的猎魔人，就必须学会用理智取代恐惧。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Fear is the old man’s reflex.##" +
+                        "If you wish to become a new witcher, you must replace fear with reason."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment05_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {ModLanguage.Chinese, "那我现在该做什么？"},
+                    {ModLanguage.English, "What do I do now?"}
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introWitcherExperiment06",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "准备好自己。##" +
+                        "把恐惧关在门外，带着问题回来。##" +
+                        "当你能直视未知而不退缩时，再来找我。那时，仪式就能开始。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Prepare yourself.##" +
+                        "Leave your fear outside, bring your questions back.##" +
+                        "When you can look at the unknown without flinching, come find me. Then the ritual can begin."
+                    }
+                }
+            ),
+
+            
+            new LocalizationSentence(
+                id: "readyToTrialOfGrasses_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {ModLanguage.Chinese, "我准备好接受实验了。"},
+                    {ModLanguage.English, "I'm ready for the experiment."}
+                }
             )
         );
     }
