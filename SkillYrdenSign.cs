@@ -256,7 +256,7 @@ public partial class TheWitcher : Mod
         UndertaleGameObject o_yrden_sign = Msl.AddObject(
             name: "o_yrden_sign",
             spriteName: "s_sign_of_yrden",
-            parentName: "o_invisible_mark",
+            parentName: "o_mark_spell_damage",
             isVisible: true,
             isPersistent: false,
             isAwake: true
@@ -265,7 +265,6 @@ public partial class TheWitcher : Mod
         o_yrden_sign.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                scr_tile_mark_prev_validate()
                 alpha = 0
                 scr_set_lt()
                 blend = make_color_rgb(0, 0, 0)
@@ -280,19 +279,10 @@ public partial class TheWitcher : Mod
             "),
 
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
-                scr_tile_mark_clear()
-                if is_tile_grid_region
-                    scr_tile_mark_region_clear(tile_region_size)
-                else if do_erase
-                    astar_clear_cell(o_controller.newgrid, grid_x, grid_y)
+                event_inherited()
 
                 with (animation)
                     is_loop = false
-            "),
-
-            new MslEvent(eventType: EventType.Step, subtype: 0, code: @"
-                event_inherited()
-                scr_skills_check_simple_targets()
             "),
 
             new MslEvent(eventType: EventType.Draw, subtype: 0, code: @"
@@ -306,6 +296,7 @@ public partial class TheWitcher : Mod
                 }
             "),
 
+            // Triggered every turn
             new MslEvent(eventType: EventType.Other, subtype: 10, code: @"
                 if (!instance_exists(owner))
                     duration = 0;
@@ -345,16 +336,7 @@ public partial class TheWitcher : Mod
                     }}
                 }}
 
-                var _owner = owner
-                if (!instance_exists(owner))
-                    owner = id
-                damage_done = scr_skill_damage(target, true, false)
-                if (damage_done > 0)
-                {{
-                    if scr_actionsLogVisible(target)
-                        scr_actionsLog(""healthLoss"", [scr_id_get_name(target), damage_done, scr_actionsLogGetHealthType(target)])
-                }}
-                owner = _owner
+                event_inherited()
 
                 if (damage_done > 0)
                 {{
@@ -383,6 +365,26 @@ public partial class TheWitcher : Mod
                 }}
             ")
         );
+
+        Msl.LoadGML("gml_GlobalScript_scr_unitTurnGetDamageFromTileMark")
+            .MatchFrom("with (c_tile_mark)")
+            .InsertAbove(@"
+                if (object_is_ancestor(object_index, o_Specter))
+                {
+                    with (o_yrden_sign)
+                    {
+                        if (grid_x == other.grid_x && grid_y == other.grid_y)
+                        {
+                            //if instance_exists(o_controller)
+                            //    ds_grid_set(o_controller.posgrid, grid_x, grid_y, other.id)
+                            //targ = other.id
+                            event_user(7)
+                        }
+                    }
+                }
+            ")
+            .Peek()
+            .Save();
 
         o_yrden_sign_birth.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
