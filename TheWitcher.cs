@@ -28,7 +28,7 @@ public partial class TheWitcher : Mod
         AddWeaponOil();
         AddWitcherPotion();
         AddWitcherDecoction();
-        AddTestPotionObject();
+        AddTestSprites();
         AddWitcherSkillBook();
         AddWitcherItems();
         AddCharacters();

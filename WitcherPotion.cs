@@ -404,28 +404,35 @@ break;
         potion_idx++;
     }
 
-    private void AddTestPotionObject()
+    private void AddTestSprites()
+    {
+        AddTestPotionObject("weapon_oil_full");
+        AddTestPotionObject("weapon_oil_empty");
+        AddTestPotionObject("weapon_oil_water");
+    }
+
+    private void AddTestPotionObject(string id)
     {
         UndertaleGameObject inv = Msl.AddObject(
-            name: "o_inv_witcher_test_potion",
+            name: $"o_inv_{id}",
             parentName: "o_inv_dishes_beverage",
-            spriteName: "s_inv_witcher_test_potion",
+            spriteName: $"s_inv_{id}",
             isVisible: true,
             isPersistent: true,
             isAwake: true
         );
 
         UndertaleGameObject loot = Msl.AddObject(
-            name: $"o_loot_witcher_test_potion",
+            name: $"o_loot_{id}",
             parentName: "o_consument_loot",
-            spriteName: "s_loot_witcher_test_potion",
+            spriteName: $"s_loot_{id}",
             isVisible: true,
             isPersistent: false,
             isAwake: true
         );
 
         Msl.InjectTableItemStats(
-            id: "witcher_test_potion",
+            id: id,
             Price: 200,
             Cat: Msl.ItemStatsCategory.beverage,
             Subcat: Msl.ItemStatsSubcategory.potion,
@@ -439,7 +446,7 @@ break;
         inv.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @$"
                 event_inherited()
-                scr_consum_atr(""witcher_test_potion"")
+                scr_consum_atr(""{id}"")
                 charge = 2
                 drop_gui_sound = snd_beverage_drop
                 pickup_sound = snd_beverage_pick
@@ -458,7 +465,7 @@ break;
         loot.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @$"
                 event_inherited()
-                inv_object = o_inv_witcher_test_potion
+                inv_object = o_inv_{id}
             ")
         );
     }
