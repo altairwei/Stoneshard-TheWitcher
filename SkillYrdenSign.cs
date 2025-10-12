@@ -374,16 +374,10 @@ public partial class TheWitcher : Mod
                     with (o_yrden_sign)
                     {
                         if (grid_x == other.grid_x && grid_y == other.grid_y)
-                        {
-                            //if instance_exists(o_controller)
-                            //    ds_grid_set(o_controller.posgrid, grid_x, grid_y, other.id)
-                            //targ = other.id
                             event_user(7)
-                        }
                     }
                 }
             ")
-            .Peek()
             .Save();
 
         o_yrden_sign_birth.ApplyEvent(

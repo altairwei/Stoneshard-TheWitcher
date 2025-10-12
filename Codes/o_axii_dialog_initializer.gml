@@ -1,14 +1,16 @@
 var _Fragments = variable_struct_get(global.__dialogue_flow_data.npc_bandit_fence, "Fragments")
 var _Scripts = variable_struct_get(global.__dialogue_flow_data.npc_bandit_fence, "Scripts")
 var _Specs = variable_struct_get(global.__dialogue_flow_data.npc_bandit_fence, "Specs")
+var _Speakers = variable_struct_get(global.__dialogue_flow_data.npc_bandit_fence, "Speakers")
 
 _Fragments.npc_bandit_fence = "condition_CND_inspection"
 _Fragments.condition_CND_inspection = ["Cnd_inspection_positive", "Cnd_inspection_negative"]
 _Specs.Cnd_inspection_positive = { hub: true }
 _Specs.Cnd_inspection_negative = { hub: true }
-_Fragments.Cnd_inspection_negative = "condition_CND_92CC01CD"
+_Fragments.Cnd_inspection_negative = "condition_CND_checkEverMeet"
 _Fragments.Cnd_inspection_positive = "npc_bandit_fence_axii_charm_inspection"
 _Fragments.npc_bandit_fence_axii_charm_inspection = "@dialogue_end"
+_Specs.npc_bandit_fence_axii_charm_inspection = { generic: true }
 _Scripts.condition_CND_inspection = function()
 {
     var _is_charmed = scr_mod_is_charmed_within(4)
@@ -16,8 +18,19 @@ _Scripts.condition_CND_inspection = function()
         ds_map_delete(data, "axii_charmed_time")
     return _is_charmed
 }
+_Fragments.condition_CND_checkEverMeet = ["Cnd_checkEverMeet_positive", "Cnd_checkEverMeet_negative"]
+_Specs.Cnd_checkEverMeet_positive = { hub: true }
+_Specs.Cnd_checkEverMeet_negative = { hub: true }
+_Fragments.Cnd_checkEverMeet_positive = "banditFenceHideout00"
+_Fragments.Cnd_checkEverMeet_negative = "condition_CND_92CC01CD"
+_Scripts.condition_CND_checkEverMeet = function() {
+    return scr_dialogue_complete("banditFenceHideout00_pc")
+                && !scr_dialogue_complete("admirationVigmar00") 
+}
 
 _Fragments.HUB_Cnd_85031BD8_negative = ["npc_bandit_fence_axii_charm", "leave"]
+_Specs.npc_bandit_fence_axii_charm = { technical: true }
+array_push(_Speakers.Player, "npc_bandit_fence_axii_charm")
 _Scripts.embedded_npc_bandit_fence_axii_charm = function() { return o_skill_axii_sign_ico.is_open }
 
 _Fragments.npc_bandit_fence_axii_charm = "instruction_INS_applyAxiiSign"
@@ -25,6 +38,7 @@ _Fragments.instruction_INS_applyAxiiSign = "npc_bandit_fence_axii_was_charmed"
 _Specs.instruction_INS_applyAxiiSign = { action: true }
 _Scripts.instruction_INS_applyAxiiSign = asset_get_index("scr_mod_apply_axii_charm_in_dialog")
 _Fragments.npc_bandit_fence_axii_was_charmed = "instruction_INS_openTheDoor"
+_Specs.npc_bandit_fence_axii_was_charmed = { generic: true }
 _Fragments.instruction_INS_openTheDoor = "@dialogue_end"
 _Specs.instruction_INS_openTheDoor = { action: true }
 _Scripts.instruction_INS_openTheDoor = function() { scr_smoothRoomChange(r_FenceHideout1floor, [4], -1, true) }
@@ -47,11 +61,13 @@ _Fragments.condition_CND_alreadyKnown = ["Cnd_alreadyKnown_positive", "Cnd_alrea
 _Specs.Cnd_alreadyKnown_positive = { hub: true }
 _Specs.Cnd_alreadyKnown_negative = { hub: true }
 _Fragments.Cnd_alreadyKnown_positive = "condition_CND_0FD35A55"
-_Scripts.condition_CND_alreadyKnown = function() { return scr_dialogue_complete("banditFenceHideout00_pc") }
+_Scripts.condition_CND_alreadyKnown = function() { return scr_dialogue_complete("admirationVigmar00"); }
 
 _Fragments.Cnd_alreadyKnown_negative = "skinflint_homs_dont_know_player"
 _Fragments.skinflint_homs_dont_know_player = ["skinflint_homs_charm_pc", "leave"]
 _Fragments.skinflint_homs_charm_pc = "instruction_CND_applyAxiiSign"
+_Specs.skinflint_homs_charm_pc = { generic: true }
+_Scripts.embedded_skinflint_homs_charm_pc = function() { return o_skill_axii_sign_ico.is_open }
 _Fragments.instruction_CND_applyAxiiSign = "skinflint_homs_was_charmed"
 _Specs.instruction_CND_applyAxiiSign = { action: true }
 _Scripts.instruction_CND_applyAxiiSign = asset_get_index("scr_mod_apply_axii_charm_in_dialog")
@@ -68,6 +84,8 @@ _Specs = variable_struct_get(global.__dialogue_flow_data.npc_spot_steal_loot, "S
 
 array_push(_Fragments.player_thieveryReaction, "player_thieveryReaction_axii_charm_pc")
 _Fragments.player_thieveryReaction_axii_charm_pc = "instruction_INS_applyAxiiSign"
+_Specs.player_thieveryReaction_axii_charm_pc = { generic: true }
+_Scripts.embedded_player_thieveryReaction_axii_charm_pc = function() { return o_skill_axii_sign_ico.is_open }
 _Scripts.instruction_INS_applyAxiiSign = asset_get_index("scr_mod_apply_axii_charm_in_dialog")
 _Specs.instruction_INS_applyAxiiSign = { action: true }
 _Fragments.instruction_INS_applyAxiiSign = "player_thieveryReaction_axii_charm"
@@ -80,6 +98,8 @@ _Specs = variable_struct_get(global.__dialogue_flow_data.npc_guard_crime_inv_che
 
 array_push(_Fragments.player_crimeInvCheck, "player_thieveryReaction_axii_charm_pc")
 _Fragments.player_thieveryReaction_axii_charm_pc = "instruction_INS_applyAxiiSign"
+_Specs.player_thieveryReaction_axii_charm_pc = { generic: true }
+_Scripts.embedded_player_thieveryReaction_axii_charm_pc = function() { return o_skill_axii_sign_ico.is_open }
 _Scripts.instruction_INS_applyAxiiSign = asset_get_index("scr_mod_apply_axii_charm_in_dialog")
 _Specs.instruction_INS_applyAxiiSign = { action: true }
 _Fragments.instruction_INS_applyAxiiSign = "player_thieveryReaction_axii_charm"
@@ -106,6 +126,7 @@ for (var i = 0; i < array_length(_vogts); i++)
     array_insert(_Fragments.greeting, array_length(_Fragments.greeting) - 2, "skinflint_homs_charm_pc")
     _Fragments.getoutVogt = ["skinflint_homs_charm_pc", "leave"]
     _Fragments.skinflint_homs_charm_pc = "instruction_CND_applyAxiiSign"
+    _Specs.skinflint_homs_charm_pc = { generic: true }
     _Fragments.instruction_CND_applyAxiiSign = "skinflint_homs_was_charmed"
     _Specs.instruction_CND_applyAxiiSign = { action: true }
     _Scripts.instruction_CND_applyAxiiSign = asset_get_index("scr_mod_apply_axii_charm_in_dialog")
