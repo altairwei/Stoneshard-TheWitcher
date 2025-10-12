@@ -12,42 +12,106 @@ public partial class TheWitcher : Mod
         ico.CollisionMasks.RemoveAt(0);
         ico.IsSpecialType = true;
         ico.SVersion = 3;
-        ico.Width = 27;
-        ico.Height = 54;
-        ico.OriginX = 0;
-        ico.OriginY = 0;
-        ico.MarginLeft = 3;
-        ico.MarginRight = 23;
-        ico.MarginBottom = 47;
-        ico.MarginTop = 5;
+        // ico.Width = 27;
+        // ico.Height = 54;
+        // ico.OriginX = 0;
+        // ico.OriginY = 0;
+        // ico.MarginLeft = 1;
+        // ico.MarginRight = 25;
+        // ico.MarginBottom = 47;
+        // ico.MarginTop = 5;
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
 
-        foreach (var tte in ico.Textures)
-        {
-            tte.Texture.TargetX = 4;
-            tte.Texture.TargetY = 5;
-            tte.Texture.TargetWidth = 18;
-            tte.Texture.TargetHeight = 43;
-            tte.Texture.BoundingWidth = 27;
-            tte.Texture.BoundingHeight = 54;
-        }
+        // foreach (var tte in ico.Textures)
+        // {
+        //     tte.Texture.TargetX = 4;
+        //     tte.Texture.TargetY = 5;
+        //     tte.Texture.TargetWidth = 18;
+        //     tte.Texture.TargetHeight = 43;
+        //     tte.Texture.BoundingWidth = 27;
+        //     tte.Texture.BoundingHeight = 54;
+        // }
 
         ico = Msl.GetSprite("s_loot_witcher_potion");
         ico.CollisionMasks.RemoveAt(0);
         ico.IsSpecialType = true;
         ico.SVersion = 3;
         ico.BBoxMode = 2;
-        ico.Width = 10;
-        ico.Height = 14;
-        ico.OriginX = 0;
-        ico.OriginY = 0;
-        ico.MarginLeft = 1;
-        ico.MarginRight = 7;
-        ico.MarginBottom = 12;
-        ico.MarginTop = 5;
+        // ico.Width = 10;
+        // ico.Height = 14;
+        // ico.OriginX = 0;
+        // ico.OriginY = 0;
+        // ico.MarginLeft = 1;
+        // ico.MarginRight = 7;
+        // ico.MarginBottom = 12;
+        // ico.MarginTop = 5;
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
+        UndertaleGameObject o_inv_witcher_potion_water = Msl.AddObject(
+            name: "o_inv_witcher_potion_water",
+            parentName: "o_inv_bottle_water_flask",
+            spriteName: "s_inv_witcher_potion_water",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_loot_witcher_potion_water = Msl.AddObject(
+            name: "o_loot_witcher_potion_water",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_witcher_potion_water",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_inv_witcher_potion_empty = Msl.AddObject(
+            name: "o_inv_witcher_potion_empty",
+            parentName: "o_inv_dishes_flask",
+            spriteName: "s_inv_witcher_potion_empty",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_loot_witcher_potion_empty = Msl.AddObject(
+            name: "o_loot_witcher_potion_empty",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_witcher_potion_empty",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_inv_witcher_potion_empty.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                drop_gui_sound = snd_med_drop
+                pickup_sound = snd_med_pick
+                is_execute = false
+            ")
+        );
+
+        o_inv_witcher_potion_water.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                charge = 2
+                drop_gui_sound = snd_beverage_drop
+                pickup_sound = snd_beverage_pick
+                dishes_object = o_inv_witcher_potion_empty
+                sec_charge = charge
+                max_charge = charge
+            ")
+        );
+
+        o_loot_witcher_potion_water.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                inv_object = o_inv_witcher_potion_water
+            ")
+        );
 
         // Make these attributes show duration text when hovered
         Msl.LoadGML("gml_Object_o_textLoader_Other_25")
@@ -83,7 +147,7 @@ public partial class TheWitcher : Mod
                 bar_color = make_color_rgb(88, 175, 19)
                 ds_map_set(data, ""quality"", (3 << 0))
                 ds_map_set(data, ""Colour"", make_colour_rgb(76, 127, 255))
-                dishes_object = o_inv_potion02_empty
+                dishes_object = o_inv_witcher_potion_empty
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
@@ -409,6 +473,9 @@ break;
         AddTestPotionObject("weapon_oil_full");
         AddTestPotionObject("weapon_oil_empty");
         AddTestPotionObject("weapon_oil_water");
+        AddTestPotionObject("witcher_test_a");
+        AddTestPotionObject("witcher_test_b");
+        AddTestPotionObject("witcher_test_c");
     }
 
     private void AddTestPotionObject(string id)

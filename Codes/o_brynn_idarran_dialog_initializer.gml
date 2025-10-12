@@ -150,7 +150,13 @@ global.__dialogue_flow_data.geneticist_idarran =
         },
 
         instruction_INS_moveToBed: function() {
+            with (o_cutscene_controller)
+            {
+                cameraFocus = true
+                event_user(0)
+            }
             scr_dialogue_cutscene_seq_start_walk(o_player, 624, 546);
+            
         }
     },
 
