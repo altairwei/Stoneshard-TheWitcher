@@ -470,12 +470,13 @@ break;
 
     private void AddTestSprites()
     {
-        AddTestPotionObject("weapon_oil_full");
-        AddTestPotionObject("weapon_oil_empty");
-        AddTestPotionObject("weapon_oil_water");
-        AddTestPotionObject("witcher_test_a");
-        AddTestPotionObject("witcher_test_b");
-        AddTestPotionObject("witcher_test_c");
+        // AddTestPotionObject("weapon_oil_full");
+        // AddTestPotionObject("weapon_oil_empty");
+        // AddTestPotionObject("weapon_oil_water");
+        // AddTestPotionObject("witcher_test_a");
+        // AddTestPotionObject("witcher_test_b");
+        // AddTestPotionObject("witcher_test_c");
+        AddTestPotionObject("decoction_test");
     }
 
     private void AddTestPotionObject(string id)

@@ -12,41 +12,105 @@ public partial class TheWitcher : Mod
         ico.CollisionMasks.RemoveAt(0);
         ico.IsSpecialType = true;
         ico.SVersion = 3;
-        ico.Width = 27;
-        ico.Height = 54;
-        ico.OriginX = 0;
-        ico.OriginY = 0;
-        ico.MarginLeft = 3;
-        ico.MarginRight = 23;
-        ico.MarginBottom = 47;
-        ico.MarginTop = 5;
+        // ico.Width = 27;
+        // ico.Height = 54;
+        // ico.OriginX = 0;
+        // ico.OriginY = 0;
+        // ico.MarginLeft = 3;
+        // ico.MarginRight = 23;
+        // ico.MarginBottom = 47;
+        // ico.MarginTop = 5;
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
 
-        foreach (var tte in ico.Textures)
-        {
-            tte.Texture.TargetX = 3;
-            tte.Texture.TargetY = 9;
-            tte.Texture.TargetWidth = 20;
-            tte.Texture.TargetHeight = 37;
-            tte.Texture.BoundingWidth = 27;
-            tte.Texture.BoundingHeight = 54;
-        }
+        // foreach (var tte in ico.Textures)
+        // {
+        //     tte.Texture.TargetX = 3;
+        //     tte.Texture.TargetY = 9;
+        //     tte.Texture.TargetWidth = 20;
+        //     tte.Texture.TargetHeight = 37;
+        //     tte.Texture.BoundingWidth = 27;
+        //     tte.Texture.BoundingHeight = 54;
+        // }
 
         ico = Msl.GetSprite("s_loot_weapon_oil");
         ico.CollisionMasks.RemoveAt(0);
         ico.IsSpecialType = true;
         ico.SVersion = 3;
-        ico.Width = 10;
-        ico.Height = 14;
-        ico.OriginX = 0;
-        ico.OriginY = 0;
-        ico.MarginLeft = 1;
-        ico.MarginRight = 7;
-        ico.MarginBottom = 12;
-        ico.MarginTop = 5;
+        // ico.Width = 10;
+        // ico.Height = 14;
+        // ico.OriginX = 0;
+        // ico.OriginY = 0;
+        // ico.MarginLeft = 1;
+        // ico.MarginRight = 7;
+        // ico.MarginBottom = 12;
+        // ico.MarginTop = 5;
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
+        UndertaleGameObject o_inv_weapon_oil_water = Msl.AddObject(
+            name: "o_inv_weapon_oil_water",
+            parentName: "o_inv_bottle_water_flask",
+            spriteName: "s_inv_weapon_oil_water",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_loot_weapon_oil_water = Msl.AddObject(
+            name: "o_loot_weapon_oil_water",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_weapon_oil_water",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_inv_weapon_oil_empty = Msl.AddObject(
+            name: "o_inv_weapon_oil_empty",
+            parentName: "o_inv_dishes_flask",
+            spriteName: "s_inv_weapon_oil_empty",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_loot_weapon_oil_empty = Msl.AddObject(
+            name: "o_loot_weapon_oil_empty",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_weapon_oil_empty",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_inv_weapon_oil_empty.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                drop_gui_sound = snd_med_drop
+                pickup_sound = snd_med_pick
+                is_execute = false
+            ")
+        );
+
+        o_inv_weapon_oil_water.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                charge = 2
+                drop_gui_sound = snd_beverage_drop
+                pickup_sound = snd_beverage_pick
+                dishes_object = o_inv_weapon_oil_empty
+                sec_charge = charge
+                max_charge = charge
+            ")
+        );
+
+        o_loot_weapon_oil_water.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                inv_object = o_inv_weapon_oil_water
+            ")
+        );
 
         UndertaleGameObject o_inv_weapon_oil_parent = Msl.AddObject(
             name: "o_inv_weapon_oil_parent",
@@ -69,7 +133,7 @@ public partial class TheWitcher : Mod
                 ds_map_set(data, ""Colour"", make_colour_rgb(89, 219, 76))
                 can_merge = true
                 skill = o_skill_weapon_coating
-                dishes_object = o_inv_potion04_empty
+                dishes_object = o_inv_weapon_oil_empty
             "),
 
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
