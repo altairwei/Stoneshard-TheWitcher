@@ -58,20 +58,21 @@ public partial class TheWitcher : Mod
                             }
                             with (scr_equip(""Worn Cloak"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
-                            with (scr_equip(""Peasant Pitchfork"", (3 << 0)))
-                            {
-                                scr_inv_atr_set(""Duration"", 80)
-                                ds_map_set(data, ""identified"", true)
-                                identified = true
-                            }
+                            with (scr_equip(""Geralt Steel Sword"", (6 << 0)))
+                                scr_inv_atr_set(""Duration"", 100)
                             with (scr_equip(""Fine Shirt"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
                             with (scr_equip(""Apprentice Cowl"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
                             with (scr_equip(""Peasant Shoes"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
+                            with (scr_inventory_add_weapon(""Training Crossbow"", (1 << 0)))
+                                scr_inv_atr_set(""Duration"", 100);
                             with (scr_inventory_add_item(o_inv_moneybag))
                                 scr_container_add_gold(250)
+                            with (scr_inventory_add_weapon(""Peasant Pitchfork"", (1 << 0)))
+                                scr_inv_atr_set(""Duration"", 20)
+                            scr_inventory_add_item(o_inv_leafshaped_bolts)
                             scr_inventory_add_item(o_inv_dumpling)
                             scr_inventory_add_item(o_inv_wineskin)
                             scr_inventory_add_item(o_inv_splint)

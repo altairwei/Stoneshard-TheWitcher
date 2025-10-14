@@ -97,12 +97,10 @@ public partial class TheWitcher : Mod
         o_inv_witcher_potion_water.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                charge = 2
                 drop_gui_sound = snd_beverage_drop
                 pickup_sound = snd_beverage_pick
                 dishes_object = o_inv_witcher_potion_empty
-                sec_charge = charge
-                max_charge = charge
+                max_charge = 1
             ")
         );
 
@@ -138,13 +136,10 @@ public partial class TheWitcher : Mod
         o_inv_witcher_potion.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                charge = 2
+                can_merge = false
                 drop_gui_sound = snd_beverage_drop
                 pickup_sound = snd_beverage_pick
-                max_charge = charge
-                sec_charge = charge
-                draw_charges = false
-                bar_color = make_color_rgb(88, 175, 19)
+                max_charge = 1
                 ds_map_set(data, ""quality"", (3 << 0))
                 ds_map_set(data, ""Colour"", make_colour_rgb(76, 127, 255))
                 dishes_object = o_inv_witcher_potion_empty
@@ -169,15 +164,13 @@ public partial class TheWitcher : Mod
                     image_index = other.i_index
                     i_index = other.i_index
                 }
-            "),
-
-            new MslEvent(eventType: EventType.Draw, subtype: 0, code: "scr_draw_consum_scale()")
+            ")
         );
 
         o_loot_witcher_potion.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                charge = 2
+                charge = 1
                 number = 0
             ")
         );
@@ -476,7 +469,7 @@ break;
         // AddTestPotionObject("witcher_test_a");
         // AddTestPotionObject("witcher_test_b");
         // AddTestPotionObject("witcher_test_c");
-        AddTestPotionObject("decoction_test");
+        // AddTestPotionObject("decoction_test");
     }
 
     private void AddTestPotionObject(string id)
@@ -515,16 +508,14 @@ break;
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @$"
                 event_inherited()
                 scr_consum_atr(""{id}"")
-                charge = 2
+                can_merge = false
                 drop_gui_sound = snd_beverage_drop
                 pickup_sound = snd_beverage_pick
-                max_charge = charge
-                sec_charge = charge
+                max_charge = 1
                 draw_charges = false
-                bar_color = make_color_rgb(88, 175, 19)
                 ds_map_set(data, ""quality"", (3 << 0))
                 ds_map_set(data, ""Colour"", make_colour_rgb(76, 127, 255))
-                dishes_object = o_inv_potion02_empty
+                dishes_object = o_inv_witcher_potion_water
             "),
 
             new MslEvent(eventType: EventType.Draw, subtype: 0, code: "scr_draw_consum_scale()")

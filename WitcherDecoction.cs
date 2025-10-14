@@ -10,46 +10,109 @@ public partial class TheWitcher : Mod
     {
         AdjustBuffIcon("s_b_witcher_decoction");
 
-        UndertaleSprite ico = Msl.GetSprite("s_inv_decoction");
+        UndertaleSprite ico = Msl.GetSprite("s_inv_witcher_decoction");
         ico.CollisionMasks.RemoveAt(0);
         ico.IsSpecialType = true;
         ico.SVersion = 3;
-        ico.Width = 27;
-        ico.Height = 54;
-        ico.OriginX = 0;
-        ico.OriginY = 0;
-        ico.MarginLeft = 3;
-        ico.MarginRight = 23;
-        ico.MarginBottom = 47;
-        ico.MarginTop = 5;
+        // ico.Width = 27;
+        // ico.Height = 54;
+        // ico.OriginX = 0;
+        // ico.OriginY = 0;
+        // ico.MarginLeft = 3;
+        // ico.MarginRight = 23;
+        // ico.MarginBottom = 47;
+        // ico.MarginTop = 5;
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
 
-        foreach (var tte in ico.Textures)
-        {
-            tte.Texture.TargetX = 3;
-            tte.Texture.TargetY = 7;
-            tte.Texture.TargetWidth = 21;
-            tte.Texture.TargetHeight = 40;
-            tte.Texture.BoundingWidth = 27;
-            tte.Texture.BoundingHeight = 54;
-        }
+        // foreach (var tte in ico.Textures)
+        // {
+        //     tte.Texture.TargetX = 3;
+        //     tte.Texture.TargetY = 7;
+        //     tte.Texture.TargetWidth = 21;
+        //     tte.Texture.TargetHeight = 40;
+        //     tte.Texture.BoundingWidth = 27;
+        //     tte.Texture.BoundingHeight = 54;
+        // }
 
-        ico = Msl.GetSprite("s_loot_decoction");
+        ico = Msl.GetSprite("s_loot_witcher_decoction");
         ico.CollisionMasks.RemoveAt(0);
         ico.IsSpecialType = true;
         ico.SVersion = 3;
         ico.BBoxMode = 2;
-        ico.Width = 10;
-        ico.Height = 14;
-        ico.OriginX = 0;
-        ico.OriginY = 0;
-        ico.MarginLeft = 1;
-        ico.MarginRight = 7;
-        ico.MarginBottom = 12;
-        ico.MarginTop = 5;
+        // ico.Width = 10;
+        // ico.Height = 14;
+        // ico.OriginX = 0;
+        // ico.OriginY = 0;
+        // ico.MarginLeft = 1;
+        // ico.MarginRight = 7;
+        // ico.MarginBottom = 12;
+        // ico.MarginTop = 5;
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
+        UndertaleGameObject o_inv_witcher_decoction_water = Msl.AddObject(
+            name: "o_inv_witcher_decoction_water",
+            parentName: "o_inv_bottle_water_flask",
+            spriteName: "s_inv_witcher_decoction_water",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_loot_witcher_decoction_water = Msl.AddObject(
+            name: "o_loot_witcher_decoction_water",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_witcher_decoction_water",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_inv_witcher_decoction_empty = Msl.AddObject(
+            name: "o_inv_witcher_decoction_empty",
+            parentName: "o_inv_dishes_flask",
+            spriteName: "s_inv_witcher_decoction_empty",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_loot_witcher_decoction_empty = Msl.AddObject(
+            name: "o_loot_witcher_decoction_empty",
+            parentName: "o_consument_loot",
+            spriteName: "s_loot_witcher_decoction_empty",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_inv_witcher_decoction_empty.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                drop_gui_sound = snd_med_drop
+                pickup_sound = snd_med_pick
+                is_execute = false
+            ")
+        );
+
+        o_inv_witcher_decoction_water.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                charge = 1
+                drop_gui_sound = snd_beverage_drop
+                pickup_sound = snd_beverage_pick
+                dishes_object = o_inv_witcher_decoction_empty
+                max_charge = charge
+            ")
+        );
+
+        o_loot_witcher_decoction_water.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                inv_object = o_inv_witcher_decoction_water
+            ")
+        );
 
         UndertaleGameObject o_inv_witcher_decoction = Msl.AddObject(
             name: "o_inv_witcher_decoction",
@@ -84,7 +147,7 @@ public partial class TheWitcher : Mod
                 pickup_sound = snd_gui_pick_potion
                 ds_map_set(data, ""quality"", (3 << 0))
                 ds_map_set(data, ""Colour"", make_colour_rgb(76, 127, 255))
-                dishes_object = o_inv_potion01_empty
+                dishes_object = o_inv_witcher_decoction_empty
                 scr_consum_set_attribute(""Intoxication"", 40)
                 scr_consum_set_attribute(""Toxicity_Change"", 0.1, true)
                 scr_consum_set_attribute(""Toxicity_Resistance"", -10, true)
@@ -827,7 +890,7 @@ popz.v
         UndertaleGameObject inv = Msl.AddObject(
             name: $"o_inv_{id}",
             parentName: "o_inv_witcher_decoction",
-            spriteName: "s_inv_decoction",
+            spriteName: "s_inv_witcher_decoction",
             isVisible: true,
             isPersistent: true,
             isAwake: true
@@ -836,7 +899,7 @@ popz.v
         UndertaleGameObject loot = Msl.AddObject(
             name: $"o_loot_{id}",
             parentName: "o_loot_witcher_decoction",
-            spriteName: "s_loot_decoction",
+            spriteName: "s_loot_witcher_decoction",
             isVisible: true,
             isPersistent: false,
             isAwake: true

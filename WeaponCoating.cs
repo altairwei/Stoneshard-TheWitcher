@@ -96,7 +96,7 @@ public partial class TheWitcher : Mod
         o_inv_weapon_oil_water.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                charge = 2
+                charge = 3
                 drop_gui_sound = snd_beverage_drop
                 pickup_sound = snd_beverage_pick
                 dishes_object = o_inv_weapon_oil_empty

@@ -10,6 +10,7 @@ public partial class TheWitcher : Mod
     {
         AddMedallionWolf();
         AddAncientTrollGland();
+        AddGeraltStealSword();
     }
 
     private void AddMedallionWolf()
@@ -325,5 +326,49 @@ public partial class TheWitcher : Mod
             .MatchFrom("ds_list_add(loot_list_add")
             .InsertBelow(@"ds_list_add(loot_list_add, ""o_loot_ancient_troll_gland"", 100)")
             .Save();
+    }
+
+    private void AddGeraltStealSword()
+    {
+        Msl.InjectTableWeapons(
+            name: "Geralt Steel Sword",
+            Tier: Msl.WeaponsTier.Tier2,
+            id: "witchersword01",
+            Slot: Msl.WeaponsSlot.twohandedsword,
+            rarity: Msl.WeaponsRarity.Unique,
+            Mat: Msl.WeaponsMaterial.metal,
+            tags: Msl.WeaponsTags.specialexc,
+            Price: 150,
+            Markup: 1,
+            MaxDuration: 95,
+            Rng: 1,
+
+            Slashing_Damage: 20,
+            Armor_Piercing: 10,
+            Block_Power: 6,
+            PRR: 4,
+            CTA: 2,
+            Skills_Energy_Cost: 10
+        );
+
+        Msl.InjectTableWeaponTextsLocalization(
+            new LocalizationWeaponText(
+                id: "Geralt Steel Sword",
+                name: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Geralt's Steel Sword"},
+                    {ModLanguage.Chinese, "杰洛特的钢剑"}
+                },
+                description: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English,
+                        "Geralt was once known for carrying two blades—steel for men, silver for monsters. " +
+                        "But after being stranded in Aldor, he only had time to commission a well-balanced steel sword from a local blacksmith."
+                    },
+                    {ModLanguage.Chinese,
+                        "杰洛特过去总是佩带双剑——钢剑对付人类，银剑斩杀怪物。 " +
+                        "然而刚流落奥尔多时，他仅来得及请当地铁匠为自己打造一柄趁手的钢剑。"
+                    }
+                }
+            )
+        );
     }
 }
