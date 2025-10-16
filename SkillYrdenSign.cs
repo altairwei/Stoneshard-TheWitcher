@@ -193,14 +193,7 @@ public partial class TheWitcher : Mod
 
                 if (_can_interract)
                 {
-                    with (o_player)
-                    {
-                        var _target = noone
-                        with (instance_create_depth(scr_round_cell(mouse_x) + 13, scr_round_cell(mouse_y) + 13, 0, o_attacked_target))
-                            _target = id
-                        
-                        other.target = scr_projectile_target(_target.x, _target.y, _target)
-                    }
+                    target = scr_attack_tile(o_player)
                     
                     with (target)
                     {
@@ -217,7 +210,7 @@ public partial class TheWitcher : Mod
                         {
                             if (object_is_ancestor(object_index, o_unit) || object_index == o_attacked_target)
                             {
-                                with (scr_onUnitEffectCreate(s_groundmarker_start, s_groundmarker_loop, s_groundmarker_end, -1, true))
+                                with (scr_onUnitEffectCreate(id, o_onUnitEffectGroundmarker, -152, 0, 0, true))
                                     array_push(_id.mark_array, id)
                             }
                         }
@@ -309,23 +302,23 @@ public partial class TheWitcher : Mod
                 tile_grid_weight = 14
                 tile_grid_marked = false
 
-                Arcane_Damage = 0
-                Bleeding_Chance = 0
-
                 var _damage = {Arcane_Damage}
 
-                with (target)
+                if (target.id == owner.id)
                 {{
-                    if (id == other.owner.id)
+                    with (target)
                     {{
                         scr_temp_incr_atr(""FMB"", -9, 1, id, id)
                         scr_temp_incr_atr(""MP_Restoration"", 9, 1, id, id)
                         scr_temp_incr_atr(""CRT"", 3, 1, id, id)
                     }}
-                    else
-                    {{
-                        other.Arcane_Damage = _damage
+                }}
+                else
+                {{
+                    Arcane_Damage = _damage
 
+                    with (target)
+                    {{
                         if (typeID == ""spectre"")
                             scr_temp_incr_atr(""Damage_Received"", 33, 1, id, id)
                         else
@@ -334,9 +327,9 @@ public partial class TheWitcher : Mod
                         scr_guiAnimation_ext(x, y, s_signofyrden_impact, 1, 1, 0, 0xFFFFFF, 0)
                         scr_audio_play_at(snd_vampire_rune_impact)
                     }}
-                }}
 
-                event_inherited()
+                    event_inherited()
+                }}
 
                 if (damage_done > 0)
                 {{
@@ -388,7 +381,7 @@ public partial class TheWitcher : Mod
                 cast_frame = 7
                 is_flying = false
                 spell = o_yrden_sign
-                scr_audio_play_at(choose(snd_vampire_rune_spell))
+                scr_audio_play_at(snd_vampire_rune_spell)
                 target_array = []
             "),
 
