@@ -302,6 +302,9 @@ public partial class TheWitcher : Mod
                 tile_grid_weight = 14
                 tile_grid_marked = false
 
+                Arcane_Damage = 0
+                Bleeding_Chance = 0
+
                 var _damage = {Arcane_Damage}
 
                 if (target.id == owner.id)
@@ -312,6 +315,8 @@ public partial class TheWitcher : Mod
                         scr_temp_incr_atr(""MP_Restoration"", 9, 1, id, id)
                         scr_temp_incr_atr(""CRT"", 3, 1, id, id)
                     }}
+
+                    damage_done = 0
                 }}
                 else
                 {{
