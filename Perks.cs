@@ -43,20 +43,20 @@ public partial class TheWitcher : Mod
                     {
                         case ""Brigand"":
                             array_push(_enchant_names, ""CRT"", ""Cooldown_Reduction"")
-                            array_push(_enchant_values, 2, -2)
+                            array_push(_enchant_values, 0.5 * Tier, -0.5 * Tier)
                             break;
                         case ""Vampire"":
                             array_push(_enchant_names, ""Miracle_Chance"", ""Lifesteal"")
-                            array_push(_enchant_values, 5, 5)
+                            array_push(_enchant_values, 1.2 * Tier, 0.5 * Tier)
                             break;
                         case ""Undead"":
                             array_push(_enchant_names, ""PRR"", ""Manasteal"")
-                            array_push(_enchant_values, 2.5, 2.5)
+                            array_push(_enchant_values, 0.7 * Tier, 0.5 * Tier)
                             break;
                         case ""Hive"":
                         case ""carnivore"":
                             array_push(_enchant_names, ""Damage_Received"")
-                            array_push(_enchant_values, -5)
+                            array_push(_enchant_values, -1 * Tier)
                             break;
                     }
                 }
