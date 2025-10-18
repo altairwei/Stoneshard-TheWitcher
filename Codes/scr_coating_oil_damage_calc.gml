@@ -13,7 +13,16 @@ function scr_coating_oil_damage_calc()
     var _oil = ""
     var _count = 0
 
-    with (scr_get_weapon_id_equipped())
+    var _weapon = scr_get_weapon_id_equipped()
+    if (other.object_index == o_throwed_loot)
+    {
+        if (other.is_weapon)
+            _weapon = other.loot_object
+        else
+            return 0;
+    }
+
+    with (_weapon)
     {
         _oil = ds_map_find_value_ext(data, "coating_oil", "")
         _count = ds_map_find_value_ext(data, "oil_available_count", 0)
