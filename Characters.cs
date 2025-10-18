@@ -136,7 +136,7 @@ public partial class TheWitcher : Mod
                 10, 11, 10, 11, 11,
                 [
                     global.swords_tier1, global.swords2h_tier1, global.daggers_tier1, global.bows_tier1, global.armor_tier1, global.athletics_tier1, global.combat_tier1,
-                    [""Witcher"", o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico, o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
+                    [""Witcher"", o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico, o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
                 ],
                 [o_perk_blaviken_butcher], (1 << 0), false)")
             .Save();

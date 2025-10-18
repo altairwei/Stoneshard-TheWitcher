@@ -90,34 +90,13 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 child_skill = o_skill_witcher_alchemy
                 event_perform_object(child_skill, ev_create, 0)
-            "),
+            ")
 
             // 每次游戏加载成功，这个事件就会执行一次。
+            /*
             new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
                 event_inherited()
 
-                var _list = scr_atr(""recipesWitcherAlchemyOpened"")
-                if (is_undefined(_list))
-                {
-                    _list = __dsDebuggerListCreate()
-                    scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
-                }
-
-                if (ds_list_find_index(_list, ""hanged_man_venom"") < 0)
-                {
-                    ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"", ""necrophage_oil"",
-                                        ""specter_oil"", ""insectoid_oil"", ""hybrid_oil"", ""ogroid_oil"")
-                }
-                if (ds_list_find_index(_list, ""thunderbolt_potion"") < 0)
-                {
-                    ds_list_add(_list, ""thunderbolt_potion"", ""blizzard_potion"", ""petri_philter"", ""swallow_potion"",
-                                        ""tawny_owl"", ""golden_oriole"")
-                }
-                if (ds_list_find_index(_list, ""ghoul_decoction"") < 0)
-                {
-                    ds_list_add(_list, ""ghoul_decoction"", ""crawler_decoction"", ""harpy_decoction"", ""troll_decoction"",
-                                        ""gulon_decoction"")
-                }
                 with (o_craftingMenu)
                 {
                     event_user(11)
@@ -125,6 +104,7 @@ public partial class TheWitcher : Mod
                     event_user(12)
                 }
             ")
+            */
         );
     }
 
