@@ -90,7 +90,8 @@ global.__dialogue_flow_data.geneticist_idarran =
         introGeralt06_pc: "introGeralt07",
         introGeralt07: "@dialogue_end",
 
-        readyToTrialOfGrasses_pc: "instruction_INS_moveToBed",
+        readyToTrialOfGrasses_pc: "readyToTrialOfGrasses02",
+        readyToTrialOfGrasses02: "instruction_INS_moveToBed",
         instruction_INS_moveToBed: "@dialogue_end"
     },
 
@@ -150,13 +151,24 @@ global.__dialogue_flow_data.geneticist_idarran =
         },
 
         instruction_INS_moveToBed: function() {
-            with (o_cutscene_controller)
+            scr_close_dialog()
+            with (owner)
             {
-                cameraFocus = true
-                event_user(0)
+                with (o_cutscene_controller)
+                    event_user(0)
+
+                scr_camera_set_target(id)
+
+                with (instance_create_depth(x, y, 0, o_npc_walk_controller))
+                {
+                    owner = other.id
+                    target = other.grass_target
+                    completion_callback = function() {
+                        with (o_npc_Idarran)
+                            scr_dialogue_start("trial_of_grasses")
+                    }
+                }
             }
-            scr_dialogue_cutscene_seq_start_walk(o_player, 624, 546);
-            
         }
     },
 
@@ -167,12 +179,98 @@ global.__dialogue_flow_data.geneticist_idarran =
             "introGeralt01_pc", "introGeralt02_pc", "introGeralt03_pc",
             "introGeralt05_pc", "introGeralt06_pc",
             "introWitcherExperiment01_pc", "introWitcherExperiment02_pc", "introWitcherExperiment03_pc",
-            "introWitcherExperiment04_pc", "introWitcherExperiment05_pc"
+            "introWitcherExperiment04_pc", "introWitcherExperiment05_pc",
+            "readyToTrialOfGrasses_pc"
         ],
         Idarran: [
             "introGeralt01", "introGeralt02", "introGeralt03",
             "introGeralt04", "introGeralt05", "introGeralt06", "introGeralt07",
             "introWitcherExperiment01", "introWitcherExperiment02", "introWitcherExperiment03",
             "introWitcherExperiment04", "introWitcherExperiment05", "introWitcherExperiment06"]
+    }
+}
+
+global.__dialogue_flow_data.trial_of_grasses =
+{
+    RootFragment: "trial_of_grasses",
+    Monologue: false,
+
+    Fragments:
+    {
+        trial_of_grasses: "instruction_INS_letPlayerCome",
+        instruction_INS_letPlayerCome: "introTrialOfGrasses01",
+        introTrialOfGrasses01: "introTrialOfGrasses02",
+        introTrialOfGrasses02: "introTrialOfGrasses03",
+        introTrialOfGrasses03: "introTrialOfGrasses03_pc",
+        introTrialOfGrasses03_pc: "instruction_INS_createIllusion",
+        instruction_INS_createIllusion: "introTrialOfGrasses04",
+        introTrialOfGrasses04: "introTrialOfGrasses04_pc",
+        introTrialOfGrasses04_pc: "introTrialOfGrasses05",
+        introTrialOfGrasses05: "introTrialOfGrasses05_pc",
+        introTrialOfGrasses05_pc: "introTrialOfGrasses06",
+        introTrialOfGrasses06: "introTrialOfGrasses07",
+        introTrialOfGrasses07: "instruction_INS_sleepAfterTrial",
+        instruction_INS_sleepAfterTrial: "afterTrialOfGrasses01",
+        afterTrialOfGrasses01: "afterTrialOfGrasses01_pc",
+        afterTrialOfGrasses01_pc: "afterTrialOfGrasses02",
+        afterTrialOfGrasses02: "afterTrialOfGrasses02_pc",
+        afterTrialOfGrasses02_pc: "afterTrialOfGrasses03",
+        afterTrialOfGrasses03: "afterTrialOfGrasses03_pc",
+        afterTrialOfGrasses03_pc: "afterTrialOfGrasses04",
+        afterTrialOfGrasses04: "afterTrialOfGrasses04_pc",
+        afterTrialOfGrasses04_pc: "instruction_INS_completeTrial",
+        instruction_INS_completeTrial: "afterTrialOfGrasses05",
+        afterTrialOfGrasses05: "afterTrialOfGrasses05_pc",
+        afterTrialOfGrasses05_pc: "afterTrialOfGrasses06",
+        afterTrialOfGrasses06: "afterTrialOfGrasses07",
+        afterTrialOfGrasses07: "@dialogue_end"
+    },
+
+    Specs: {},
+
+    Scripts:
+    {
+        instruction_INS_letPlayerCome: function() {
+            scr_dialogue_cutscene_seq_start_walk(o_player, 624, 546)
+
+            with (o_cutscene_controller)
+                event_user(1)
+        },
+
+        instruction_INS_createIllusion: function() {
+            with (o_player)
+            {
+                scr_effect_create(o_db_bad_trip, 1024, id, id)
+                scr_effect_create(o_db_drug_nikkaf, 1024, id, id)
+            }
+        },
+
+        instruction_INS_sleepAfterTrial: function() {
+            with (o_cutscene_controller)
+                event_user(0)
+
+            scr_dialogue_cutscene_time_skip(24)
+        },
+
+        instruction_INS_completeTrial: function() {
+            with (o_cutscene_controller)
+                event_user(1)
+
+            scr_skill_branch_study([o_skill_trial_of_grasses])
+        }
+    },
+
+    Speakers: 
+    {
+        Player: [
+            "introTrialOfGrasses03_pc", "introTrialOfGrasses04_pc", "introTrialOfGrasses05_pc",
+            "afterTrialOfGrasses01_pc", "afterTrialOfGrasses02_pc", "afterTrialOfGrasses03_pc",
+            "afterTrialOfGrasses04_pc", "afterTrialOfGrasses05_pc"],
+        Idarran: [
+            "introTrialOfGrasses01", "introTrialOfGrasses02", "introTrialOfGrasses03",
+            "introTrialOfGrasses04", "introTrialOfGrasses05", "introTrialOfGrasses06",
+            "introTrialOfGrasses07", "afterTrialOfGrasses01", "afterTrialOfGrasses02",
+            "afterTrialOfGrasses03", "afterTrialOfGrasses04", "afterTrialOfGrasses05",
+            "afterTrialOfGrasses06", "afterTrialOfGrasses07"]
     }
 }

@@ -52,6 +52,7 @@ public partial class TheWitcher : Mod
                 myfloor = ""H1""
                 dialog_id = ""geneticist_idarran""
                 scr_npc_set_global_info(""idarran_chats_left"", 3)
+                grass_target = noone
 
                 chat = true
                 rumors = false
@@ -123,7 +124,8 @@ public partial class TheWitcher : Mod
                     choose(o_inv_ghoul_decoction, o_inv_crawler_decoction,
                         o_inv_harpy_decoction, o_inv_troll_decoction, o_inv_gulon_decoction), 1
                 )
-                scr_selling_loot_category(""herb"", irandom_range(8, 16))
+                scr_selling_loot_category(""herb"", irandom_range(16, 24))
+                ds_list_add(singular_stock_list, o_inv_book_witcher1, o_inv_book_witcher2)
             ")
         );
 
@@ -713,11 +715,18 @@ public partial class TheWitcher : Mod
             LayerTarget.InstancesData.Instances.First(
                 t => t.ObjectDefinition.Name.Content == "o_NPC_target" && t.X == 520 && t.Y == 182));
 
+        UndertaleRoom.GameObject grass_target = room.AddGameObject(
+            LayerTarget,
+            "o_NPC_target",
+            x: 650, y: 546
+        );
+
         string creationCode = @$"
             target_array = [{stand_position.InstanceID}, {stand_position.InstanceID}, {stand_position.InstanceID}, {sitedown_position.InstanceID}]
             myfloor_counter = ""H1""
             idle_state = false
             time_period_night = time_period_day
+            grass_target = {grass_target.InstanceID}
         ";
 
         room.AddGameObject(
@@ -1272,13 +1281,422 @@ public partial class TheWitcher : Mod
                 }
             ),
 
-            
+
             new LocalizationSentence(
                 id: "readyToTrialOfGrasses_pc",
                 sentence: new Dictionary<ModLanguage, string>
                 {
                     {ModLanguage.Chinese, "我准备好接受实验了。"},
                     {ModLanguage.English, "I'm ready for the experiment."}
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "readyToTrialOfGrasses02",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "……很好。##" +
+                        "看来你已经下定决心了。##" +
+                        "跟我来。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "...Good.##" +
+                        "Looks like you’ve made your decision.##" +
+                        "Come here."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses01",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {ModLanguage.Chinese, "床就在这边，别愣着。"},
+                    {ModLanguage.English, "The cot’s right there, don’t just stand there staring."}
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses02",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "放松。##" +
+                        "你的心跳太快，会干扰药剂的扩散。##" +
+                        "这是第一瓶——血液解构液，它会让你的血脉‘忘记’人类的形态。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Relax.##" +
+                        "Your heart’s racing—it’ll disrupt the diffusion.##" +
+                        "This is the first vial—Hemolytic Reagent. It’ll teach your veins to forget their human form."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses03",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "（液体灌入的声音）##" +
+                        "很好……现在，专注在呼吸上。##" +
+                        "感受灼烧、冰冷与脉动，那是你的身体在学习新语言。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "(Sound of liquid being poured)##" +
+                        "Good... now focus on your breathing.##" +
+                        "The burning, the chill, the pulse—that’s your body learning a new language."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses03_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "（痛苦呻吟）" +
+                        "我——我看不清了……眼睛在烧！"
+                    },
+                    {
+                        ModLanguage.English,
+                        "(Groan of pain)" +
+                        "I—can’t see... my eyes—they’re burning!"
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses04",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "不要挣扎。##" +
+                        "视觉正在重组，你看到的是光谱的残影。##" +
+                        "再坚持十秒，你的瞳孔会记住真相。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Don’t fight it.##" +
+                        "Your vision’s reconstructing—you’re seeing afterimages of the spectrum.##" +
+                        "Hold for ten seconds more, and your pupils will remember the truth."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses04_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "……（喘息）" +
+                        "这到底是什么……"
+                    },
+                    {
+                        ModLanguage.English,
+                        "...(panting)" +
+                        "What... what is this?"
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses05",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "新陈代谢正在崩解，这是第二阶段——共振试剂。##" +
+                        "它会让你的感官彼此对话。听觉会嗅到光，皮肤会尝到空气。##" +
+                        "别怕，这是通往感知的真正入口。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Your metabolism’s collapsing—that’s the second stage, the Resonance Serum.##" +
+                        "It lets your senses speak to one another. Hearing will smell light, skin will taste air.##" +
+                        "Don’t fear it—that’s the true threshold of perception."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses05_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "（数秒静默）" +
+                        "……我还能感觉到自己的心跳。" +
+                        "它……变了。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "(Silence)" +
+                        "...I can still feel my heartbeat." +
+                        "It’s... different."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses06",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "很好。你听到了自己身体的回声。##" +
+                        "那不是幻觉，而是进化的声音。##" +
+                        "当一切归于平静，你将不再是‘人’，但也不再畏惧‘人’。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Good. You’re hearing your body’s echo.##" +
+                        "It isn’t a hallucination—it’s the sound of evolution.##" +
+                        "When the silence returns, you’ll no longer be ‘human,’ yet you’ll no longer fear humanity."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "introTrialOfGrasses07",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "现在休息。##" +
+                        "等你的血液不再拒绝新的自己时，再睁开眼。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Now rest.##" +
+                        "When your blood stops rejecting what you’ve become, open your eyes again."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses01",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "（空气流动的声音，水滴在石地上回荡）##" +
+                        "……你终于醒了。##" +
+                        "很好。你的体温还在，说明血液已经接受了重组。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "(Sound of air shifting, droplets echoing on stone)##" +
+                        "...You’re awake at last.##" +
+                        "Good. Your temperature’s stable—means the blood accepted its restructuring."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses01_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "……我……我还活着？" +
+                        "身体……感觉不一样……像是有另一层在呼吸。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "...I... I’m alive?" +
+                        "My body... feels different... like something else inside me is breathing."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses02",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "那是你的感官在重新校准。##" +
+                        "尝试睁开眼。告诉我——你看到了什么颜色？"
+                    },
+                    {
+                        ModLanguage.English,
+                        "That’s your senses recalibrating.##" +
+                        "Try opening your eyes. Tell me—what color do you see?"
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses02_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "……一切都发着光。空气在闪烁。" +
+                        "我甚至能看见你的呼吸在流动……"
+                    },
+                    {
+                        ModLanguage.English,
+                        "...Everything’s glowing. The air’s shimmering." +
+                        "I can even see your breath moving..."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses03",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "完美。视觉突变成功。##" +
+                        "看来你比我想象中更耐受。也许……下一阶段可以提前。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Perfect. Visual mutation confirmed.##" +
+                        "You’re more resilient than I expected. Perhaps... the next phase can be advanced."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses03_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "下一阶段？" +
+                        "你还打算对我做什么？"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Next phase?" +
+                        "What else are you planning to do to me?"
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses04",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "别误会。##" +
+                        "你现在需要的是稳定，而不是更多痛苦。##" +
+                        "喝下这个——它会抑制体内的化学风暴。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Don’t misunderstand.##" +
+                        "What you need now is stability, not more pain.##" +
+                        "Drink this—it’ll quiet the chemical storm inside you."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses04_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "（金属杯落在木桌上，液体声）" +
+                        "味道像……铁和灰。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "(Sound of a metal cup on wood, liquid sloshing)" +
+                        "Tastes like... iron and ash."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses05",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "那是生命在被重写的味道。##" +
+                        "别急着起身。##" +
+                        "你的神经还在判断自己是否属于这个身体。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "That’s the taste of life being rewritten.##" +
+                        "Don’t rush to stand.##" +
+                        "Your nerves are still deciding whether they belong to this body."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses05_pc",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "……你打算拿我做什么？猎魔人？怪物？还是别的东西？"
+                    },
+                    {
+                        ModLanguage.English,
+                        "...What do you plan to make of me? Witcher? Monster? Something else?"
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses06",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "定义是给哲学家用的。##" +
+                        "而你——是我的证明。##" +
+                        "证明理智比神明更擅长创造。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Definitions are for philosophers.##" +
+                        "You, however, are my proof.##" +
+                        "Proof that reason outperforms gods at creation."
+                    }
+                }
+            ),
+
+            new LocalizationSentence(
+                id: "afterTrialOfGrasses07",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    {
+                        ModLanguage.Chinese,
+                        "你先休息吧。##" +
+                        "这具身体尚且陌生，需要时间与经验去磨合。##" +
+                        "等你真正掌握它的力量后，才有资格参与我的研究计划。##" +
+                        "另外——我这里有几种专为这种身体调制的炼金药水与配方，" +
+                        "还有关于魔法潜能的研究笔记。若你感兴趣……可以花点钱买。"
+                    },
+                    {
+                        ModLanguage.English,
+                        "Rest for now.##" +
+                        "This body is still unfamiliar—you’ll need time and experience to make it your own.##" +
+                        "Once you’ve truly mastered its power, you may earn the right to join my research.##" +
+                        "Oh, and—I happen to have a few alchemical potions and formulas tailored for that body, " +
+                        "along with some notes on its magical potential. If you’re interested... they’re for sale."
+                    }
                 }
             )
         );
