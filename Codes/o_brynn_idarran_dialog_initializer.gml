@@ -250,11 +250,17 @@ global.__dialogue_flow_data.trial_of_grasses =
                 event_user(0)
 
             scr_dialogue_cutscene_time_skip(24)
+            
+            with (o_player)
+                scr_pain_change(id, 50)
         },
 
         instruction_INS_completeTrial: function() {
             with (o_cutscene_controller)
                 event_user(1)
+
+            with (o_player)
+                scr_pain_change(id, 50)
 
             scr_skill_branch_study([o_skill_trial_of_grasses])
         }

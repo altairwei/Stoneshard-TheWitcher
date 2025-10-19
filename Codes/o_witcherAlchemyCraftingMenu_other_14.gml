@@ -5,7 +5,16 @@ var _data = ds_map_find_value(global.recipes_witcher_alchemy_data, idName)
 var _char_num = 0
 var _target = noone
 var _xp = 0
-if _object
+
+if (idName == "oil")
+{
+    _target = scr_craft_oil(true)
+}
+else if (idName == "alcohol")
+{
+    _target = scr_craft_alcohol(true)
+}
+else if _object
 {
     var _count = max(1, string_to_real(ds_map_find_value(_data, "AMOUNT")))
     repeat _count
