@@ -37,19 +37,7 @@ else if _object
     for (var i = 0; i < _size; i++)
     {
         with (item_array[i])
-        {
-            if (object_index == o_inv_craftkit)
-            {
-                if (!other.workbench)
-                {
-                    charge--
-                    if (charge <= 0)
-                        instance_destroy()
-                }
-            }
-            else
-                instance_destroy()
-        }
+            instance_destroy()
     }
     _xp = string_to_real(ds_map_find_value(_data, "XP"))
 }

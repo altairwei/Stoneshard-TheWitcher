@@ -91,9 +91,10 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 child_skill = o_skill_witcher_alchemy
                 event_perform_object(child_skill, ev_create, 0)
-            "),
+            ")
 
             // 每次游戏加载成功，这个事件就会执行一次。
+            /*
             new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
                 event_inherited()
 
@@ -104,11 +105,6 @@ public partial class TheWitcher : Mod
                     scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
                 }
 
-                if (ds_list_find_index(_list, ""oil"") < 0)
-                {
-                    ds_list_add(_list, ""oil"", ""alcohol"")
-                }
-
                 with (o_craftingMenu)
                 {
                     event_user(11)
@@ -116,8 +112,10 @@ public partial class TheWitcher : Mod
                     event_user(12)
                 }
             ")
-
+            */
         );
+
+        AddCaravanAlchemyStation();
     }
 
     private void AddWitcherAlchemy_Alcohol()
@@ -269,6 +267,17 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 11, code: @"
                 if instance_exists(parent)
                 {
+                    if (object_is_ancestor(parent.object_index, c_container))
+                    {
+                        var _list = parent.loot_list
+                        var _size = ds_list_size(_list)
+                        
+                        if (_size > 0)
+                            scr_loadContainerContent(_list, object_index, noone, id, false, false)
+                        
+                        workbench = true
+                    }
+
                     if (parent.object_index == o_skill_witcher_alchemy)
                         rightContainerBG = s_CookingBG_Consums
                 }
@@ -419,6 +428,37 @@ pushi.e {DataLoader.data.GameObjects.IndexOf(o_witcherAlchemyCraftingMenu)}
 cmp.i.v EQ
 bt [{btNum}]")
             .Save();
-        
+
+    }
+
+    private void AddCaravanAlchemyStation()
+    {
+        Msl.LoadAssemblyAsString("gml_Object_o_caravanBranch_Cooking_Create_0")
+            .MatchFromUntil("pushloc.v local._alchemy", "popenv")
+            .ReplaceBy("")
+            .Save();
+
+        Msl.AddNewEvent(
+            objectName: "o_AlchemyTable_hl",
+            eventType: EventType.Other,
+            subtype: 10,
+            eventCode: @"
+                if (!instance_exists(o_witcherAlchemyCraftingMenu))
+                {
+                    with (scr_guiCreateContainer(global.guiBaseContainerSideLeft, o_witcherAlchemyCraftingMenu))
+                    {
+                        parent = other.id
+                        event_user(1)
+                    }
+                }
+            "
+        );
+
+        Msl.AddNewEvent(
+            objectName: "o_AlchemyTable_hl",
+            eventType: EventType.Other,
+            subtype: 15,
+            eventCode: @""
+        );
     }
 }

@@ -57,8 +57,7 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
                 gain_xp = 50
-                skills_array = [
-                    ""Witcher"", o_skill_witcher_alchemy_ico]
+                skills_array = [""Witcher""]
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
@@ -72,6 +71,18 @@ public partial class TheWitcher : Mod
                 }
 
                 var _title = ds_list_find_value(global.other_hover, 77)
+
+                if (ds_list_find_index(_list, ""oil"") < 0)
+                {
+                    ds_list_add(_list, ""oil"", ""alcohol"")
+
+                    var _name = ds_map_find_value_ext(global.crafting_category, ""other"")
+                    with (scr_notificationCreate(s_notification_icon_recipe, _title, _name, room_speed, false))
+                        scr_guiLayoutOffsetUpdate(id, (global.cameraWidth - sprite_width) / 2,
+                            ((global.cameraHeight / 2) - 140) + (0 * (sprite_height + 2)))
+
+                    scr_actionsLog(""learnSchematic"", [scr_id_get_name(o_player), _name])
+                }
 
                 if (ds_list_find_index(_list, ""hanged_man_venom"") < 0)
                 {
