@@ -33,6 +33,7 @@ public partial class TheWitcher : Mod
         AddWitcherItems();
         AddCharacters();
         AddNewNPCs();
+        AddEuipments();
     }
 
     private void PatchWeaponCoatingSkill()
