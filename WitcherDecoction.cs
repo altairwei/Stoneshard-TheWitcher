@@ -513,7 +513,9 @@ popz.v")
                 event_inherited()
 
                 if (!global.contrattack && !target.is_offhand_attack
-                        && !o_inv_left_hand.children.equipped
+                        && (!instance_exists(o_inv_left_hand)
+                                || !instance_exists(o_inv_left_hand.children)
+                                || !o_inv_left_hand.children.equipped)
                         && attack_result != ""miss"" && attack_result != ""fumble""
                         && attack_result != ""fumbleBlock"")
                 {
@@ -577,23 +579,6 @@ popz.v")
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
-                if (object_is_ancestor(other, o_skill))
-                {
-                    var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
-                    var _is_maneuver = ds_list_find_index(_category, ""Maneuver"") >= 0
-                    var _is_Stance = ds_list_find_index(_category, ""Stance"") >= 0
-                    if (_category != 0 && (_is_maneuver || _is_Stance))
-                    {
-                        stage++
-                        event_user(5)
-                    }
-                }
-                else
-                {
-                    stage++
-                    event_user(5)
-                }
-
                 if (buff_id != noone && instance_exists(buff_id))
                 {
                     if (stage > 3)
@@ -602,9 +587,29 @@ popz.v")
                             instance_destroy()
                         
                         buff_id = noone
+
+                        // buff was decreased due to debuff removal
                         stage--
                         event_user(5)
                     }
+                }
+                else if (object_is_ancestor(other, o_skill))
+                {
+                    var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
+                    var _is_maneuver = ds_list_find_index(_category, ""Maneuver"") >= 0
+                    var _is_Stance = ds_list_find_index(_category, ""Stance"") >= 0
+                    if (_category != 0 && (_is_maneuver || _is_Stance))
+                    {
+                        // buff was called by maneuver or stance skill
+                        stage++
+                        event_user(5)
+                    }
+                }
+                else
+                {
+                    // buff was called skip turns or switch weapon
+                    stage++
+                    event_user(5)
                 }
             ")
 
@@ -711,6 +716,8 @@ popz.v")
 
         // 使用能力（包括技能和咒法）将会触发 event_user(4)
         Msl.LoadAssemblyAsString("gml_Object_o_skill_Other_13")
+            .MatchFrom("bf [end]")
+            .ReplaceBy("bf [1093]")
             .MatchFrom("bf [end]")
             .ReplaceBy("bf [1093]")
             .MatchFrom(":[end]")
