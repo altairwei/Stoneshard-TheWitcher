@@ -25,9 +25,6 @@ public partial class TheWitcher : Mod
         PatchWitcherSkills();
         PatchCoatingDisplay();
         PatchWeaponCoatingSkill();
-        AddWeaponOil();
-        AddWitcherPotion();
-        AddWitcherDecoction();
         AddTestSprites();
         AddBooks();
         AddWitcherItems();

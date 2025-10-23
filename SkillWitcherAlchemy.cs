@@ -45,6 +45,9 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
+        AddWeaponOil();
+        AddWitcherPotion();
+        AddWitcherDecoction();
         AddWitcherAlchemyCraftingMenu();
 
         o_skill_witcher_alchemy.ApplyEvent(
@@ -235,6 +238,13 @@ public partial class TheWitcher : Mod
 
         o_witcherAlchemyCraftingMenu.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                var _list = scr_atr(""recipesWitcherAlchemyOpened"")
+                if (is_undefined(_list))
+                {
+                    _list = __dsDebuggerListCreate()
+                    scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
+                }
+
                 event_inherited()
                 with (mask)
                     title = ds_map_find_value(global.skill_name_text, ""Witcher_Alchemy"")

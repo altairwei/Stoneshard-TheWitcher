@@ -22,13 +22,13 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
+        AddSkill_Trial_Of_Grasses();
         AddSkill_Witcher_Alchemy();
         AddSkill_Quen_Sign();
         AddSkill_Axii_Sign();
         AddSkill_Yrden_Sign();
         AddSkill_Aard_Sign();
         AddSkill_Igni_Sign();
-        AddSkill_Trial_Of_Grasses();
 
         // Add Skill Branch
 
