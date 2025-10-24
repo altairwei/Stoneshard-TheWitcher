@@ -9,7 +9,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "vampire_oil": {
         "CAT":      "weapon_oil",
@@ -21,7 +21,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "necrophage_oil": {
         "CAT":      "weapon_oil",
@@ -33,7 +33,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "specter_oil": {
         "CAT":      "weapon_oil",
@@ -45,7 +45,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "insectoid_oil": {
         "CAT":      "weapon_oil",
@@ -57,7 +57,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "hybrid_oil": {
         "CAT":      "weapon_oil",
@@ -69,7 +69,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "ogroid_oil": {
         "CAT":      "weapon_oil",
@@ -81,7 +81,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "thunderbolt_potion": {
         "CAT":      "witcher_potion",
@@ -93,7 +93,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "blizzard_potion": {
         "CAT":      "witcher_potion",
@@ -105,7 +105,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "petri_philter": {
         "CAT":      "witcher_potion",
@@ -117,19 +117,20 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "swallow_potion": {
         "CAT":      "witcher_potion",
         "Recipe1":  "alcohol",
-        "Recipe2":  "honey",
-        "Recipe3":  "honey",
-        "Recipe4":  "burdock, bogbean, burnet",
-        "Recipe5":  "burdock, bogbean, burnet",
-        "Recipe6":  "fleawort",
-        "AMOUNT":   "1",
+        "Recipe2":  "fleawort",
+        "Recipe3":  "fleawort",
+        "Recipe4":  "wormwood",
+        "Recipe5":  "-",
+        "Recipe6":  "-",
+        "ADDITIVES": "hyssop, spleenwort",
+        "AMOUNT":   "2",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "tawny_owl": {
         "CAT":      "witcher_potion",
@@ -141,7 +142,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "golden_oriole": {
         "CAT":      "witcher_potion",
@@ -153,7 +154,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "ghoul_decoction": {
         "CAT":      "witcher_decoction",
@@ -165,7 +166,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "crawler_decoction": {
         "CAT":      "witcher_decoction",
@@ -177,7 +178,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "harpy_decoction": {
         "CAT":      "witcher_decoction",
@@ -189,7 +190,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "troll_decoction": {
         "CAT":      "witcher_decoction",
@@ -201,7 +202,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "gulon_decoction": {
         "CAT":      "witcher_decoction",
@@ -213,7 +214,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "rhubarb",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "oil": {
         "CAT":      "other",
@@ -225,7 +226,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "5",
-        "SOURCE":   "Basic"
+        "SOURCE":   "Base Recipe"
     },
     "alcohol": {
         "CAT":      "other",
@@ -237,7 +238,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Basic"
+        "SOURCE":   "Base Recipe"
     }
 }')
 

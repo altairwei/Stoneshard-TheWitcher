@@ -245,6 +245,11 @@ public partial class TheWitcher : Mod
                     scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
                 }
 
+                if (ds_list_find_index(_list, ""oil"") < 0)
+                {
+                    ds_list_add(_list, ""oil"", ""alcohol"")
+                }
+
                 event_inherited()
                 with (mask)
                     title = ds_map_find_value(global.skill_name_text, ""Witcher_Alchemy"")

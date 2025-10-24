@@ -17,7 +17,6 @@ else if (idName == "alcohol")
 else if _object
 {
     var _size = array_length(item_array)
-    _char_num = 0
     var _char_map = __dsDebuggerMapCreate()
 
     for (var i = 0; i < _size; i++)
@@ -54,7 +53,8 @@ else if _object
             // Add additional attributes
             _size = ds_map_size(_char_map)
             var _key = ds_map_find_first(_char_map)
-            
+
+            _char_num = 0
             for (var i = 0; i < _size; i++)
             {
                 var _value = ds_map_find_value(_char_map, _key)

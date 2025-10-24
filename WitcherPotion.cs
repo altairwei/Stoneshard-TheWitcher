@@ -260,11 +260,9 @@ public partial class TheWitcher : Mod
             {
                 {"Intoxication",       10},
                 {"Pain",              -25},
-                {"max_hp_res",         50},
+                {"max_hp_res",         25},
                 {"Condition",          25},
-                {"Healing_Received",   25},
-                {"Health_Restoration", 15},
-                {"EVS",               -10}
+                {"Healing_Received",   25}
             },
             code: @"
                 var _changeValue = ds_map_find_value_ext(attributes_data, ""Condition"", 0)
@@ -416,7 +414,7 @@ switch (idName)
             Subcat: Msl.ItemStatsSubcategory.potion,
             Material: Msl.ItemStatsMaterial.glass,
             Weight: Msl.ItemStatsWeight.Light,
-            Duration: 20,
+            Duration: 60,
             tags: Msl.ItemStatsTags.special,
             bottle: true
         );
