@@ -69,7 +69,7 @@ public partial class TheWitcher : Mod
 
         UndertaleGameObject o_b_decoction_buff = Msl.AddObject(
             name: $"o_b_decoction_buff",
-            parentName: "o_physical_buff",
+            parentName: "o_buff",
             isVisible: true,
             isPersistent: false,
             isAwake: true
@@ -124,6 +124,10 @@ public partial class TheWitcher : Mod
         o_b_decoction_buff.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
+                type = ds_list_find_value(global.buff_type_text, 4)
+                type_col = make_colour_rgb(158, 27, 49)
+                buff_type = o_b_decoction_buff
+
                 buff_snd = noone
                 snd_loop = noone
                 stack = 1
