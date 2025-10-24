@@ -13,7 +13,7 @@ public partial class TheWitcher : Mod
     public override string Author => "Altair & 北境的救世主";
     public override string Name => "The Witcher";
     public override string Description => "The Witcher";
-    public override string Version => "0.3.6";
+    public override string Version => "0.3.7";
     public override string TargetVersion => "0.9.2.13";
 
     public override void PatchMod()
