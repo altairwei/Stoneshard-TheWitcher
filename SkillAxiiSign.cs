@@ -20,7 +20,7 @@ public partial class TheWitcher : Mod
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @"No translation"},
                     {ModLanguage.Chinese, string.Join("##",
-                        "有~lg~/*Charm_Chance*/%~/~的概率~lg~催眠~/~敌人（受~r~灵能抗性~/~影响），使其变为友方单位~w~/*Charm_Time*/~/~回合。",
+                        "有~lg~/*Charm_Chance*/%~/~的概率~lg~催眠~/~敌人~w~/*Charm_Time*/~/~回合（受~r~灵能抗性~/~影响），被催眠的敌人会优先攻击其他敌对单位。",
                         "如果目标~lg~没有察觉~/~或处于~r~眩晕~/~状态，那么必然催眠成功。如果目标处于~r~慌乱~/~状态，催眠成功率~lg~+20%~/~。",
                         "催眠失败或者敌人从催眠中醒来后会陷入~w~12~/~回合的~r~“慌乱”~/~。若催眠失败，则令该技能冷却时间~lg~减半~/~，同时令敌人所有技能的冷却时间~lg~+3~/~。",
                         "在与某些居民对话时，可以~lg~催眠~/~对方以获得便利，而代价是阵营~r~声望下降~/~。"
