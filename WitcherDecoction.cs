@@ -475,13 +475,13 @@ popz.v")
                 {ModLanguage.English, string.Join("##",
                     "Each decoction stack increases Dodge Chance by ~lg~+5%~/~, Critical Chance by ~lg~+5%~/~, and reduces Cooldown Time by ~lg~-5%~/~.",
                     "Landing a melee hit with the main hand (without missing) adds ~lg~1~/~ stack. Killing an enemy adds ~lg~3~/~ stacks (up to six). Receiving melee ~r~damage~/~ or every ~r~90~/~ turns removes ~r~1~/~ stack.",
-                    "All nearby enemies have a ~lg~3%~/~ chance each turn to cough, increased by ~lg~+3%~/~ per decoction stack.",
+                    "All nearby enemies have a ~lg~3%~/~ chance each turn to cough, increased by ~lg~+3%~/~ per decoction stack. Immunity to ~r~Coughing~/~.",
                     "Starting from the ~sy~fourth layer~/~, each stack also increases the range of all ~w~charge~/~ skills by ~lg~+1~/~."
                 )},
                 {ModLanguage.Chinese, string.Join("##",
                     "每层煎药效果使闪躲几率~lg~+5%~/~，暴击几率~lg~+5%~/~，冷却时间~lg~-5%~/~。",
                     "主手近身主动攻击命中目标（没有失手）会令煎药效果叠加~lg~1~/~层。击杀目标则叠加~lg~3~/~层（最多叠到六层）。受到近身攻击~r~伤害~/~或者每过~r~90~/~回合，煎药效果消减~r~1~/~层。",
-                    "所有邻近敌人每回合有~lg~3%~/~的几率咳嗽，并且每一层煎药效果使此几率~lg~+3%~/~。",
+                    "令所有邻近敌人每回合有~lg~3%~/~的几率咳嗽，并且每一层煎药效果使此几率~lg~+3%~/~。免疫~r~咳嗽~/~。",
                     "从~sy~第四层~/~开始，每一层煎药效果令所有~w~突进~/~技能距离~lg~+1~/~。"
                 )}
             },
@@ -910,6 +910,19 @@ popz.v
                 }
             }
         }")
+            .Save();
+
+        // 免疫咳嗽
+        Msl.LoadGML("gml_Object_o_db_cough_Alarm_1")
+            .MatchFrom("object_is_ancestor(target.object_index, c_ghoul)")
+            .InsertAbove(@"
+                else if scr_instance_exists_in_list(o_b_harpy_decoction, target.buffs)
+                {
+                    actionsLogDrop = false
+                    instance_destroy()
+                    return;
+                }
+            ")
             .Save();
     }
 

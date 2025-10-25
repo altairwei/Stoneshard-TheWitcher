@@ -114,7 +114,7 @@ public partial class TheWitcher : Mod
         // Make these attributes show duration text when hovered
         Msl.LoadGML("gml_Object_o_textLoader_Other_25")
             .MatchFrom("ds_list_add(global.attribute_duration, ")
-            .InsertBelow(@"ds_list_add(global.attribute_duration, ""EVS"", ""PRR"", ""Shock_Damage"", ""Magic_Power"", ""Miracle_Chance"", ""Miscast_Chance"", ""Backfire_Damage"", ""CTA"", ""Crit_Avoid"", ""Mainhand_Efficiency"", ""Offhand_Efficiency"")")
+            .InsertBelow(@"ds_list_add(global.attribute_duration, ""EVS"", ""PRR"", ""Shock_Damage"", ""Magic_Power"", ""Miracle_Chance"", ""Miscast_Chance"", ""Backfire_Damage"", ""CTA"", ""Crit_Avoid"", ""Mainhand_Efficiency"", ""Offhand_Efficiency"", ""Abilities_Energy_Cost"")")
             .Save();
 
         UndertaleGameObject o_inv_witcher_potion = Msl.AddObject(
@@ -180,11 +180,12 @@ public partial class TheWitcher : Mod
             effects: new Dictionary<string, int>()
             {
                 {"Intoxication",     15},
-                {"Weapon_Damage",    50},
-                {"CRT",              30},
-                {"EVS",             -10},
-                {"PRR",             -10}
+                {"Weapon_Damage",    25},
+                {"CRT",              15},
+                {"EVS",             -5},
+                {"PRR",             -5}
             },
+            duration: 30,
             name: new Dictionary<ModLanguage, string>() {
                 {ModLanguage.English, "Thunderbolt"},
                 {ModLanguage.Chinese, "雷霆"}
@@ -205,14 +206,12 @@ public partial class TheWitcher : Mod
             effects: new Dictionary<string, int>()
             {
                 {"Intoxication",        15},
-                {"EVS",                 50},
-                {"PRR",                 50},
-                {"CTA",                 25},
-                {"Crit_Avoid",          25},
-                {"FMB",                -25},
-                {"Mainhand_Efficiency", 25},
-                {"Offhand_Efficiency",  35}
+                {"EVS",                 25},
+                {"PRR",                 25},
+                {"Mainhand_Efficiency", 15},
+                {"Offhand_Efficiency",  25}
             },
+            duration: 30,
             name: new Dictionary<ModLanguage, string>() {
                 {ModLanguage.English, "Blizzard"},
                 {ModLanguage.Chinese, "暴风雪"}
@@ -233,12 +232,13 @@ public partial class TheWitcher : Mod
             effects: new Dictionary<string, int>()
             {
                 {"Intoxication",         30},
-                {"Magic_Power",          50},
-                {"Miracle_Chance",       30},
-                {"Cooldown_Reduction",  -50},
-                {"Miscast_Chance",       10},
-                {"Backfire_Damage",      15}
+                {"Magic_Power",          25},
+                {"Miracle_Chance",       10},
+                {"Cooldown_Reduction",  -25},
+                {"Miscast_Chance",       6},
+                {"Backfire_Damage",      9}
             },
+            duration: 30,
             name: new Dictionary<ModLanguage, string>() {
                 {ModLanguage.English, "Petri's Philter"},
                 {ModLanguage.Chinese, "佩特里"}
@@ -264,6 +264,7 @@ public partial class TheWitcher : Mod
                 {"Condition",          25},
                 {"Healing_Received",   25}
             },
+            duration: 60,
             code: @"
                 var _changeValue = ds_map_find_value_ext(attributes_data, ""Condition"", 0)
                 with (o_player)
@@ -319,12 +320,12 @@ public partial class TheWitcher : Mod
             effects: new Dictionary<string, int>()
             {
                 {"Intoxication",        10},
-                {"max_mp_res",          50},
+                {"max_mp_res",          40},
                 {"MP_Restoration",      35},
-                {"PRR",                 15},
-                {"Nature_Resistance",  -10},
-                {"Magic_Resistance",   -10}
+                {"Nature_Resistance",  -5},
+                {"Magic_Resistance",   -5}
             },
+            duration: 60,
             name: new Dictionary<ModLanguage, string>() {
                 {ModLanguage.English, "Tawny Owl"},
                 {ModLanguage.Chinese, "棕林鸮"}
@@ -347,11 +348,12 @@ public partial class TheWitcher : Mod
                 {"Intoxication",             5},
                 {"Poison_Resistance",       50},
                 {"Fire_Resistance",         30},
-                {"Bleeding_Resistance",     30},
-                {"Physical_Resistance",     15},
+                {"Bleeding_Resistance",     15},
+                {"Physical_Resistance",     10},
                 {"Nature_Resistance",       15},
                 {"Magic_Resistance",        15}
             },
+            duration: 60,
             name: new Dictionary<ModLanguage, string>() {
                 {ModLanguage.English, "Golden Oriole"},
                 {ModLanguage.Chinese, "金莺"}
@@ -387,7 +389,7 @@ switch (idName)
     private void AddWitcherPotionObject(
         string id, Dictionary<string, int> effects, Dictionary<ModLanguage, string> name,
         Dictionary<ModLanguage, string> midtext, Dictionary<ModLanguage, string> description,
-        string code = "event_inherited()")
+        string code = "event_inherited()", ushort duration = 30)
     {
         UndertaleGameObject inv = Msl.AddObject(
             name: $"o_inv_{id}",
@@ -414,7 +416,7 @@ switch (idName)
             Subcat: Msl.ItemStatsSubcategory.potion,
             Material: Msl.ItemStatsMaterial.glass,
             Weight: Msl.ItemStatsWeight.Light,
-            Duration: 60,
+            Duration: duration,
             tags: Msl.ItemStatsTags.special,
             bottle: true
         );

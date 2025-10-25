@@ -39,6 +39,94 @@ else if _object
                         break;
                     }
                 break;
+
+                case o_inv_blizzard_potion:
+                    switch (object_index)
+                    {
+                        case o_inv_hornet_honey:
+                            ds_map_accumulate(_char_map, "Hit_Chance", 25)
+                            ds_map_accumulate(_char_map, "CTA", 50)
+                        break;
+
+                        case o_inv_bear_fat:
+                            ds_map_accumulate(_char_map, "PRR", 25)
+                            ds_map_accumulate(_char_map, "CTA", 25)
+                        break;
+
+                        case o_inv_truffle:
+                            ds_map_accumulate(_char_map, "FMB", -25)
+                            ds_map_accumulate(_char_map, "Mainhand_Efficiency", 25)
+                        break;
+                    }
+                break;
+
+                case o_inv_thunderbolt_potion:
+                    switch (object_index)
+                    {
+                        case o_inv_hop:
+                            ds_map_accumulate(_char_map, "Weapon_Damage", 25)
+                            ds_map_accumulate(_char_map, "CRTD", 50)
+                        break;
+
+                        case o_inv_rotbloom:
+                            ds_map_accumulate(_char_map, "FMB", -25)
+                            ds_map_accumulate(_char_map, "CRT", 15)
+                        break;
+                    }
+                break;
+
+                case o_inv_petri_philter:
+                    switch (object_index)
+                    {
+                        case o_inv_moose_kidney:
+                            ds_map_accumulate(_char_map, "Manasteal", 25)
+                            ds_map_accumulate(_char_map, "Miracle_Power", 50)
+                        break;
+
+                        case o_inv_azurecap:
+                            ds_map_accumulate(_char_map, "Magic_Power", 25)
+                            ds_map_accumulate(_char_map, "Miracle_Chance", 25)
+                            ds_map_accumulate(_char_map, "Cooldown_Reduction", -25)
+                        break;
+                    }
+                break;
+
+                case o_inv_golden_oriole:
+                    switch (object_index)
+                    {
+                        case o_inv_spidervine:
+                            ds_map_accumulate(_char_map, "Physical_Resistance", 15)
+                            ds_map_accumulate(_char_map, "Stun_Resistance", 30)
+                            ds_map_accumulate(_char_map, "Bleeding_Resistance", 30)
+                        break;
+
+                        case o_inv_puffball:
+                            ds_map_accumulate(_char_map, "Nature_Resistance", 30)
+                            ds_map_accumulate(_char_map, "Magic_Resistance", 30)
+                            ds_map_accumulate(_char_map, "Pain_Resistance", 30)
+                        break;
+
+                        case o_inv_dragonfruit:
+                            ds_map_accumulate(_char_map, "Received_XP", 50)
+                            ds_map_accumulate(_char_map, "Crit_Avoid", 50)
+                        break;
+                    }
+                break;
+
+                case o_inv_tawny_owl:
+                    switch (object_index)
+                    {
+                        case o_inv_silverleaf:
+                            ds_map_accumulate(_char_map, "Fatigue", -25)
+                            ds_map_accumulate(_char_map, "Cooldown_Reduction", 30)
+                        break;
+
+                        case o_inv_wolf_tongue:
+                            ds_map_accumulate(_char_map, "max_mp_res", 25)
+                            ds_map_accumulate(_char_map, "Abilities_Energy_Cost", -25)
+                        break;
+                    }
+                break;
             }
 
             instance_destroy()
