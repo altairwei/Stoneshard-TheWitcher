@@ -314,8 +314,8 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "类虫生物油"}
                 },
                 effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to insectoid (such as crawler, swarm, etc.) by ~lg~20%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对类虫生物（比如巨蜘、亡蜂等）造成的伤害增加~lg~20%~/~。"}
+                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to insectoid (such as Crawler, Buzzer, Rock Eater etc.) by ~lg~20%~/~."},
+                    {ModLanguage.Chinese, "应用于武器，对类虫生物（比如巨蜘、亡蜂、食岩虫等）造成的伤害增加~lg~20%~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "This blade grease increases damage dealt to arachnids and creatures similar to insects in their physiology. It is the most effective oil against monsters of this type. Witchers also use Insectoid oil to rid their fortresses of bugs and parasites."},

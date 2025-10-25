@@ -22,9 +22,9 @@ public partial class TheWitcher : Mod
         Msl.AddFunction(ModFiles.GetCode("scr_coating_oil_damage_calc.gml"), "scr_coating_oil_damage_calc");
         Msl.AddFunction(ModFiles.GetCode("scr_hoversGetCoatingOilAttributes.gml"), "scr_hoversGetCoatingOilAttributes");
 
+        PatchWeaponCoatingSkill();
         PatchWitcherSkills();
         PatchCoatingDisplay();
-        PatchWeaponCoatingSkill();
         AddTestSprites();
         AddBooks();
         AddWitcherItems();
