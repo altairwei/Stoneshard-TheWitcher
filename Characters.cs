@@ -28,6 +28,15 @@ public partial class TheWitcher : Mod
             sprite.OriginY = 36;
         }
 
+        UndertaleSprite body = Msl.GetSprite("s_GeraltBody");
+        body.OriginX = 22;
+        body.OriginY = 34;
+        body.CollisionMasks.RemoveAt(0);
+        body.IsSpecialType = true;
+        body.SVersion = 3;
+        body.GMS2PlaybackSpeed = 1;
+        body.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
         UndertaleGameObject o_white_wolf = Msl.AddObject(
             name: "o_white_wolf",
             parentName: "o_player",
@@ -49,7 +58,7 @@ public partial class TheWitcher : Mod
                         {
                             scr_atr_set_simple(""Head"", ""s_GeraltHead"")
                             scr_atr_set_simple(""CorpseSprite"", sprite_get_name(s_Geralt_dead))
-                            scr_atr_set_simple(""BodySprite"", sprite_get_name(s_human_male))
+                            scr_atr_set_simple(""BodySprite"", sprite_get_name(s_GeraltBody))
                             with(scr_inventory_add_item(o_inv_witcher_medallion_wolf))
                             {
                                 onStart_equipped = true
