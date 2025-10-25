@@ -244,7 +244,12 @@ popz.v")
             },
             midtext: new Dictionary<ModLanguage, string>()
             {
-                {ModLanguage.English, "No Translation"},
+                {ModLanguage.English, string.Join("##",
+                    $"Allows ~lg~automatic health regeneration~/~ during combat, and each decoction stack increases regeneration by ~lg~+{HP_Restoration}%~/~.",
+                    "Killing an enemy grants ~lg~1~/~ additional stack (up to ~w~six~/~ stacks). Every ~r~90~/~ turns, one stack dissipates.",
+                    $"From the ~w~second~/~ stack onward, if health drops below ~r~20%~/~, all current stacks will be consumed to restore life. Each consumed stack restores ~lg~{HP_Got}%~/~ of maximum health, and shortens the decoction duration by ~r~20~/~ turns.",
+                    $"Starting from the ~w~fourth~/~ stack, each stack also increases weapon damage by ~lg~+{Weapon_Damage}%~/~ and magic power by ~lg~+{Magic_Power}%~/~."
+                )},
                 {ModLanguage.Chinese, string.Join("##",
                     $"允许在战斗中~lg~自动恢复~/~生命值，并且每一层煎药效果使生命自动恢复~lg~+{HP_Restoration}%~/~。",
                     "击杀目标会令煎药效果叠加~lg~1~/~层（最多叠到~w~六~/~层）。每过~r~90~/~回合，煎药效果消减~r~1~/~层。",
@@ -253,8 +258,14 @@ popz.v")
                 )}
             },
             description: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "WIP"},
-                {ModLanguage.Chinese, "WIP"}
+                {ModLanguage.Chinese,
+                    "以食尸鬼的心肌为主材，取其离体仍能搏动的“亡者活性”，将这份不安的生机封进瓶中。" +
+                    "药后常感饥渴与寒意，耳畔似有万人坑与古战场的低语。"
+                },
+                {ModLanguage.English,
+                    "Brewed from ghoul hide, fur, and heart-muscle, it harnesses the ‘undead vitality’ that keeps twitching even after severance, bottling that restless life. " +
+                    "A gnawing hunger and a creeping chill often follow, with whispers of mass graves and old battlefields at your ear."
+                }
             },
 
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -356,7 +367,12 @@ popz.v")
                 {ModLanguage.Chinese, "巨蛛煎药"}
             },
             midtext: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "No Translation"},
+                {ModLanguage.English, string.Join("##",
+                    "Each decoction stack grants ~cg~+1~/~ Corrosion Damage, ~lg~+5%~/~ Energy Drain, and ~lg~+5%~/~ Accuracy.",
+                    "Using attack skills or signs adds ~lg~1~/~ stack (up to six). Missing an attack, a shot, or failing a spell removes ~r~1~/~ stack, but also reduces all current ability cooldowns by ~lg~1~/~ turn.",
+                    "Starting from the ~sy~fourth layer~/~, each stack increases Immobilization Chance by ~lg~+15%~/~.",
+                    "When reaching the ~sy~sixth layer~/~, the decoction grants ~lg~+25%~/~ Critical and Wonder Chance. Upon triggering a critical hit or wonder, ~r~3~/~ stacks are consumed, and all abilities’ remaining cooldowns are reduced by ~lg~3~/~ turns."
+                )},
                 {ModLanguage.Chinese, string.Join("##",
                     "每层煎药效果使~cg~腐蚀伤害+1~/~，精力吸取~lg~+5%~/~，准度~lg~+5%~/~。",
                     "发动攻击技能或咒法会令煎药效果叠加~lg~1~/~层（最多叠到六层）。击打或射击失手或法咒失误会令会使煎药效果消减~r~1~/~层，并使所有能力当前剩余冷却时间缩短~lg~1~/~个回合。",
@@ -365,8 +381,8 @@ popz.v")
                 )}
             },
             description: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "WIP"},
-                {ModLanguage.Chinese, "WIP"}
+                {ModLanguage.English, "Distilled from the uncoagulated blood and venom glands of great crawlers, the decoction must be sealed in special glass flasks — any ordinary vessel would soon be eaten through."},
+                {ModLanguage.Chinese, "以巨蛛未凝固的鲜血与毒腺提炼而成，需用特制玻璃瓶长期保存，否则药液会自行溶蚀容器。"}
             },
 
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -456,7 +472,12 @@ popz.v")
                 {ModLanguage.Chinese, "哈比煎药"}
             },
             midtext: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "No Translation"},
+                {ModLanguage.English, string.Join("##",
+                    "Each decoction stack increases Dodge Chance by ~lg~+5%~/~, Critical Chance by ~lg~+5%~/~, and reduces Cooldown Time by ~lg~-5%~/~.",
+                    "Landing a melee hit with the main hand (without missing) adds ~lg~1~/~ stack. Killing an enemy adds ~lg~3~/~ stacks (up to six). Receiving melee ~r~damage~/~ or every ~r~90~/~ turns removes ~r~1~/~ stack.",
+                    "All nearby enemies have a ~lg~3%~/~ chance each turn to cough, increased by ~lg~+3%~/~ per decoction stack.",
+                    "Starting from the ~sy~fourth layer~/~, each stack also increases the range of all ~w~charge~/~ skills by ~lg~+1~/~."
+                )},
                 {ModLanguage.Chinese, string.Join("##",
                     "每层煎药效果使闪躲几率~lg~+5%~/~，暴击几率~lg~+5%~/~，冷却时间~lg~-5%~/~。",
                     "主手近身主动攻击命中目标（没有失手）会令煎药效果叠加~lg~1~/~层。击杀目标则叠加~lg~3~/~层（最多叠到六层）。受到近身攻击~r~伤害~/~或者每过~r~90~/~回合，煎药效果消减~r~1~/~层。",
@@ -465,8 +486,12 @@ popz.v")
                 )}
             },
             description: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "WIP"},
-                {ModLanguage.Chinese, "WIP"}
+                {ModLanguage.Chinese,
+                    "布林人的炼金术士最早尝试使用哈比蛋与其胃酸混合熬制药剂，据说灵感来自一道令人作呕的煎蛋饼。" +
+                    "有传言说，只要比例得当，加入新鲜蛋清与草药，可令死人起身复生。艾达兰将之改造为适合猎魔人的煎药。"},
+                {ModLanguage.English,
+                    "Brinian alchemists were the first to brew this concoction, mixing harpy eggs with their stomach acid — a notion reportedly inspired by a nauseating omelette recipe." +
+                    "Rumor has it that, when mixed with fresh egg white and herbs in just the right ratio, it can bring the dead back to life. Idarran transformed it into a decoction suitable for witchers."}
             },
 
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -609,7 +634,12 @@ popz.v")
                 {ModLanguage.Chinese, "巨魔煎药"}
             },
             midtext: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "No Translation"},
+                {ModLanguage.English, string.Join("##",
+                    "Each decoction stack grants ~lg~+10~/~ Maximum Health, reduces damage taken by ~lg~-5%~/~, increases Knockback Chance by ~lg~+10%~/~, Poise by ~lg~+10%~/~, and Displacement Resistance by ~lg~+5%~/~, but decreases Hunger Resistance by ~r~-10%~/~.",
+                    "Using ~sy~mobility~/~, ~sy~stance~/~ skills, skipping a turn, or switching weapons adds ~lg~1~/~ stack (up to six).",
+                    "Starting from the ~sy~fourth layer~/~, if the drinker gains ~r~Bleeding~/~, ~r~Stagger~/~, ~r~Stun~/~, ~r~Unbalance~/~, or ~r~Immobilized~/~, those effects are instantly removed and ~r~1~/~ stack is consumed.",
+                    "No matter how much you eat, you will never ~r~vomit~/~ — only extend the duration of the ~lg~Satiety~/~ effect."
+                )},
                 {ModLanguage.Chinese, string.Join("##",
                     "每层煎药效果使生命上限~lg~+10~/~，所受伤害~lg~-5%~/~，位移抗性~lg~+5%~/~，击退几率~lg~+10%~/~，坚忍~lg~+10%~/~，饥饿抗性~r~-10%~/~。",
                     "运用~sy~机动~/~技能、~sy~站姿~/~技能、跳过一个回合或者切换武器可令煎药效果叠加~lg~1~/~层（最多叠到六层）。",
@@ -618,8 +648,8 @@ popz.v")
                 )}
             },
             description: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "WIP"},
-                {ModLanguage.Chinese, "WIP"}
+                {ModLanguage.English, "Some claim a troll’s near-immortal vitality comes from a peculiar gland secretion — a substance that makes its flesh heal and grow even after being cleaved apart."},
+                {ModLanguage.Chinese, "有的人说，巨魔那近乎不死的体魄，全仰赖体内的一种腺体分泌物——它能令血肉自愈，甚至在被斩断之后仍继续生长。"}
             },
 
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -680,7 +710,11 @@ popz.v")
                 {ModLanguage.Chinese, "谷隆煎药"}
             },
             midtext: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "No Translation"},
+                {ModLanguage.English, string.Join("##",
+                    "Each decoction stack grants ~lg~+5%~/~ Life Steal, ~lg~+10%~/~ Bleed Chance, ~lg~+10%~/~ Limb Damage, and ~lg~+10%~/~ Armor Penetration.",
+                    "Using attack skills adds ~lg~1~/~ stack (up to six) and restores ~lg~30%~/~ of the energy cost as Health. Each decoction stack increases this restoration by ~lg~+30%~/~.",
+                    "Starting from the ~sy~second layer~/~: if your strike inflicts ~r~Bleeding~/~, you immediately improve all limb conditions by ~lg~10%~/~, reduce all ability cooldowns by ~lg~1~/~ turn, and consume ~r~1~/~ stack of the decoction."
+                )},
                 {ModLanguage.Chinese, string.Join("##",
                     "每层煎药效果令生命吸取~lg~+5%~/~，出血几率~lg~+10%~/~，肢体伤害~lg~+10%~/~，护甲穿透~lg~+10%~/~。",
                     "发动攻击技能会令煎药效果叠加~lg~1~/~层（最多叠到六层），并恢复该技能所耗精力~lg~30%~/~的生命值，每层煎药效果使恢复量~lg~+30%~/~。",
@@ -688,8 +722,8 @@ popz.v")
                 )}
             },
             description: new Dictionary<ModLanguage, string>() {
-                {ModLanguage.English, "WIP"},
-                {ModLanguage.Chinese, "WIP"}
+                {ModLanguage.English, "Once drunk, blood surges like flame — hunger and ecstasy intertwine. The fiercer the battle, the stronger the brew, every drop of blood spilled reminds the drinker that life itself burns, yet refuses to die."},
+                {ModLanguage.Chinese, "服下后，血液如火焰流淌，饥渴与快感并生。战斗越激烈，药性越旺盛，每一次出血都在提醒饮者——生命正在燃烧，却又拒绝熄灭。"}
             },
 
             new MslEvent(eventType: EventType.Other, subtype: 15, code: @$"
