@@ -49,41 +49,10 @@ public partial class TheWitcher : Mod
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
 
-        UndertaleGameObject o_inv_witcher_potion_water = Msl.AddObject(
-            name: "o_inv_witcher_potion_water",
-            parentName: "o_inv_bottle_water_flask",
-            spriteName: "s_inv_witcher_potion_water",
-            isVisible: true,
-            isPersistent: true,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_loot_witcher_potion_water = Msl.AddObject(
-            name: "o_loot_witcher_potion_water",
-            parentName: "o_consument_loot",
-            spriteName: "s_loot_witcher_potion_water",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_inv_witcher_potion_empty = Msl.AddObject(
-            name: "o_inv_witcher_potion_empty",
-            parentName: "o_inv_dishes_flask",
-            spriteName: "s_inv_witcher_potion_empty",
-            isVisible: true,
-            isPersistent: true,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_loot_witcher_potion_empty = Msl.AddObject(
-            name: "o_loot_witcher_potion_empty",
-            parentName: "o_consument_loot",
-            spriteName: "s_loot_witcher_potion_empty",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
+        UndertaleGameObject o_inv_witcher_potion_water = Msl.GetObject("o_inv_witcher_potion_water");
+        UndertaleGameObject o_loot_witcher_potion_water = Msl.GetObject("o_loot_witcher_potion_water");
+        UndertaleGameObject o_inv_witcher_potion_empty = Msl.GetObject("o_inv_witcher_potion_empty");
+        UndertaleGameObject o_loot_witcher_potion_empty = Msl.GetObject("o_loot_witcher_potion_empty");
 
         o_inv_witcher_potion_empty.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -117,21 +86,8 @@ public partial class TheWitcher : Mod
             .InsertBelow(@"ds_list_add(global.attribute_duration, ""EVS"", ""PRR"", ""Shock_Damage"", ""Magic_Power"", ""Miracle_Chance"", ""Miscast_Chance"", ""Backfire_Damage"", ""CTA"", ""Crit_Avoid"", ""Mainhand_Efficiency"", ""Offhand_Efficiency"", ""Abilities_Energy_Cost"")")
             .Save();
 
-        UndertaleGameObject o_inv_witcher_potion = Msl.AddObject(
-            name: "o_inv_witcher_potion",
-            parentName: "o_inv_dishes_beverage",
-            isVisible: true,
-            isPersistent: true,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_loot_witcher_potion = Msl.AddObject(
-            name: "o_loot_witcher_potion",
-            parentName: "o_consument_loot",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
+        UndertaleGameObject o_inv_witcher_potion = Msl.GetObject("o_inv_witcher_potion");
+        UndertaleGameObject o_loot_witcher_potion = Msl.GetObject("o_loot_witcher_potion");
 
         o_inv_witcher_potion.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -148,13 +104,19 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
                 event_inherited()
                 audio_play_sound(snd_gui_drink_potion, 3, 0)
-                scr_random_speech(""useWitcherPotion"", 100)
+                scr_random_speech(""useWitcherPotion"")
 
                 with (o_player)
                     scr_guiAnimation(s_drinking, 1, 1, 0)
 
                 if (!o_skill_trial_of_grasses.is_open)
                     scr_atr_incr(""Intoxication"", 100)
+                
+                with (o_perk_professional_witcher)
+                {
+                    item = other.object_index
+                    event_user(5)
+                }
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 25, code: @"

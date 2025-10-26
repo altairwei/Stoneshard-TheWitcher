@@ -13,45 +13,10 @@ public partial class TheWitcher : Mod
 
     private void AddWitcherSkillBook()
     {
-        UndertaleGameObject o_inv_book_witcher1 = Msl.AddObject(
-            name: "o_inv_book_witcher1",
-            spriteName: "s_inv_bookG",
-            parentName: "o_inv_treatise",
-            isVisible: true,
-            isAwake: true,
-            isPersistent: true,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
-
-        UndertaleGameObject o_inv_book_witcher2 = Msl.AddObject(
-            name: "o_inv_book_witcher2",
-            spriteName: "s_inv_bookB",
-            parentName: "o_inv_treatise",
-            isVisible: true,
-            isAwake: true,
-            isPersistent: true,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
-
-        UndertaleGameObject o_loot_book_witcher1 = Msl.AddObject(
-            name: "o_loot_book_witcher1",
-            spriteName: "s_loot_BookG",
-            parentName: "o_loot_treatise",
-            isVisible: true,
-            isAwake: true,
-            isPersistent: false,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
-
-        UndertaleGameObject o_loot_book_witcher2 = Msl.AddObject(
-            name: "o_loot_book_witcher2",
-            spriteName: "s_loot_BookB",
-            parentName: "o_loot_treatise",
-            isVisible: true,
-            isAwake: true,
-            isPersistent: false,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
+        UndertaleGameObject o_inv_book_witcher1 = Msl.GetObject("o_inv_book_witcher1");
+        UndertaleGameObject o_inv_book_witcher2 = Msl.GetObject("o_inv_book_witcher2");
+        UndertaleGameObject o_loot_book_witcher1 = Msl.GetObject("o_loot_book_witcher1");
+        UndertaleGameObject o_loot_book_witcher2 = Msl.GetObject("o_loot_book_witcher2");
 
         o_inv_book_witcher1.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"

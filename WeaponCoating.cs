@@ -48,41 +48,10 @@ public partial class TheWitcher : Mod
         ico.GMS2PlaybackSpeed = 1;
         ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
 
-        UndertaleGameObject o_inv_weapon_oil_water = Msl.AddObject(
-            name: "o_inv_weapon_oil_water",
-            parentName: "o_inv_bottle_water_flask",
-            spriteName: "s_inv_weapon_oil_water",
-            isVisible: true,
-            isPersistent: true,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_loot_weapon_oil_water = Msl.AddObject(
-            name: "o_loot_weapon_oil_water",
-            parentName: "o_consument_loot",
-            spriteName: "s_loot_weapon_oil_water",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_inv_weapon_oil_empty = Msl.AddObject(
-            name: "o_inv_weapon_oil_empty",
-            parentName: "o_inv_dishes_flask",
-            spriteName: "s_inv_weapon_oil_empty",
-            isVisible: true,
-            isPersistent: true,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_loot_weapon_oil_empty = Msl.AddObject(
-            name: "o_loot_weapon_oil_empty",
-            parentName: "o_consument_loot",
-            spriteName: "s_loot_weapon_oil_empty",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
+        UndertaleGameObject o_inv_weapon_oil_water = Msl.GetObject("o_inv_weapon_oil_water");
+        UndertaleGameObject o_loot_weapon_oil_water = Msl.GetObject("o_loot_weapon_oil_water");
+        UndertaleGameObject o_inv_weapon_oil_empty = Msl.GetObject("o_inv_weapon_oil_empty");
+        UndertaleGameObject o_loot_weapon_oil_empty = Msl.GetObject("o_loot_weapon_oil_empty");
 
         o_inv_weapon_oil_empty.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -112,13 +81,7 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        UndertaleGameObject o_inv_weapon_oil_parent = Msl.AddObject(
-            name: "o_inv_weapon_oil_parent",
-            parentName: "o_inv_consum_active",
-            isVisible: true,
-            isPersistent: true,
-            isAwake: true
-        );
+        UndertaleGameObject o_inv_weapon_oil_parent = Msl.GetObject("o_inv_weapon_oil_parent");
 
         o_inv_weapon_oil_parent.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -162,13 +125,7 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Draw, subtype: 0, code: "scr_draw_consum_scale()")
         );
 
-        UndertaleGameObject o_loot_weapon_oil_parent = Msl.AddObject(
-            name: "o_loot_weapon_oil_parent",
-            parentName: "o_consument_loot",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
+        UndertaleGameObject o_loot_weapon_oil_parent = Msl.GetObject("o_loot_weapon_oil_parent");
 
         o_loot_weapon_oil_parent.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"

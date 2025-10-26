@@ -8,7 +8,7 @@ public partial class TheWitcher : Mod
 {
     private void AddCharacters()
     {
-        AddPerkBlavikenButcher();
+        AddPerk_ProfessionalWitcher();
         AddGeralt();
     }
 
@@ -37,14 +37,7 @@ public partial class TheWitcher : Mod
         body.GMS2PlaybackSpeed = 1;
         body.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
 
-        UndertaleGameObject o_white_wolf = Msl.AddObject(
-            name: "o_white_wolf",
-            parentName: "o_player",
-            spriteName: "s_char_select",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
+        UndertaleGameObject o_white_wolf = Msl.GetObject("o_white_wolf");
 
         o_white_wolf.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -147,7 +140,7 @@ public partial class TheWitcher : Mod
                     global.swords_tier1, global.swords2h_tier1, global.daggers_tier1, global.bows_tier1, global.armor_tier1, global.athletics_tier1, global.combat_tier1,
                     [""Witcher"", o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico, o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
                 ],
-                [o_perk_blaviken_butcher], (1 << 0), false)")
+                [o_perk_professional_witcher], (1 << 0), false)")
             .Save();
 
         AddCharacterLocalization(

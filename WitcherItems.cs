@@ -193,15 +193,12 @@ public partial class TheWitcher : Mod
                 },
                 effect: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, " +
-                        "it vibrates and yanks sharply on its chain. You can also ~lg~use~/~ the medallion actively to perform a scan.##" +
-                        "~lg~Trophies~/~ placed into the witcher’s alchemy interface together with the ~y~Wolf School Medallion~/~ can grant it corresponding enhancements." },
-                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。也可主动~lg~使用~/~徽章进行侦测。##" +
-                        "佩戴~y~狼学派徽章~/~首次击杀关底头目时，可以获得相应的加成。"}
+                        "it vibrates and yanks sharply on its chain. You can also ~lg~use~/~ the medallion actively to perform a scan."},
+                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。也可主动~lg~使用~/~徽章进行侦测。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "The Witcher’s medallion is a silver amulet, crafted in different shapes to represent the various witcher schools. " +
-                        "Geralt’s wolf-school medallion, however, for some unknown reason, has become tainted with the path of “sacrifice” in this new world..." },
-                    {ModLanguage.Chinese, "猎魔人徽章是一种银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。杰洛特的这枚狼学派徽章，却不知为何在新世界沾染上了“献祭”之道..."}
+                    {ModLanguage.English, "The Witcher’s medallion is a silver amulet, crafted in different shapes to represent the various witcher schools. "},
+                    {ModLanguage.Chinese, "猎魔人徽章是一种银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。"}
                 }
             )
         );

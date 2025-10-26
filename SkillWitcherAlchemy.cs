@@ -35,15 +35,7 @@ public partial class TheWitcher : Mod
             hook: Msl.SkillsStatsHook.BASIC
         );
 
-        UndertaleGameObject o_skill_witcher_alchemy = Msl.AddObject(
-            name: "o_skill_witcher_alchemy",
-            parentName: "o_skill",
-            spriteName: "s_witcher_alchemy",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
+        UndertaleGameObject o_skill_witcher_alchemy = Msl.GetObject("o_skill_witcher_alchemy");
 
         AddWeaponOil();
         AddWitcherPotion();
@@ -79,15 +71,7 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        UndertaleGameObject o_skill_witcher_alchemy_ico = Msl.AddObject(
-            name: "o_skill_witcher_alchemy_ico",
-            parentName: "o_skill_ico",
-            spriteName: "s_witcher_alchemy",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
+        UndertaleGameObject o_skill_witcher_alchemy_ico = Msl.GetObject("o_skill_witcher_alchemy_ico");
 
         o_skill_witcher_alchemy_ico.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -123,23 +107,8 @@ public partial class TheWitcher : Mod
 
     private void AddWitcherAlchemy_Alcohol()
     {
-        UndertaleGameObject o_inv_alcohol = Msl.AddObject(
-            name: "o_inv_alcohol",
-            parentName: "o_inv_dishes_beverage",
-            spriteName: "s_inv_alcohol",
-            isVisible: true,
-            isPersistent: true,
-            isAwake: true
-        );
-
-        UndertaleGameObject o_loot_alcohol = Msl.AddObject(
-            name: "o_loot_alcohol",
-            parentName: "o_consument_loot",
-            spriteName: "s_loot_alcohol",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
+        UndertaleGameObject o_inv_alcohol = Msl.GetObject("o_inv_alcohol");
+        UndertaleGameObject o_loot_alcohol = Msl.GetObject("o_loot_alcohol");
 
         Msl.InjectTableItemStats(
             id: "alcohol",
@@ -220,15 +189,7 @@ public partial class TheWitcher : Mod
             })
         );
 
-        UndertaleGameObject o_witcherAlchemyCraftingMenu = Msl.AddObject(
-            name: "o_witcherAlchemyCraftingMenu",
-            parentName: "o_craftingMenu",
-            spriteName: "s_cooking_menu",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true,
-            collisionShapeFlags: CollisionShapeFlags.Box
-        );
+        UndertaleGameObject o_witcherAlchemyCraftingMenu = Msl.GetObject("o_witcherAlchemyCraftingMenu");
 
         o_witcherAlchemyCraftingMenu.Group = 1;
 
