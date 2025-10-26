@@ -132,6 +132,7 @@ public partial class TheWitcher : Mod
         InjectItemsToTable(
             table: "gml_GlobalScript_table_names",
             anchor: "NPC_info;NPC_info;NPC_info;",
+            defaultKey: 2,
             new Dictionary<int, string>
             {
                 [0] = "geneticist",

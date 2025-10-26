@@ -56,10 +56,10 @@ public partial class TheWitcher : Mod
                 var _hr = 1.5 * owner.Vitality
                 ds_map_replace(text_map, ""HR"", _maxhp)
 
-                var _cta = 1.5 * owner.AGL
+                var _cta = 1.5 * owner.AGL / 2
                 ds_map_replace(text_map, ""CTA"", _cta)
 
-                var _evs = 1.5 * owner.AGL
+                var _evs = 1.5 * owner.AGL / 2
                 ds_map_replace(text_map, ""EVS"", _evs)
 
                 if (is_open)

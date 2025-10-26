@@ -57,7 +57,7 @@ public partial class TheWitcher : Mod
             AOE_Lenght: 2,
             AOE_Width: 3,
             Pattern: Msl.SkillsStatsPattern.pyramid,
-            KD: 6,
+            KD: 12,
             MP: 16,
             Reserv: 18,
             Duration: 0,
@@ -108,7 +108,7 @@ public partial class TheWitcher : Mod
 
         string Fire_Damage = "13 * ((owner.Magic_Power + owner.Pyromantic_Power) / 100)";
         string Fire_Resistance = "math_round((-10 * (owner.Magic_Power + owner.Pyromantic_Power)) / 100)";
-        string Ignition_Chance = "7 * owner.WIL * (owner.Magic_Power + owner.Pyromantic_Power) / 100";
+        string Ignition_Chance = "5 * owner.WIL * (owner.Magic_Power + owner.Pyromantic_Power) / 100";
 
         o_skill_igni_sign.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"

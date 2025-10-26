@@ -6,7 +6,7 @@ namespace TheWitcher;
 
 public partial class TheWitcher : Mod
 {
-    private void InjectItemsToTable(string table, string? anchor = null, params Dictionary<int, string>[] items)
+    private void InjectItemsToTable(string table, string? anchor = null, int? defaultKey = null, params Dictionary<int, string>[] items)
     {
         List<string> lines = Msl.ThrowIfNull(ModLoader.GetTable(table));
         int colCount = lines[0].Split(';').Length;
@@ -20,6 +20,16 @@ public partial class TheWitcher : Mod
                 if (kv.Key >= 0 && kv.Key < colCount)
                     record[kv.Key] = kv.Value;
             }
+
+            if (defaultKey.HasValue && item.TryGetValue(defaultKey.Value, out var defVal))
+            {
+                for (int c = 0; c < colCount; c++)
+                {
+                    if (record[c] == null)
+                        record[c] = defVal;
+                }
+            }
+
             targets.Add(string.Join(';', record));
         }
 
@@ -37,7 +47,7 @@ public partial class TheWitcher : Mod
         ModLoader.SetTable(lines, table);
     }
 
-    private void InjectItemsToTable(string table, string? anchor = null, params Dictionary<string, string>[] items)
+    private void InjectItemsToTable(string table, string? anchor = null, string? defaultKey = null, params Dictionary<string, string>[] items)
     {
         List<string> lines = Msl.ThrowIfNull(ModLoader.GetTable(table));
         var header = lines[0].Split(';');
@@ -56,6 +66,10 @@ public partial class TheWitcher : Mod
             mapped[i] = dst;
         }
 
-        InjectItemsToTable(table, anchor, mapped);
+        int? defaultIdx = null;
+        if (!string.IsNullOrEmpty(defaultKey) && name2idx.TryGetValue(defaultKey, out int tmpIdx))
+            defaultIdx = tmpIdx;
+
+        InjectItemsToTable(table, anchor, defaultIdx, mapped);
     }
 }

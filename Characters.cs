@@ -176,6 +176,10 @@ public partial class TheWitcher : Mod
                 new Dictionary<ModLanguage, string> {
                     {ModLanguage.English, "The medallion is vibrating, stay alert."},
                     {ModLanguage.Chinese, "徽章在振动，警醒一点。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "The medallion is vibrating... A sorceress nearby?"},
+                    {ModLanguage.Chinese, "徽章在振动，附近有女术士？"}
                 }
             ),
             new LocalizationSpeech(
@@ -254,7 +258,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Do you have a room available for the night? ~lg~[allows to save the game]~/~" },
                     { ModLanguage.Chinese, "可有房间留宿？~lg~[可以保存游戏进度]~/~" }
                 }
-            ) { Type = "geralt" },
+            )
+            { Type = "geralt" },
 
             new LocalizationSentence(
                 "custom_chat",
@@ -263,7 +268,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Let’s talk about the latest news you have heard." },
                     { ModLanguage.Chinese, "聊聊你最近听说的事。" }
                 }
-            ) { Type = "geralt" },
+            )
+            { Type = "geralt" },
 
             new LocalizationSentence(
                 "custom_trade",
@@ -272,7 +278,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Let’s do some trading." },
                     { ModLanguage.Chinese, "来做点买卖。" }
                 }
-            ) { Type = "geralt" },
+            )
+            { Type = "geralt" },
 
             new LocalizationSentence(
                 "custom_leave",
@@ -281,7 +288,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Farewell." },
                     { ModLanguage.Chinese, "再会。" }
                 }
-            ) { Type = "geralt" },
+            )
+            { Type = "geralt" },
 
             new LocalizationSentence(
                 "custom_back",
@@ -290,7 +298,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "*Nods in greeting*" },
                     { ModLanguage.Chinese, "*点头致意*" }
                 }
-            ) { Type = "geralt" },
+            )
+            { Type = "geralt" },
 
             new LocalizationSentence(
                 "contractGet_pc",
@@ -299,7 +308,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Got any tricky business that needs taking care of?" },
                     { ModLanguage.Chinese, "有什么棘手的事要处理么？" }
                 }
-            ) { Type = "geralt" },
+            )
+            { Type = "geralt" },
 
             // --- Trader Skadia ---
             new LocalizationSentence(
@@ -309,7 +319,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Welmy radowy striye." },
                     { ModLanguage.Chinese, "韦尔迷'拉多以'斯特莱耶。" }
                 }
-            ) { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
+            )
+            { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
 
             new LocalizationSentence(
                 "greeting",
@@ -318,7 +329,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Jak zmohu razpomosc?" },
                     { ModLanguage.Chinese, "亚克'兹莫乌'拉兹泼莫茨？" }
                 }
-            ) { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
+            )
+            { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
 
             // --- Trader Nistra ---
             new LocalizationSentence(
@@ -328,7 +340,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Emporia apodi Nistiria!" },
                     { ModLanguage.Chinese, "恩泼利亚'阿泼蒂'尼斯特利亚！" }
                 }
-            ) { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
+            )
+            { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
 
             new LocalizationSentence(
                 "greeting",
@@ -337,7 +350,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Nistrijeve dobro!" },
                     { ModLanguage.Chinese, "尼斯特里耶维'多布洛！" }
                 }
-            ) { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
+            )
+            { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
 
             // --- Trader Jibey ---
             new LocalizationSentence(
@@ -347,7 +361,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Nezi erzulu, arzeci?" },
                     { ModLanguage.Chinese, "涅齐'厄祖鲁，阿切斯？" }
                 }
-            ) { Tags = "any", Role = "trader_jibey", Type = "geralt", Settlement = "Brynn" },
+            )
+            { Tags = "any", Role = "trader_jibey", Type = "geralt", Settlement = "Brynn" },
 
             // --- Trader Fjall ---
             new LocalizationSentence(
@@ -357,7 +372,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Var vra Fjall! Skad ar hodt!" },
                     { ModLanguage.Chinese, "瓦尔'弗勒'弗约！斯加得'阿'霍特！" }
                 }
-            ) { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" },
+            )
+            { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" },
 
             new LocalizationSentence(
                 "greeting",
@@ -366,7 +382,8 @@ public partial class TheWitcher : Mod
                     { ModLanguage.English, "Har du tvagir?" },
                     { ModLanguage.Chinese, "哈尔'杜'特瓦基尔？" }
                 }
-            ) { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" }
+            )
+            { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" }
         );
 
 
@@ -698,6 +715,18 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "魔力的波动？唔，没法吸收。"}
                 }
             )
+        );
+
+        InjectItemsToTable(
+            table: "gml_GlobalScript_table_text",
+            anchor: "examineKingStatue_Mahir",
+            defaultKey: 2,
+            new Dictionary<int, string>
+            {
+                [0] = "examineKingStatue_Geralt",
+                [2] = "There are plenty of statues like this back in the North... The difference is, most of those kings are still alive — their heads have just been empty for years.",
+                [3] = "北境也有很多这样的雕像…… 不同的是，那些国王大多还活着，只是脑袋早就空了。"
+            }
         );
     }
 
