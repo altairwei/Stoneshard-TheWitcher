@@ -193,14 +193,7 @@ public partial class TheWitcher : Mod
 
                 if (_can_interract)
                 {
-                    with (o_player)
-                    {
-                        var _target = noone
-                        with (instance_create_depth(scr_round_cell(mouse_x) + 13, scr_round_cell(mouse_y) + 13, 0, o_attacked_target))
-                            _target = id
-                        
-                        other.target = scr_projectile_target(_target.x, _target.y, _target)
-                    }
+                    target = scr_attack_tile(o_player)
                     
                     with (target)
                     {
@@ -217,7 +210,7 @@ public partial class TheWitcher : Mod
                         {
                             if (object_is_ancestor(object_index, o_unit) || object_index == o_attacked_target)
                             {
-                                with (scr_onUnitEffectCreate(s_groundmarker_start, s_groundmarker_loop, s_groundmarker_end, -1, true))
+                                with (scr_onUnitEffectCreate(id, o_onUnitEffectGroundmarker, -152, 0, 0, true))
                                     array_push(_id.mark_array, id)
                             }
                         }
@@ -256,7 +249,7 @@ public partial class TheWitcher : Mod
         UndertaleGameObject o_yrden_sign = Msl.AddObject(
             name: "o_yrden_sign",
             spriteName: "s_sign_of_yrden",
-            parentName: "o_invisible_mark",
+            parentName: "o_mark_spell_damage",
             isVisible: true,
             isPersistent: false,
             isAwake: true
@@ -265,7 +258,6 @@ public partial class TheWitcher : Mod
         o_yrden_sign.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                scr_tile_mark_prev_validate()
                 alpha = 0
                 scr_set_lt()
                 blend = make_color_rgb(0, 0, 0)
@@ -280,19 +272,10 @@ public partial class TheWitcher : Mod
             "),
 
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
-                scr_tile_mark_clear()
-                if is_tile_grid_region
-                    scr_tile_mark_region_clear(tile_region_size)
-                else if do_erase
-                    astar_clear_cell(o_controller.newgrid, grid_x, grid_y)
+                event_inherited()
 
                 with (animation)
                     is_loop = false
-            "),
-
-            new MslEvent(eventType: EventType.Step, subtype: 0, code: @"
-                event_inherited()
-                scr_skills_check_simple_targets()
             "),
 
             new MslEvent(eventType: EventType.Draw, subtype: 0, code: @"
@@ -306,6 +289,7 @@ public partial class TheWitcher : Mod
                 }
             "),
 
+            // Triggered every turn
             new MslEvent(eventType: EventType.Other, subtype: 10, code: @"
                 if (!instance_exists(owner))
                     duration = 0;
@@ -323,18 +307,23 @@ public partial class TheWitcher : Mod
 
                 var _damage = {Arcane_Damage}
 
-                with (target)
+                if (target.id == owner.id)
                 {{
-                    if (id == other.owner.id)
+                    with (target)
                     {{
                         scr_temp_incr_atr(""FMB"", -9, 1, id, id)
                         scr_temp_incr_atr(""MP_Restoration"", 9, 1, id, id)
                         scr_temp_incr_atr(""CRT"", 3, 1, id, id)
                     }}
-                    else
-                    {{
-                        other.Arcane_Damage = _damage
 
+                    damage_done = 0
+                }}
+                else
+                {{
+                    Arcane_Damage = _damage
+
+                    with (target)
+                    {{
                         if (typeID == ""spectre"")
                             scr_temp_incr_atr(""Damage_Received"", 33, 1, id, id)
                         else
@@ -343,18 +332,9 @@ public partial class TheWitcher : Mod
                         scr_guiAnimation_ext(x, y, s_signofyrden_impact, 1, 1, 0, 0xFFFFFF, 0)
                         scr_audio_play_at(snd_vampire_rune_impact)
                     }}
-                }}
 
-                var _owner = owner
-                if (!instance_exists(owner))
-                    owner = id
-                damage_done = scr_skill_damage(target, true, false)
-                if (damage_done > 0)
-                {{
-                    if scr_actionsLogVisible(target)
-                        scr_actionsLog(""healthLoss"", [scr_id_get_name(target), damage_done, scr_actionsLogGetHealthType(target)])
+                    event_inherited()
                 }}
-                owner = _owner
 
                 if (damage_done > 0)
                 {{
@@ -384,6 +364,20 @@ public partial class TheWitcher : Mod
             ")
         );
 
+        Msl.LoadGML("gml_GlobalScript_scr_unitTurnGetDamageFromTileMark")
+            .MatchFrom("with (c_tile_mark)")
+            .InsertAbove(@"
+                if (object_is_ancestor(object_index, o_Specter))
+                {
+                    with (o_yrden_sign)
+                    {
+                        if (grid_x == other.grid_x && grid_y == other.grid_y)
+                            event_user(7)
+                    }
+                }
+            ")
+            .Save();
+
         o_yrden_sign_birth.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
@@ -392,7 +386,7 @@ public partial class TheWitcher : Mod
                 cast_frame = 7
                 is_flying = false
                 spell = o_yrden_sign
-                scr_audio_play_at(choose(snd_vampire_rune_spell))
+                scr_audio_play_at(snd_vampire_rune_spell)
                 target_array = []
             "),
 

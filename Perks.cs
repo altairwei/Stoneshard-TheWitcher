@@ -20,16 +20,27 @@ public partial class TheWitcher : Mod
         o_perk_blaviken_butcher.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                ds_map_add(data, ""Weapon_Damage"", 10)
-                ds_map_add(data, ""CRTD"", 20)
-                ds_map_add(data, ""Magic_Power"", 10)
-                ds_map_add(data, ""Miracle_Power"", 20)
-                ds_map_add(data, ""Piercing_Resistance"", -5)
             "),
 
+            // 叠层效果
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
                 event_inherited()
-                scr_skill_map_processor(1, 10)
+
+                var _buffs = [
+                    ""Weapon_Damage"",          10,
+                    ""CRTD"",                   20,
+                    ""Magic_Power"",            10,
+                    ""Miracle_Power"",          20,
+                    ""Piercing_Resistance"",    -5
+                ]
+
+                for (var i = 0; i < array_length(_buffs); i += 2)
+                {
+                    with (scr_temp_incr_atr(_buffs[i], _buffs[i+1], 10, o_player, o_player, true, false))
+                        can_save = false
+                }
+                
+                scr_atr_calc(o_player)
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 16, code: @"

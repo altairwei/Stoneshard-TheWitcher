@@ -245,7 +245,7 @@ public partial class TheWitcher : Mod
                         if (object_is_ancestor(target.object_index, o_enemy))
                         {{
                             if (scr_instance_exists_in_list(o_db_confuse, target.buffs)
-                                    && scr_instance_exists_in_list(o_db_daze, target.buffs))
+                                    || scr_instance_exists_in_list(o_db_daze, target.buffs))
                             {{
                                 Psionic_Damage = {Psionic_Damage}
                             }}
