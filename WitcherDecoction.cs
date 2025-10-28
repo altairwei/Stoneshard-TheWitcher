@@ -102,22 +102,33 @@ public partial class TheWitcher : Mod
                 scr_consum_set_attribute(""Toxicity_Resistance"", -10, true)
             "),
 
+            // 这里没用，只是 buff 效果出来后的事情。
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
-                event_inherited()
-                audio_play_sound(snd_gui_drink_potion, 3, 0)
-                scr_random_speech(""useDrug"")
-
-                with (o_player)
-                    scr_guiAnimation(s_drinking, 1, 1, 0)
-
-                if (!o_skill_trial_of_grasses.is_open)
-                    with (o_player)
-                        instance_destroy()
-
-                with (o_perk_professional_witcher)
+                if (instance_number(o_b_decoction_buff) < 3)
                 {
-                    item = other.object_index
-                    event_user(5)
+                    event_inherited()
+                    audio_play_sound(snd_gui_drink_potion, 3, 0)
+                    scr_random_speech(""useDrug"")
+
+                    with (o_player)
+                        scr_guiAnimation(s_drinking, 1, 1, 0)
+
+                    if (!o_skill_trial_of_grasses.is_open)
+                        with (o_player)
+                            instance_destroy()
+
+                    scr_effect_create(asset_get_index(""o_b_"" + idName), 1200)
+
+                    with (o_perk_professional_witcher)
+                    {
+                        item = other.object_index
+                        event_user(5)
+                    }
+                }
+                else
+                {
+                    scr_random_speech(""useDecoctionLimit"", 100)
+                    audio_play_sound(snd_mouse_skill_denied, 3, 0)
                 }
             "),
 
@@ -750,6 +761,26 @@ popz.v")
 
         Msl.InjectTableItemsLocalization(decoction_texts.ToArray());
         Msl.InjectTableModifiersLocalization(decoction_buff_texts.ToArray());
+
+        Msl.InjectTableSpeechesLocalization(
+            new LocalizationSpeech(
+                id: "useDecoctionLimit",
+                new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "No... not another one. My blood’s already a cauldron."},
+                    {ModLanguage.Chinese, "不……不能再喝了。我的血已经在沸腾了。"}
+                },
+
+                new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Another drop and I’ll start glowing in the dark."},
+                    {ModLanguage.Chinese, "再喝一滴，我可能会在黑夜里发光。"}
+                },
+
+                new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "That’s it. One more dose and I’ll end up studying myself in a jar."},
+                    {ModLanguage.Chinese, "够了。再来一瓶，我就该被装进罐子里研究了。"}
+                }
+            )
+        );
     }
 
     private void AddHooksForDecoctionBuff()
@@ -948,7 +979,6 @@ popz.v
 
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @$"
                 event_inherited()
-                scr_effect_create(o_b_{id}, 1200)
             ")
         );
 

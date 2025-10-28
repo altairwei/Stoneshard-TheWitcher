@@ -20,7 +20,7 @@ public partial class TheWitcher : Mod
                 description: new Dictionary<ModLanguage, string>{
                     {ModLanguage.English, @"No translation"},
                     {ModLanguage.Chinese, string.Join("##",
-                        "免疫~w~煎药~/~的致死效果。此外，令猎魔人：",
+                        "免疫~w~煎药~/~的致死效果，但最多同时服用~w~3~/~瓶。此外，令猎魔人：",
                         "免疫变化幅度~lg~+0.02~/~#生命上限~lg~+/*MAXHP*/~/~#生命自动恢复~lg~+/*HR*/%~/~#视野~lg~+2~/~#距离加成~lg~+1~/~#反击几率~lg~+/*CTA*/%~/~#闪躲几率~lg~+/*EVS*/%~/~"
                     )}
                 }
@@ -74,6 +74,11 @@ public partial class TheWitcher : Mod
                 }
 
                 event_inherited()
+            "),
+
+            new MslEvent(eventType: EventType.Alarm, subtype: 4, code: @"
+                if instance_exists(o_perk_professional_witcher)
+                    scr_skill_open(id)
             ")
         );
     }
