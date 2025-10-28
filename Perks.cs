@@ -183,6 +183,7 @@ popenv [44]")
         o_perk_professional_witcher.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
+
                 scr_atr_add_simple(""PotionRewarded"", 0)
                 scr_atr_add_simple(""PotionBonus"", 0)
 
@@ -196,6 +197,31 @@ popenv [44]")
                     scr_atr_add_list(""DecoctionTypeList"", __dsDebuggerListCreate())
 
                 item = noone
+                evade = false
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 10, code: @"
+                event_inherited()
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 11, code: @"
+                if (attack_result == ""crit"")
+                {
+                    scr_temp_effect_update(object_index, o_player, ""PRR"", 5, 3, 5)
+                    scr_temp_effect_update(object_index, o_player, ""EVS"", 5, 3, 5)
+                    scr_temp_effect_update(object_index, o_player, ""Block_Power"", 5, 3, 5)
+                }
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 12, code: @"
+                if ((attack_result == ""block"") || (attack_result == ""fumbleBlock"")
+                        || (evade && (attack_result == ""miss"" || attack_result == ""fumble"")))
+                {
+                    scr_temp_effect_update(object_index, o_player, ""CRT"", 5, 3, 5)
+                    scr_temp_effect_update(object_index, o_player, ""Weapon_Damage"", 5, 3, 5)
+                    scr_temp_effect_update(object_index, o_player, ""CTA"", 5, 3, 5)
+                    evade = false
+                }
             "),
 
             // 每次喝完魔药或煎药都检查一下
@@ -267,10 +293,55 @@ popenv [44]")
             ")
         );
 
-        Msl.AddNewEvent(objectName: "o_skill_trial_of_grasses", eventType: EventType.Alarm, subtype: 4, eventCode: @"
-            if instance_exists(o_perk_professional_witcher)
-                scr_skill_open(id)
-        ");
+        /*
+        Msl.LoadGML("gml_Object_o_skill_ico_Other_18")
+            .MatchFrom("global.open_ranged_skill++")
+            .InsertBelow(@"
+                if ((branch == ""swords"") || (branch == ""greatswords""))
+                {
+                    if (instance_exists(o_perk_professional_witcher))
+                    {
+                        scr_atr_incr(""Geralt_"" + branch + ""_skills_learned"", 1)
+                    }
+                }
+            ")
+            .Save();
+        */
+
+        Msl.LoadGML("gml_GlobalScript_scr_attack")
+            .MatchFromUntil(" if (_target.EVS >= 0)", "_evade = true")
+            .InsertBelow(@"
+                    if (_isPlayerTarget)
+                    {
+                        with (o_perk_professional_witcher)
+                            evade = _evade
+                    }
+            ")
+            .Save();
+
+        Msl.LoadGML("gml_Object_o_arrow_Other_10")
+            .MatchFrom("P_proc = scr_chance_value(_target.PRR)")
+            .InsertBelow(@"
+                    else if (instance_exists(o_perk_professional_witcher))
+                    {
+                        var _chance = _target.PRR * _target.Hit_Chance / 100
+                        scr_actionsLogUpdate(""o_perk_professional_witcher_block_chance_"" + string(_chance))
+                        P_proc = scr_chance_value(_chance)
+                    }
+            ")
+            .Save();
+
+        Msl.LoadGML("gml_Object_o_throwed_loot_Other_10")
+            .MatchFrom("P_proc = scr_chance_value(_target.PRR)")
+            .InsertBelow(@"
+                    else if (instance_exists(o_perk_professional_witcher))
+                    {
+                        var _chance = _target.PRR * _target.Hit_Chance / 100
+                        scr_actionsLogUpdate(""o_perk_professional_witcher_block_chance_"" + string(_chance))
+                        P_proc = scr_chance_value(_chance)
+                    }
+            ")
+            .Save();
 
         Msl.InjectTableSkillsLocalization(
             new LocalizationSkill(
@@ -283,8 +354,10 @@ popenv [44]")
                     {ModLanguage.English,
                      "WIP"},
                     {ModLanguage.Chinese,
-                     "每习得一项剑术（双手剑或单手剑）能力，兵器伤害便~lg~+2%~/~，暴击几率便~lg~+1%~/~。##" +
-                     "角色每升五级，喝下~w~5~/~瓶不同的魔药后便获得~lg~1~/~个属性点，喝下~w~5~/~瓶不同的煎药后便获得~lg~1~/~个能力点。"}
+                     "游戏开局习得~w~“青草试炼”~/~，并且角色每升~w~五~/~级，喝下~w~5~/~瓶不同的~y~魔药~/~后便获得~lg~1~/~个属性点，喝下~w~5~/~瓶不同的~y~煎药~/~后便获得~lg~1~/~个能力点。##" +
+                     "~w~格挡~/~或~w~闪躲~/~一次击打，会令~w~3~/~回合内暴击几率~lg~+5%~/~，兵器伤害~lg~+5%~/~，反击几率~lg~+5%~/~。" +
+                     "~w~暴击~/~会令~w~3~/~回合内闪躲几率~lg~+5%~/~，格挡几率~lg~+5%~/~，格挡力量上限~lg~+5~/~。这两组效果可以叠加，最多~w~5~/~层。##" +
+                     "角色可以使用兵器~w~格挡~/~箭矢和投掷的物品，格挡几率受~lg~准度~/~的影响。"}
                 }
             )
         );
