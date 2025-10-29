@@ -9,6 +9,8 @@ public partial class TheWitcher : Mod
     private void AddWitcherItems()
     {
         AddMedallionWolf();
+        AddAncientTrollGland();
+        AddGeraltStealSword();
     }
 
     private void AddMedallionWolf()
@@ -191,52 +193,179 @@ public partial class TheWitcher : Mod
                 },
                 effect: new Dictionary<ModLanguage, string>() {
                     {ModLanguage.English, "Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, " +
-                        "it vibrates and yanks sharply on its chain. You can also ~lg~use~/~ the medallion actively to perform a scan.##" +
-                        "~lg~Trophies~/~ placed into the witcher’s alchemy interface together with the ~y~Wolf School Medallion~/~ can grant it corresponding enhancements." },
-                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。也可主动~lg~使用~/~徽章进行侦测。##" +
-                        "佩戴~y~狼学派徽章~/~首次击杀关底头目时，可以获得相应的加成。"}
+                        "it vibrates and yanks sharply on its chain. You can also ~lg~use~/~ the medallion actively to perform a scan."},
+                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。也可主动~lg~使用~/~徽章进行侦测。"}
                 },
                 description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "The Witcher’s medallion is a silver amulet, crafted in different shapes to represent the various witcher schools. " +
-                        "Geralt’s wolf-school medallion, however, for some unknown reason, has become tainted with the path of “sacrifice” in this new world..." },
-                    {ModLanguage.Chinese, "猎魔人徽章是一种银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。杰洛特的这枚狼学派徽章，却不知为何在新世界沾染上了“献祭”之道..."}
+                    {ModLanguage.English, "The Witcher’s medallion is a silver amulet, crafted in different shapes to represent the various witcher schools. "},
+                    {ModLanguage.Chinese, "猎魔人徽章是一种银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。"}
+                }
+            )
+        );
+    }
+
+    private void AddAncientTrollGland()
+    {
+        UndertaleSprite ico = Msl.GetSprite("s_inv_ancient_troll_gland");
+        ico.CollisionMasks.RemoveAt(0);
+        ico.IsSpecialType = true;
+        ico.SVersion = 3;
+        ico.Width = 27;
+        ico.Height = 54;
+        ico.OriginX = 0;
+        ico.OriginY = 0;
+        ico.MarginLeft = 2;
+        ico.MarginRight = 24;
+        ico.MarginBottom = 48;
+        ico.MarginTop = 3;
+        ico.GMS2PlaybackSpeed = 1;
+        ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
+        foreach (var tte in ico.Textures)
+        {
+            tte.Texture.TargetX = 2;
+            tte.Texture.TargetY = 3;
+            tte.Texture.TargetWidth = 23;
+            tte.Texture.TargetHeight = 46;
+            tte.Texture.BoundingWidth = 27;
+            tte.Texture.BoundingHeight = 54;
+        }
+
+        ico = Msl.GetSprite("s_loot_ancient_troll_gland");
+        ico.CollisionMasks.RemoveAt(0);
+        ico.IsSpecialType = true;
+        ico.SVersion = 3;
+        ico.Width = 23;
+        ico.Height = 14;
+        ico.OriginX = 0;
+        ico.OriginY = 0;
+        ico.MarginLeft = 4;
+        ico.MarginRight = 8;
+        ico.MarginBottom = 11;
+        ico.MarginTop = 2;
+        ico.GMS2PlaybackSpeed = 1;
+        ico.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
+        foreach (var tte in ico.Textures)
+        {
+            tte.Texture.TargetX = 0;
+            tte.Texture.TargetY = 0;
+            tte.Texture.TargetWidth = 23;
+            tte.Texture.TargetHeight = 14;
+            tte.Texture.BoundingWidth = 23;
+            tte.Texture.BoundingHeight = 14;
+        }
+
+        UndertaleGameObject o_inv_ancient_troll_gland = Msl.AddObject(
+            name: "o_inv_ancient_troll_gland",
+            parentName: "o_inv_consum_passive",
+            spriteName: "s_inv_ancient_troll_gland",
+            isVisible: true,
+            isPersistent: true,
+            isAwake: true
+        );
+
+        UndertaleGameObject o_loot_ancient_troll_gland = Msl.AddObject(
+            name: "o_loot_ancient_troll_gland",
+            parentName: "c_food",
+            spriteName: "s_loot_ancient_troll_gland",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_inv_ancient_troll_gland.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                scr_consum_atr(""ancient_troll_gland"")
+                drop_gui_sound = snd_item_meat_drop
+                pickup_sound = snd_item_meat_pick
+                ds_map_set(data, ""quality"", (6 << 0))
+                ds_map_set(data, ""Colour"", make_colour_rgb(130, 72, 188))
+            ")
+        );
+
+        Msl.InjectTableItemStats(
+            id: "ancient_troll_gland",
+            Price: 600,
+            EffPrice: 600,
+            tier: Msl.ItemStatsTier.Tier4,
+            Cat: Msl.ItemStatsCategory.ingredient,
+            Material: Msl.ItemStatsMaterial.organic,
+            Weight: Msl.ItemStatsWeight.Light,
+            tags: Msl.ItemStatsTags.alchemy
+        );
+
+        Msl.InjectTableItemsLocalization(
+            new LocalizationItem(
+                id: "ancient_troll_gland",
+                name: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Ancient Troll Gland"},
+                    {ModLanguage.Chinese, "古代巨魔腺体"}
+                },
+                effect: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Can be used to craft ~lg~advanced witcher mutagen potions~/~."},
+                    {ModLanguage.Chinese, "可用于制作猎魔人~lg~进阶突变药剂~/~。"}
+                },
+                description: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "The essence of an ancient troll’s vitality, regarded in Idarran as the finest ingredient for crafting advanced witcher mutagens."},
+                    {ModLanguage.Chinese, "古代巨魔生命力的精华，被艾达兰视为制作猎魔人进阶突变药剂的最佳候选。"}
                 }
             )
         );
 
-        // Msl.InjectTableArmor(
-        //     hook: Msl.ArmorHook.NECKLACES,
-        //     name: "Wolf School Medallion",
-        //     Tier: Msl.ArmorTier.Tier5,
-        //     id: "witcher_medallion_wolf",
-        //     Slot: Msl.ArmorSlot.Amulet,
-        //     Class: Msl.ArmorClass.Light,
-        //     rarity: Msl.ArmorRarity.Unique,
-        //     Mat: Msl.ArmorMaterial.silver,
-        //     Price: 200,
-        //     MaxDuration: 80,
-        //     Nature_Resistance: 9,
-        //     Magic_Resistance: 9,
-        //     Received_XP: 6,
-        //     VSN: 1,
-        //     tags: Msl.ArmorTags.specialexc
-        // );
+        Msl.LoadGML("gml_Object_o_ancientTroll_Create_0")
+            .MatchFrom("ds_list_add(loot_list_add")
+            .InsertBelow(@"ds_list_add(loot_list_add, ""o_loot_ancient_troll_gland"", 100)")
+            .Save();
 
-        // Msl.InjectTableWeaponTextsLocalization(
-        //     new LocalizationWeaponText(
-        //         id: "Wolf School Medallion",
-        //         name: new Dictionary<ModLanguage, string>() {
-        //             {ModLanguage.English, "Wolf School Medallion"},
-        //             {ModLanguage.Chinese, "狼学派徽章"}
-        //         },
-        //         description: new Dictionary<ModLanguage, string>() {
-        //             {ModLanguage.English, "A witcher medallion is a silver symbol of the witchers' profession. " +
-        //                 "Each one is shaped to represent the school a witcher comes from. " +
-        //                 "The medallions vibrate in response to magic in all its forms." },
-        //             {ModLanguage.Chinese, "猎魔人徽章是一个银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。" +
-        //                 "猎魔人徽章对所有魔法形式敏感，当侦测到魔法存在时徽章就会震动并且猛拉挂着它的链子。" }
-        //         }
-        //     )
-        // );
+        Msl.LoadGML("gml_Object_o_ancientTroll_dead_Create_0")
+            .MatchFrom("ds_list_add(loot_list_add")
+            .InsertBelow(@"ds_list_add(loot_list_add, ""o_loot_ancient_troll_gland"", 100)")
+            .Save();
+    }
+
+    private void AddGeraltStealSword()
+    {
+        Msl.InjectTableWeapons(
+            name: "Geralt Steel Sword",
+            Tier: Msl.WeaponsTier.Tier2,
+            id: "witchersword01",
+            Slot: Msl.WeaponsSlot.twohandedsword,
+            rarity: Msl.WeaponsRarity.Unique,
+            Mat: Msl.WeaponsMaterial.metal,
+            tags: Msl.WeaponsTags.specialexc,
+            Price: 150,
+            Markup: 1,
+            MaxDuration: 95,
+            Rng: 1,
+
+            Slashing_Damage: 20,
+            Armor_Piercing: 10,
+            Block_Power: 6,
+            PRR: 4,
+            CTA: 2,
+            Skills_Energy_Cost: 10
+        );
+
+        Msl.InjectTableWeaponTextsLocalization(
+            new LocalizationWeaponText(
+                id: "Geralt Steel Sword",
+                name: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English, "Geralt's Steel Sword"},
+                    {ModLanguage.Chinese, "杰洛特的钢剑"}
+                },
+                description: new Dictionary<ModLanguage, string>() {
+                    {ModLanguage.English,
+                        "Geralt was once known for carrying two blades—steel for men, silver for monsters. " +
+                        "But after being stranded in Aldor, he only had time to commission a well-balanced steel sword from a local blacksmith."
+                    },
+                    {ModLanguage.Chinese,
+                        "杰洛特过去总是佩带双剑——钢剑对付人类，银剑斩杀怪物。 " +
+                        "然而刚流落奥尔多时，他仅来得及请当地铁匠为自己打造一柄趁手的钢剑。"
+                    }
+                }
+            )
+        );
     }
 }

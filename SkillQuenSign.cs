@@ -67,7 +67,8 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
-        string Shield_Duration = "40 * power(owner.Magic_Power / 100, 3)";
+        //string Shield_Duration = "40 * power(owner.Magic_Power / 100, 3)";
+        string Shield_Duration = "30 * power(owner.Magic_Power / 100, 2)";
         string Cure_Chance = "45 * owner.Magic_Power / 100";
 
         o_skill_quen_sign.ApplyEvent(

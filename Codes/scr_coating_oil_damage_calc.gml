@@ -58,8 +58,19 @@ function scr_coating_oil_damage_calc()
                 _oil_damage = _damage * 0.2
             break;
         case "insectoid_oil":
-            if (_target.object_index == o_crawler || _target.object_index == o_hornets)
-                _oil_damage = _damage * 0.2
+            switch (_target.object_index)
+            {
+                case o_crawler:
+                case o_spiderling:
+                case o_crawler_broodmother:
+                case o_hornets:
+                case o_rockeater_worker:
+                case o_rockeater_hunter:
+                case o_rockeater_soldier:
+                case o_rockeater_queen:
+                    _oil_damage = _damage * 0.2
+                    break;
+            }
             break;
         case "hybrid_oil":
             if (_target.object_index == o_gulon || _target.object_index == o_harpy)

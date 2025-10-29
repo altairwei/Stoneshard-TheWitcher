@@ -3,161 +3,167 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "CAT":      "weapon_oil",
         "Recipe1":  "oil",
         "Recipe2":  "stool",
-        "Recipe3":  "stool",
-        "Recipe4":  "henbane",
+        "Recipe3":  "henbane",
+        "Recipe4":  "-",
         "Recipe5":  "-",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "vampire_oil": {
         "CAT":      "weapon_oil",
         "Recipe1":  "oil",
-        "Recipe2":  "silver_nugget, silver_talisman, silver_earrings",
+        "Recipe2":  "garlic",
         "Recipe3":  "hemp",
-        "Recipe4":  "hemp",
-        "Recipe5":  "garlic",
-        "Recipe6":  "-",
-        "AMOUNT":   "1",
-        "XP":       "10",
-        "SOURCE":   "Skill"
-    },
-    "necrophage_oil": {
-        "CAT":      "weapon_oil",
-        "Recipe1":  "oil",
-        "Recipe2":  "church_candle",
-        "Recipe3":  "mindwort",
-        "Recipe4":  "rhubarb",
+        "Recipe4":  "-",
         "Recipe5":  "-",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
+    },
+    "necrophage_oil": {
+        "CAT":      "weapon_oil",
+        "Recipe1":  "oil",
+        "Recipe2":  "mindwort",
+        "Recipe3":  "lavender",
+        "Recipe4":  "-",
+        "Recipe5":  "-",
+        "Recipe6":  "-",
+        "AMOUNT":   "1",
+        "XP":       "10",
+        "SOURCE":   "Book"
     },
     "specter_oil": {
         "CAT":      "weapon_oil",
         "Recipe1":  "oil",
         "Recipe2":  "skull",
         "Recipe3":  "horsetail",
-        "Recipe4":  "horsetail",
+        "Recipe4":  "-",
         "Recipe5":  "-",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "insectoid_oil": {
         "CAT":      "weapon_oil",
         "Recipe1":  "oil",
         "Recipe2":  "flyagaric",
-        "Recipe3":  "flyagaric",
-        "Recipe4":  "henbane",
+        "Recipe3":  "henbane",
+        "Recipe4":  "-",
         "Recipe5":  "-",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "hybrid_oil": {
         "CAT":      "weapon_oil",
         "Recipe1":  "oil",
         "Recipe2":  "flyagaric",
-        "Recipe3":  "henbane",
-        "Recipe4":  "burnet",
-        "Recipe5":  "citrus",
+        "Recipe3":  "stool",
+        "Recipe4":  "-",
+        "Recipe5":  "-",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "ogroid_oil": {
         "CAT":      "weapon_oil",
         "Recipe1":  "oil",
-        "Recipe2":  "stool",
-        "Recipe3":  "stool",
-        "Recipe4":  "henbane",
-        "Recipe5":  "ginger",
+        "Recipe2":  "ginger",
+        "Recipe3":  "henbane",
+        "Recipe4":  "-",
+        "Recipe5":  "-",
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "10",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "thunderbolt_potion": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "spirit, wine1",
-        "Recipe2":  "hop",
+        "Recipe1":  "alcohol",
+        "Recipe2":  "henbane",
         "Recipe3":  "henbane",
-        "Recipe4":  "henbane",
+        "Recipe4":  "hemp",
         "Recipe5":  "-",
         "Recipe6":  "-",
+        "ADDITIVES": "hop, rotbloom",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "blizzard_potion": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "spirit, wine",
-        "Recipe2":  "hornet_honey",
-        "Recipe3":  "mindwort",
+        "Recipe1":  "alcohol",
+        "Recipe2":  "peppermint",
+        "Recipe3":  "rhubarb",
         "Recipe4":  "mindwort",
         "Recipe5":  "-",
         "Recipe6":  "-",
+        "ADDITIVES": "hornet_honey, bear_fat, truffle",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "petri_philter": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "coffee",
+        "Recipe1":  "alcohol",
         "Recipe2":  "mindwort",
         "Recipe3":  "agrimony",
         "Recipe4":  "agrimony",
         "Recipe5":  "-",
         "Recipe6":  "-",
+        "ADDITIVES": "moose_kidney, azurecap",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "swallow_potion": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "spirit",
-        "Recipe2":  "honey",
-        "Recipe3":  "honey",
-        "Recipe4":  "burdock, bogbean, burnet",
-        "Recipe5":  "burdock, bogbean, burnet",
-        "Recipe6":  "fleawort",
-        "AMOUNT":   "1",
+        "Recipe1":  "alcohol",
+        "Recipe2":  "fleawort",
+        "Recipe3":  "fleawort",
+        "Recipe4":  "wormwood",
+        "Recipe5":  "-",
+        "Recipe6":  "-",
+        "ADDITIVES": "hyssop, spleenwort",
+        "AMOUNT":   "2",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "tawny_owl": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "mead",
-        "Recipe2":  "garlic",
+        "Recipe1":  "alcohol",
+        "Recipe2":  "peppermint",
         "Recipe3":  "thyme",
         "Recipe4":  "thyme",
         "Recipe5":  "-",
         "Recipe6":  "-",
+        "ADDITIVES": "silverleaf, wolf_tongue",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "golden_oriole": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "spirit, wine1",
-        "Recipe2":  "nettle",
-        "Recipe3":  "burdock, burnet",
-        "Recipe4":  "poppy, wormwood, henbane",
+        "Recipe1":  "alcohol",
+        "Recipe2":  "poppy",
+        "Recipe3":  "burdock",
+        "Recipe4":  "-",
         "Recipe5":  "-",
         "Recipe6":  "-",
+        "ADDITIVES": "spidervine, puffball, dragonfruit",
         "AMOUNT":   "1",
         "XP":       "25",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "ghoul_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "spirit, brandy",
+        "Recipe1":  "alcohol",
         "Recipe2":  "ghoul_heart",
         "Recipe3":  "burdock, bogbean, burnet",
         "Recipe4":  "pennybun",
@@ -165,11 +171,11 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "crawler_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "mead",
+        "Recipe1":  "alcohol",
         "Recipe2":  "spider_eye, mandibles",
         "Recipe3":  "henbane",
         "Recipe4":  "henbane",
@@ -177,11 +183,11 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "harpy_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "brandy",
+        "Recipe1":  "alcohol",
         "Recipe2":  "harpy_egg_raw, harpy_stomach",
         "Recipe3":  "ginger",
         "Recipe4":  "poppy",
@@ -189,11 +195,11 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "troll_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "wine1",
+        "Recipe1":  "alcohol",
         "Recipe2":  "troll_gland, tusks_troll",
         "Recipe3":  "burdock",
         "Recipe4":  "peppermint",
@@ -201,11 +207,11 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "-",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
     },
     "gulon_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "wine",
+        "Recipe1":  "alcohol",
         "Recipe2":  "gulon_liver",
         "Recipe3":  "henbane",
         "Recipe4":  "henbane",
@@ -213,15 +219,40 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe6":  "rhubarb",
         "AMOUNT":   "1",
         "XP":       "50",
-        "SOURCE":   "Skill"
+        "SOURCE":   "Book"
+    },
+    "oil": {
+        "CAT":      "other",
+        "Recipe1":  "-",
+        "Recipe2":  "-",
+        "Recipe3":  "-",
+        "Recipe4":  "-",
+        "Recipe5":  "-",
+        "Recipe6":  "-",
+        "AMOUNT":   "1",
+        "XP":       "5",
+        "SOURCE":   "Base Recipe"
+    },
+    "alcohol": {
+        "CAT":      "other",
+        "Recipe1":  "-",
+        "Recipe2":  "-",
+        "Recipe3":  "-",
+        "Recipe4":  "-",
+        "Recipe5":  "-",
+        "Recipe6":  "-",
+        "AMOUNT":   "1",
+        "XP":       "10",
+        "SOURCE":   "Base Recipe"
     }
 }')
 
 global.recipes_witcher_alchemy_categories_order_list = __dsDebuggerListCreate()
-ds_list_add(global.recipes_witcher_alchemy_categories_order_list, "weapon_oil", "witcher_potion", "witcher_decoction")
+ds_list_add(global.recipes_witcher_alchemy_categories_order_list, "weapon_oil", "witcher_potion", "witcher_decoction", "other")
 
 global.recipes_witcher_alchemy_category_order_map = json_decode(@'{
     "weapon_oil": ["hanged_man_venom", "vampire_oil", "necrophage_oil", "specter_oil", "insectoid_oil", "hybrid_oil", "ogroid_oil"],
     "witcher_potion": ["thunderbolt_potion", "blizzard_potion", "petri_philter", "swallow_potion", "tawny_owl", "golden_oriole"],
-    "witcher_decoction": ["ghoul_decoction", "crawler_decoction", "harpy_decoction", "troll_decoction", "gulon_decoction"]
+    "witcher_decoction": ["ghoul_decoction", "crawler_decoction", "harpy_decoction", "troll_decoction", "gulon_decoction"],
+    "other": ["oil", "alcohol"]
 }')

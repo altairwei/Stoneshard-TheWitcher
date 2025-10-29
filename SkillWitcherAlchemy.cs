@@ -11,6 +11,7 @@ public partial class TheWitcher : Mod
     private void AddSkill_Witcher_Alchemy()
     {
         AdjustSkillIcon("s_witcher_alchemy");
+        AddWitcherAlchemy_Alcohol();
 
         // Skill - Witcher Alchemy
 
@@ -34,16 +35,11 @@ public partial class TheWitcher : Mod
             hook: Msl.SkillsStatsHook.BASIC
         );
 
-        UndertaleGameObject o_skill_witcher_alchemy = Msl.AddObject(
-            name: "o_skill_witcher_alchemy",
-            parentName: "o_skill",
-            spriteName: "s_witcher_alchemy",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
+        UndertaleGameObject o_skill_witcher_alchemy = Msl.GetObject("o_skill_witcher_alchemy");
 
+        AddWeaponOil();
+        AddWitcherPotion();
+        AddWitcherDecoction();
         AddWitcherAlchemyCraftingMenu();
 
         o_skill_witcher_alchemy.ApplyEvent(
@@ -75,24 +71,17 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        UndertaleGameObject o_skill_witcher_alchemy_ico = Msl.AddObject(
-            name: "o_skill_witcher_alchemy_ico",
-            parentName: "o_skill_ico",
-            spriteName: "s_witcher_alchemy",
-            isVisible: true, 
-            isPersistent: false, 
-            isAwake: true,
-            collisionShapeFlags: CollisionShapeFlags.Circle
-        );
+        UndertaleGameObject o_skill_witcher_alchemy_ico = Msl.GetObject("o_skill_witcher_alchemy_ico");
 
         o_skill_witcher_alchemy_ico.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
                 child_skill = o_skill_witcher_alchemy
                 event_perform_object(child_skill, ev_create, 0)
-            "),
+            ")
 
             // 每次游戏加载成功，这个事件就会执行一次。
+            /*
             new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
                 event_inherited()
 
@@ -103,27 +92,82 @@ public partial class TheWitcher : Mod
                     scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
                 }
 
-                if (ds_list_find_index(_list, ""hanged_man_venom"") < 0)
-                {
-                    ds_list_add(_list, ""hanged_man_venom"", ""vampire_oil"", ""necrophage_oil"",
-                                        ""specter_oil"", ""insectoid_oil"", ""hybrid_oil"", ""ogroid_oil"")
-                }
-                if (ds_list_find_index(_list, ""thunderbolt_potion"") < 0)
-                {
-                    ds_list_add(_list, ""thunderbolt_potion"", ""blizzard_potion"", ""petri_philter"", ""swallow_potion"",
-                                        ""tawny_owl"", ""golden_oriole"")
-                }
-                if (ds_list_find_index(_list, ""ghoul_decoction"") < 0)
-                {
-                    ds_list_add(_list, ""ghoul_decoction"", ""crawler_decoction"", ""harpy_decoction"", ""troll_decoction"",
-                                        ""gulon_decoction"")
-                }
                 with (o_craftingMenu)
                 {
                     event_user(11)
                     event_user(13)
                     event_user(12)
                 }
+            ")
+            */
+        );
+
+        AddCaravanAlchemyStation();
+    }
+
+    private void AddWitcherAlchemy_Alcohol()
+    {
+        UndertaleGameObject o_inv_alcohol = Msl.GetObject("o_inv_alcohol");
+        UndertaleGameObject o_loot_alcohol = Msl.GetObject("o_loot_alcohol");
+
+        Msl.InjectTableItemStats(
+            id: "alcohol",
+            Price: 60,
+            Cat: Msl.ItemStatsCategory.alcohol,
+            Material: Msl.ItemStatsMaterial.glass,
+            Weight: Msl.ItemStatsWeight.Light,
+            Duration: 240,
+            Thirsty: 70,
+            Intoxication: 40,
+            Toxicity_Change: 1,
+            Pain_Change: -0.5f,
+            Sanity_Change: -0.2f,
+            bottle: true,
+            tags: Msl.ItemStatsTags.special
+        );
+
+        Msl.InjectTableItemsLocalization(
+            new LocalizationItem(
+                id: "alcohol",
+                name: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Alcohol"},
+                    {ModLanguage.Chinese, "酒精"}
+                },
+                effect: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "A flammable liquid obtained through the distillation of various ~lg~alcoholic beverages~/~. Highly concentrated, ~r~do not drink~/~."},
+                    {ModLanguage.Chinese, "一种易燃液体，可通过各种~lg~酒类饮品~/~蒸馏而成。浓度太高，请勿~r~饮用~/~。"}
+                },
+                description: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "A bottle of high-proof alcohol, commonly used as a base for many alchemical concoctions."},
+                    {ModLanguage.Chinese, "一瓶高度酒精，常用作多种炼金混合物的基础。"}
+                }
+            )
+        );
+
+        o_inv_alcohol.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                scr_consum_atr(""alcohol"")
+                max_charge = 1
+                can_merge = false
+                drop_gui_sound = snd_item_ether_inhaler_drop
+                pickup_sound = snd_item_ether_inhaler_pick
+                is_execute = false
+                Hit_Bonus = 30
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
+                event_inherited()
+                audio_play_sound(snd_gui_drink_potion, 3, 0)
+                scr_effect_create(o_db_drunk, 360 * (((1.25 + (0.01 * scr_atr(""Hunger""))) - (0.025 * o_player.Vitality)) * (1 - (o_player.Toxicity_Resistance / 100))))
+            ")
+        );
+
+        o_loot_alcohol.ApplyEvent(
+            new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                event_inherited()
+                inv_object = o_inv_alcohol
+                number = 0
             ")
         );
     }
@@ -145,20 +189,28 @@ public partial class TheWitcher : Mod
             })
         );
 
-        UndertaleGameObject o_witcherAlchemyCraftingMenu = Msl.AddObject(
-            name: "o_witcherAlchemyCraftingMenu",
-            parentName: "o_craftingMenu",
-            spriteName: "s_cooking_menu",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true,
-            collisionShapeFlags: CollisionShapeFlags.Box
-        );
+        UndertaleGameObject o_witcherAlchemyCraftingMenu = Msl.GetObject("o_witcherAlchemyCraftingMenu");
 
         o_witcherAlchemyCraftingMenu.Group = 1;
 
+        Msl.AddFunction(ModFiles.GetCode("scr_craft_alchemy_base.gml"), "scr_craft_alchemy_base");
+        Msl.AddFunction(ModFiles.GetCode("scr_craft_oil.gml"), "scr_craft_oil");
+        Msl.AddFunction(ModFiles.GetCode("scr_craft_alcohol.gml"), "scr_craft_alcohol");
+
         o_witcherAlchemyCraftingMenu.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
+                var _list = scr_atr(""recipesWitcherAlchemyOpened"")
+                if (is_undefined(_list))
+                {
+                    _list = __dsDebuggerListCreate()
+                    scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
+                }
+
+                if (ds_list_find_index(_list, ""oil"") < 0)
+                {
+                    ds_list_add(_list, ""oil"", ""alcohol"")
+                }
+
                 event_inherited()
                 with (mask)
                     title = ds_map_find_value(global.skill_name_text, ""Witcher_Alchemy"")
@@ -191,6 +243,17 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Other, subtype: 11, code: @"
                 if instance_exists(parent)
                 {
+                    if (object_is_ancestor(parent.object_index, c_container))
+                    {
+                        var _list = parent.loot_list
+                        var _size = ds_list_size(_list)
+                        
+                        if (_size > 0)
+                            scr_loadContainerContent(_list, object_index, noone, id, false, false)
+                        
+                        workbench = true
+                    }
+
                     if (parent.object_index == o_skill_witcher_alchemy)
                         rightContainerBG = s_CookingBG_Consums
                 }
@@ -210,7 +273,14 @@ public partial class TheWitcher : Mod
             // Check if it is allowed to craft weapon oil or potions
             new MslEvent(eventType: EventType.Other, subtype: 13, code: @"
                 item_array = []
-                canCraft = scr_crafting_recipe_components_check(activeRecipeButton, true)
+
+                if (idName == ""oil"")
+                    canCraft = scr_craft_oil()
+                else if (idName == ""alcohol"")
+                    canCraft = scr_craft_alcohol()
+                else
+                    canCraft = scr_crafting_recipe_components_check(activeRecipeButton, true)
+
                 event_inherited()
             "),
 
@@ -334,6 +404,37 @@ pushi.e {DataLoader.data.GameObjects.IndexOf(o_witcherAlchemyCraftingMenu)}
 cmp.i.v EQ
 bt [{btNum}]")
             .Save();
-        
+
+    }
+
+    private void AddCaravanAlchemyStation()
+    {
+        Msl.LoadAssemblyAsString("gml_Object_o_caravanBranch_Cooking_Create_0")
+            .MatchFromUntil("pushloc.v local._alchemy", "popenv")
+            .ReplaceBy("")
+            .Save();
+
+        Msl.AddNewEvent(
+            objectName: "o_AlchemyTable_hl",
+            eventType: EventType.Other,
+            subtype: 10,
+            eventCode: @"
+                if (!instance_exists(o_witcherAlchemyCraftingMenu))
+                {
+                    with (scr_guiCreateContainer(global.guiBaseContainerSideLeft, o_witcherAlchemyCraftingMenu))
+                    {
+                        parent = other.id
+                        event_user(1)
+                    }
+                }
+            "
+        );
+
+        Msl.AddNewEvent(
+            objectName: "o_AlchemyTable_hl",
+            eventType: EventType.Other,
+            subtype: 15,
+            eventCode: @""
+        );
     }
 }

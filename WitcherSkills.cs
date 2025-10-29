@@ -22,13 +22,13 @@ public partial class TheWitcher : Mod
             collisionShapeFlags: CollisionShapeFlags.Circle
         );
 
+        AddSkill_Trial_Of_Grasses();
         AddSkill_Witcher_Alchemy();
         AddSkill_Quen_Sign();
         AddSkill_Axii_Sign();
         AddSkill_Yrden_Sign();
         AddSkill_Aard_Sign();
         AddSkill_Igni_Sign();
-        AddSkill_Trial_Of_Grasses();
 
         // Add Skill Branch
 
@@ -50,7 +50,7 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
                 text = ""Witcher""
-                skill = [o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico,
+                skill = [o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico,
                          o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
                 branch_sprite = s_witcher_branch
                 alarm[1] = 2

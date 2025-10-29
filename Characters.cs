@@ -8,7 +8,7 @@ public partial class TheWitcher : Mod
 {
     private void AddCharacters()
     {
-        AddPerkBlavikenButcher();
+        AddPerk_ProfessionalWitcher();
         AddGeralt();
     }
 
@@ -28,14 +28,16 @@ public partial class TheWitcher : Mod
             sprite.OriginY = 36;
         }
 
-        UndertaleGameObject o_white_wolf = Msl.AddObject(
-            name: "o_white_wolf",
-            parentName: "o_player",
-            spriteName: "s_char_select",
-            isVisible: true,
-            isPersistent: false,
-            isAwake: true
-        );
+        UndertaleSprite body = Msl.GetSprite("s_GeraltBody");
+        body.OriginX = 22;
+        body.OriginY = 34;
+        body.CollisionMasks.RemoveAt(0);
+        body.IsSpecialType = true;
+        body.SVersion = 3;
+        body.GMS2PlaybackSpeed = 1;
+        body.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerGameFrame;
+
+        UndertaleGameObject o_white_wolf = Msl.GetObject("o_white_wolf");
 
         o_white_wolf.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -49,7 +51,7 @@ public partial class TheWitcher : Mod
                         {
                             scr_atr_set_simple(""Head"", ""s_GeraltHead"")
                             scr_atr_set_simple(""CorpseSprite"", sprite_get_name(s_Geralt_dead))
-                            scr_atr_set_simple(""BodySprite"", sprite_get_name(s_human_male))
+                            scr_atr_set_simple(""BodySprite"", sprite_get_name(s_GeraltBody))
                             with(scr_inventory_add_item(o_inv_witcher_medallion_wolf))
                             {
                                 onStart_equipped = true
@@ -58,20 +60,21 @@ public partial class TheWitcher : Mod
                             }
                             with (scr_equip(""Worn Cloak"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
-                            with (scr_equip(""Peasant Pitchfork"", (3 << 0)))
-                            {
-                                scr_inv_atr_set(""Duration"", 80)
-                                ds_map_set(data, ""identified"", true)
-                                identified = true
-                            }
+                            with (scr_equip(""Geralt Steel Sword"", (6 << 0)))
+                                scr_inv_atr_set(""Duration"", 100)
                             with (scr_equip(""Fine Shirt"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
                             with (scr_equip(""Apprentice Cowl"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
                             with (scr_equip(""Peasant Shoes"", (1 << 0)))
                                 scr_inv_atr_set(""Duration"", 100)
+                            with (scr_inventory_add_weapon(""Training Crossbow"", (1 << 0)))
+                                scr_inv_atr_set(""Duration"", 100);
                             with (scr_inventory_add_item(o_inv_moneybag))
                                 scr_container_add_gold(250)
+                            with (scr_inventory_add_weapon(""Peasant Pitchfork"", (1 << 0)))
+                                scr_inv_atr_set(""Duration"", 20)
+                            scr_inventory_add_item(o_inv_leafshaped_bolts)
                             scr_inventory_add_item(o_inv_dumpling)
                             scr_inventory_add_item(o_inv_wineskin)
                             scr_inventory_add_item(o_inv_splint)
@@ -135,9 +138,9 @@ public partial class TheWitcher : Mod
                 10, 11, 10, 11, 11,
                 [
                     global.swords_tier1, global.swords2h_tier1, global.daggers_tier1, global.bows_tier1, global.armor_tier1, global.athletics_tier1, global.combat_tier1,
-                    [""Witcher"", o_skill_witcher_alchemy_ico, o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico, o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
+                    [""Witcher"", o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico, o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
                 ],
-                [o_perk_blaviken_butcher], (1 << 0), false)")
+                [o_perk_professional_witcher], (1 << 0), false)")
             .Save();
 
         AddCharacterLocalization(
@@ -166,6 +169,10 @@ public partial class TheWitcher : Mod
                 new Dictionary<ModLanguage, string> {
                     {ModLanguage.English, "The medallion is vibrating, stay alert."},
                     {ModLanguage.Chinese, "徽章在振动，警醒一点。"}
+                },
+                new Dictionary<ModLanguage, string> {
+                    {ModLanguage.English, "The medallion is vibrating... A sorceress nearby?"},
+                    {ModLanguage.Chinese, "徽章在振动，附近有女术士？"}
                 }
             ),
             new LocalizationSpeech(
@@ -235,129 +242,143 @@ public partial class TheWitcher : Mod
             )
         );
 
-        InjectItemsToTable(
-            table: "gml_GlobalScript_table_lines",
-            anchor: ";;;;;;;[CHARACTERS] BASIC LINES;;;;;;;;;;;",
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_rent_room",
-                ["Type"] = "geralt",
-                ["English"] = "Do you have a room available for the night? ~lg~[allows to save the game]~/~",
-                ["中文"] = "可有房间留宿？~lg~[可以保存游戏进度]~/~"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_chat",
-                ["Type"] = "geralt",
-                ["English"] = "Let’s talk about the latest news you have heard.",
-                ["中文"] = "聊聊你最近听说的事。"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_trade",
-                ["Type"] = "geralt",
-                ["English"] = "Let’s do some trading.",
-                ["中文"] = "来做点买卖。"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_leave",
-                ["Type"] = "geralt",
-                ["English"] = "Farewell.",
-                ["中文"] = "再会。"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "custom_back",
-                ["Type"] = "geralt",
-                ["English"] = "*Nods in greeting*",
-                ["中文"] = "*点头致意*"
-            },
-            new Dictionary<string, string>
-            {
-                ["id"] = "contractGet_pc",
-                ["Type"] = "geralt",
-                ["English"] = "Got any tricky business that needs taking care of?",
-                ["中文"] = "有什么棘手的事要处理么？"
-            },
+        Msl.InjectTableDialogLocalization(
+            // --- [CHARACTERS] BASIC LINES ---
+            new LocalizationSentence(
+                id: "custom_rent_room",
+                sentence: new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Do you have a room available for the night? ~lg~[allows to save the game]~/~" },
+                    { ModLanguage.Chinese, "可有房间留宿？~lg~[可以保存游戏进度]~/~" }
+                }
+            )
+            { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_skadia",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Welmy radowy striye.",
-                ["中文"] = "韦尔迷'拉多以'斯特莱耶。"
-            },
+            new LocalizationSentence(
+                "custom_chat",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Let’s talk about the latest news you have heard." },
+                    { ModLanguage.Chinese, "聊聊你最近听说的事。" }
+                }
+            )
+            { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_skadia",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Jak zmohu razpomosc?",
-                ["中文"] = "亚克'兹莫乌'拉兹泼莫茨？"
-            },
+            new LocalizationSentence(
+                "custom_trade",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Let’s do some trading." },
+                    { ModLanguage.Chinese, "来做点买卖。" }
+                }
+            )
+            { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_nistra",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Emporia apodi Nistiria!",
-                ["中文"] = "恩泼利亚'阿泼蒂'尼斯特利亚！"
-            },
+            new LocalizationSentence(
+                "custom_leave",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Farewell." },
+                    { ModLanguage.Chinese, "再会。" }
+                }
+            )
+            { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_nistra",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Nistrijeve dobro!",
-                ["中文"] = "尼斯特里耶维'多布洛！"
-            },
+            new LocalizationSentence(
+                "custom_back",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "*Nods in greeting*" },
+                    { ModLanguage.Chinese, "*点头致意*" }
+                }
+            )
+            { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_jibey",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Nezi erzulu, arzeci?",
-                ["中文"] = "涅齐'厄祖鲁，阿切斯？"
-            },
+            new LocalizationSentence(
+                "contractGet_pc",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Got any tricky business that needs taking care of?" },
+                    { ModLanguage.Chinese, "有什么棘手的事要处理么？" }
+                }
+            )
+            { Type = "geralt" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_fjall",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Var vra Fjall! Skad ar hodt!",
-                ["中文"] = "瓦尔'弗勒'弗约！斯加得'阿'霍特！"
-            },
+            // --- Trader Skadia ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Welmy radowy striye." },
+                    { ModLanguage.Chinese, "韦尔迷'拉多以'斯特莱耶。" }
+                }
+            )
+            { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
 
-            new Dictionary<string, string>
-            {
-                ["id"] = "greeting",
-                ["Tags"] = "any",
-                ["Role"] = "trader_fjall",
-                ["Type"] = "geralt",
-                ["Settlement"] = "Brynn",
-                ["English"] = "Har du tvagir?",
-                ["中文"] = "哈尔'杜'特瓦基尔？"
-            }
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Jak zmohu razpomosc?" },
+                    { ModLanguage.Chinese, "亚克'兹莫乌'拉兹泼莫茨？" }
+                }
+            )
+            { Tags = "any", Role = "trader_skadia", Type = "geralt", Settlement = "Brynn" },
+
+            // --- Trader Nistra ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Emporia apodi Nistiria!" },
+                    { ModLanguage.Chinese, "恩泼利亚'阿泼蒂'尼斯特利亚！" }
+                }
+            )
+            { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
+
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Nistrijeve dobro!" },
+                    { ModLanguage.Chinese, "尼斯特里耶维'多布洛！" }
+                }
+            )
+            { Tags = "any", Role = "trader_nistra", Type = "geralt", Settlement = "Brynn" },
+
+            // --- Trader Jibey ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Nezi erzulu, arzeci?" },
+                    { ModLanguage.Chinese, "涅齐'厄祖鲁，阿切斯？" }
+                }
+            )
+            { Tags = "any", Role = "trader_jibey", Type = "geralt", Settlement = "Brynn" },
+
+            // --- Trader Fjall ---
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Var vra Fjall! Skad ar hodt!" },
+                    { ModLanguage.Chinese, "瓦尔'弗勒'弗约！斯加得'阿'霍特！" }
+                }
+            )
+            { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" },
+
+            new LocalizationSentence(
+                "greeting",
+                new Dictionary<ModLanguage, string>
+                {
+                    { ModLanguage.English, "Har du tvagir?" },
+                    { ModLanguage.Chinese, "哈尔'杜'特瓦基尔？" }
+                }
+            )
+            { Tags = "any", Role = "trader_fjall", Type = "geralt", Settlement = "Brynn" }
         );
+
 
         Msl.InjectTableSpeechesLocalization(
             new LocalizationSpeech(
@@ -687,6 +708,18 @@ public partial class TheWitcher : Mod
                     {ModLanguage.Chinese, "魔力的波动？唔，没法吸收。"}
                 }
             )
+        );
+
+        InjectItemsToTable(
+            table: "gml_GlobalScript_table_text",
+            anchor: "examineKingStatue_Mahir",
+            defaultKey: 2,
+            new Dictionary<int, string>
+            {
+                [0] = "examineKingStatue_Geralt",
+                [2] = "There are plenty of statues like this back in the North... The difference is, most of those kings are still alive — their heads have just been empty for years.",
+                [3] = "北境也有很多这样的雕像…… 不同的是，那些国王大多还活着，只是脑袋早就空了。"
+            }
         );
     }
 
