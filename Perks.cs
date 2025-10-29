@@ -133,11 +133,6 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        Msl.AddNewEvent(objectName: "o_skill_trial_of_grasses", eventType: EventType.Alarm, subtype: 4, eventCode: @"
-            if instance_exists(o_perk_blaviken_butcher)
-                scr_skill_open(id)
-        ");
-
         Msl.InjectTableSkillsLocalization(
             new LocalizationSkill(
                 id: "blaviken_butcher",
@@ -155,6 +150,7 @@ public partial class TheWitcher : Mod
             )
         );
 
+        /*
         int index = DataLoader.data.GameObjects.IndexOf(
             DataLoader.data.GameObjects.First(x => x.Name.Content == "o_perk_suum_cuique"));
         Msl.LoadAssemblyAsString("gml_Object_o_enemy_Destroy_0")
@@ -174,6 +170,7 @@ popz.v
 :[1001]
 popenv [44]")
             .Save();
+        */
     }
 
     private void AddPerk_ProfessionalWitcher()
