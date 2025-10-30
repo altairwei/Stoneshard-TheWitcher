@@ -160,7 +160,9 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 audio_play_sound(snd_gui_drink_potion, 3, 0)
                 scr_effect_create(o_db_drunk, 360 * (((1.25 + (0.01 * scr_atr(""Hunger""))) - (0.025 * o_player.Vitality)) * (1 - (o_player.Toxicity_Resistance / 100))))
-            ")
+            "),
+
+            new MslEvent(eventType: EventType.Other, subtype: 22, code: "instance_destroy()")
         );
 
         o_loot_alcohol_essentia.ApplyEvent(
@@ -206,9 +208,13 @@ public partial class TheWitcher : Mod
                     scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
                 }
 
-                if (ds_list_find_index(_list, ""oil"") < 0)
+                var _basic_items = [""oil"", ""alcohol_essentia""]
+                for (var i = 0; i < array_length(_basic_items); i++)
                 {
-                    ds_list_add(_list, ""oil"", ""alcohol_essentia"")
+                    if (ds_list_find_index(_list, _basic_items[i]) < 0)
+                    {
+                        ds_list_add(_list, _basic_items[i])
+                    }
                 }
 
                 event_inherited()
