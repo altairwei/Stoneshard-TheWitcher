@@ -10,9 +10,9 @@ if (idName == "oil")
 {
     _target = scr_craft_oil(true)
 }
-else if (idName == "alcohol")
+else if (idName == "alcohol_essentia")
 {
-    _target = scr_craft_alcohol(true)
+    _target = scr_craft_alcohol_essentia(true)
 }
 else if _object
 {

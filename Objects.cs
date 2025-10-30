@@ -102,18 +102,18 @@ public partial class TheWitcher : Mod
         );
 
         Msl.AddObject(
-            name: "o_inv_alcohol",
+            name: "o_inv_alcohol_essentia",
             parentName: "o_inv_dishes_beverage",
-            spriteName: "s_inv_alcohol",
+            spriteName: "s_inv_alcohol_essentia",
             isVisible: true,
             isPersistent: true,
             isAwake: true
         );
 
         Msl.AddObject(
-            name: "o_loot_alcohol",
+            name: "o_loot_alcohol_essentia",
             parentName: "o_consument_loot",
-            spriteName: "s_loot_alcohol",
+            spriteName: "s_loot_alcohol_essentia",
             isVisible: true,
             isPersistent: false,
             isAwake: true

@@ -85,7 +85,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "thunderbolt_potion": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "henbane",
         "Recipe3":  "henbane",
         "Recipe4":  "hemp",
@@ -98,7 +98,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "blizzard_potion": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "peppermint",
         "Recipe3":  "rhubarb",
         "Recipe4":  "mindwort",
@@ -111,7 +111,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "petri_philter": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "mindwort",
         "Recipe3":  "agrimony",
         "Recipe4":  "agrimony",
@@ -124,7 +124,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "swallow_potion": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "fleawort",
         "Recipe3":  "fleawort",
         "Recipe4":  "wormwood",
@@ -137,7 +137,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "tawny_owl": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "peppermint",
         "Recipe3":  "thyme",
         "Recipe4":  "thyme",
@@ -150,7 +150,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "golden_oriole": {
         "CAT":      "witcher_potion",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "poppy",
         "Recipe3":  "burdock",
         "Recipe4":  "-",
@@ -163,7 +163,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "ghoul_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "ghoul_heart",
         "Recipe3":  "burdock, bogbean, burnet",
         "Recipe4":  "pennybun",
@@ -175,7 +175,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "crawler_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "spider_eye, mandibles",
         "Recipe3":  "henbane",
         "Recipe4":  "henbane",
@@ -187,7 +187,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "harpy_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "harpy_egg_raw, harpy_stomach",
         "Recipe3":  "ginger",
         "Recipe4":  "poppy",
@@ -199,7 +199,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "troll_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "troll_gland, tusks_troll",
         "Recipe3":  "burdock",
         "Recipe4":  "peppermint",
@@ -211,7 +211,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
     },
     "gulon_decoction": {
         "CAT":      "witcher_decoction",
-        "Recipe1":  "alcohol",
+        "Recipe1":  "alcohol_essentia",
         "Recipe2":  "gulon_liver",
         "Recipe3":  "henbane",
         "Recipe4":  "henbane",
@@ -233,7 +233,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "XP":       "5",
         "SOURCE":   "Base Recipe"
     },
-    "alcohol": {
+    "alcohol_essentia": {
         "CAT":      "other",
         "Recipe1":  "-",
         "Recipe2":  "-",
@@ -254,5 +254,5 @@ global.recipes_witcher_alchemy_category_order_map = json_decode(@'{
     "weapon_oil": ["hanged_man_venom", "vampire_oil", "necrophage_oil", "specter_oil", "insectoid_oil", "hybrid_oil", "ogroid_oil"],
     "witcher_potion": ["thunderbolt_potion", "blizzard_potion", "petri_philter", "swallow_potion", "tawny_owl", "golden_oriole"],
     "witcher_decoction": ["ghoul_decoction", "crawler_decoction", "harpy_decoction", "troll_decoction", "gulon_decoction"],
-    "other": ["oil", "alcohol"]
+    "other": ["oil", "alcohol_essentia"]
 }')
