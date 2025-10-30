@@ -107,11 +107,11 @@ public partial class TheWitcher : Mod
 
     private void AddWitcherAlchemy_Alcohol()
     {
-        UndertaleGameObject o_inv_alcohol = Msl.GetObject("o_inv_alcohol");
-        UndertaleGameObject o_loot_alcohol = Msl.GetObject("o_loot_alcohol");
+        UndertaleGameObject o_inv_alcohol_essentia = Msl.GetObject("o_inv_alcohol_essentia");
+        UndertaleGameObject o_loot_alcohol_essentia = Msl.GetObject("o_loot_alcohol_essentia");
 
         Msl.InjectTableItemStats(
-            id: "alcohol",
+            id: "alcohol_essentia",
             Price: 60,
             Cat: Msl.ItemStatsCategory.alcohol,
             Material: Msl.ItemStatsMaterial.glass,
@@ -128,26 +128,26 @@ public partial class TheWitcher : Mod
 
         Msl.InjectTableItemsLocalization(
             new LocalizationItem(
-                id: "alcohol",
+                id: "alcohol_essentia",
                 name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Alcohol"},
-                    {ModLanguage.Chinese, "酒精"}
+                    {ModLanguage.English, "Alcohol Essentia"},
+                    {ModLanguage.Chinese, "醇素"}
                 },
                 effect: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "A flammable liquid obtained through the distillation of various ~lg~alcoholic beverages~/~. Highly concentrated, ~r~do not drink~/~."},
-                    {ModLanguage.Chinese, "一种易燃液体，可通过各种~lg~酒类饮品~/~蒸馏而成。浓度太高，请勿~r~饮用~/~。"}
+                    {ModLanguage.English, "The ~lg~quintessential spirit~/~, coaxed from wine and ale. Highly concentrated and volatile, ~r~not for casual consumption~/~."},
+                    {ModLanguage.Chinese, "从葡萄酒与麦酒中诱出的~lg~精髓之灵~/~。浓度极高，性质躁动，~r~不宜直接饮用~/~。"}
                 },
                 description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "A bottle of high-proof alcohol, commonly used as a base for many alchemical concoctions."},
-                    {ModLanguage.Chinese, "一瓶高度酒精，常用作多种炼金混合物的基础。"}
+                    {ModLanguage.English, "A bottle of high-proof alcohol, serving as the fundamental solvent and base for countless alchemical concoctions."},
+                    {ModLanguage.Chinese, "一瓶高度酒精，作为无数炼金配方中不可或缺的基底与溶剂。"}
                 }
             )
         );
 
-        o_inv_alcohol.ApplyEvent(
+        o_inv_alcohol_essentia.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                scr_consum_atr(""alcohol"")
+                scr_consum_atr(""alcohol_essentia"")
                 max_charge = 1
                 can_merge = false
                 drop_gui_sound = snd_item_ether_inhaler_drop
@@ -163,10 +163,10 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        o_loot_alcohol.ApplyEvent(
+        o_loot_alcohol_essentia.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
-                inv_object = o_inv_alcohol
+                inv_object = o_inv_alcohol_essentia
                 number = 0
             ")
         );
@@ -195,7 +195,7 @@ public partial class TheWitcher : Mod
 
         Msl.AddFunction(ModFiles.GetCode("scr_craft_alchemy_base.gml"), "scr_craft_alchemy_base");
         Msl.AddFunction(ModFiles.GetCode("scr_craft_oil.gml"), "scr_craft_oil");
-        Msl.AddFunction(ModFiles.GetCode("scr_craft_alcohol.gml"), "scr_craft_alcohol");
+        Msl.AddFunction(ModFiles.GetCode("scr_craft_alcohol_essentia.gml"), "scr_craft_alcohol_essentia");
 
         o_witcherAlchemyCraftingMenu.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -208,7 +208,7 @@ public partial class TheWitcher : Mod
 
                 if (ds_list_find_index(_list, ""oil"") < 0)
                 {
-                    ds_list_add(_list, ""oil"", ""alcohol"")
+                    ds_list_add(_list, ""oil"", ""alcohol_essentia"")
                 }
 
                 event_inherited()
@@ -276,8 +276,8 @@ public partial class TheWitcher : Mod
 
                 if (idName == ""oil"")
                     canCraft = scr_craft_oil()
-                else if (idName == ""alcohol"")
-                    canCraft = scr_craft_alcohol()
+                else if (idName == ""alcohol_essentia"")
+                    canCraft = scr_craft_alcohol_essentia()
                 else
                     canCraft = scr_crafting_recipe_components_check(activeRecipeButton, true)
 
