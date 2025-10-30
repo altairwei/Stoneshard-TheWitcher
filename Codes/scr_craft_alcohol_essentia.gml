@@ -1,4 +1,4 @@
-function scr_craft_alcohol()
+function scr_craft_alcohol_essentia()
 {
     var arg0 = false
     if (!is_undefined(argument0))
@@ -14,5 +14,5 @@ function scr_craft_alcohol()
         o_inv_wine2, 2
     ]
 
-    return scr_craft_alchemy_base(_items, o_inv_alcohol, arg0)
+    return scr_craft_alchemy_base(_items, o_inv_alcohol_essentia, arg0)
 }
