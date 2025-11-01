@@ -207,9 +207,6 @@ public partial class TheWitcher : Mod
                 stack = 1
                 duration = 6
                 should_execute = false
-                Damage_Got = 0
-                Part_Normalizer = 1
-                Damage_After = 0
                 Max_Duration = 25
                 Shield_Duration = Max_Duration
                 scr_buff_atr()
@@ -256,17 +253,10 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 if (should_execute)
                 {
-                    should_execute = false
-
                     with (target)
                         scr_guiAnimation_ext(x, y, s_magical_shield_proc)
 
-                    var _durReduc = min(Damage_Got, (Shield_Duration * Part_Normalizer))
-                    Damage_After = math_round(max(Damage_Got - Shield_Duration * Part_Normalizer, 0))
-                    Shield_Duration -= _durReduc
-
-                    if (Shield_Duration <= 0)
-                        instance_destroy()
+                    Shield_Duration -= damage
                 }
             "),
 
@@ -287,7 +277,7 @@ public partial class TheWitcher : Mod
                 with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
                 {
                     should_execute = true
-                    P_proc = true
+                    P_proc = false
                 }
             ")
             .Save();
@@ -296,19 +286,10 @@ public partial class TheWitcher : Mod
         Msl.LoadGML("gml_GlobalScript_scr_skill_damage")
             .MatchFrom("    var dmg = 0")
             .InsertBelow(@"
-    var _magic_shield = false
     with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
     {
         should_execute = true
-        _magic_shield = true
     }")
-            .MatchFrom("    if _need_log")
-            .InsertAbove(@"
-    if (_magic_shield && scr_actionsLogVisible(_target))
-    {
-        audio_play_sound(choose(snd_block_1, snd_block_2, snd_block_3, snd_block_4), 4, 0)
-    }
-")
             .Save();
 
         // Arrow attack
@@ -318,7 +299,7 @@ public partial class TheWitcher : Mod
             with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
             {
                 should_execute = true
-                P_proc = true
+                P_proc = false
             }")
             .Save();
 
@@ -329,9 +310,54 @@ public partial class TheWitcher : Mod
             with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
             {
                 should_execute = true
-                P_proc = true
+                P_proc = false
             }")
             .Save();
+
+        // Finish execution
+
+        Msl.LoadAssemblyAsString("gml_GlobalScript_scr_damage_calculation")
+            .MatchFrom("pop.v.v self.is_deal_damage")
+            .InsertBelow(@"pushbltn.v builtin.argument0
+pushi.e -9
+push.v [stacktop]self.buffs
+pushi.e o_b_magical_shield
+conv.i.v
+call.i gml_Script_scr_instance_exists_in_list(argc=2)
+pushi.e -9
+pushenv [1097]
+
+:[1095]
+pushi.e 0
+pop.v.b self.should_execute
+pushi.e 0
+conv.i.v
+pushi.e 4
+conv.i.v
+pushi.e snd_block_1
+conv.i.v
+pushi.e snd_block_2
+conv.i.v
+pushi.e snd_block_3
+conv.i.v
+pushi.e snd_block_4
+conv.i.v
+call.i choose(argc=4)
+call.i audio_play_sound(argc=3)
+popz.v
+push.v self.Shield_Duration
+pushi.e 0
+cmp.i.v LTE
+bf [1097]
+
+:[1096]
+call.i instance_destroy(argc=0)
+popz.v
+
+:[1097]
+popenv [1095]")
+            .Save();
+
 
         // Throwed net
         Msl.LoadGML("gml_Object_o_net_throw_Alarm_0")
@@ -351,20 +377,18 @@ public partial class TheWitcher : Mod
             .InsertAbove(@"
         with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
         {
-            Damage_Got = argument1
-            Part_Normalizer = _partDamageNormalizer
+            damage = argument1
             event_user(4)
-            argument1 = Damage_After            
+            argument1 = 0
         }
             ")
             .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - 0.5 * argument0.tmpDEF * _partDamageNormalizer * argument6) * (1 - argument2 / 100)), 0)))")
             .InsertAbove(@"
         with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
         {
-            Damage_Got = argument1
-            Part_Normalizer = _partDamageNormalizer
+            damage = argument1
             event_user(4)
-            argument1 = Damage_After            
+            argument1 = 0            
         }
             ")
             .Save();
