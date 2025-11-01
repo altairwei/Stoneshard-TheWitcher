@@ -237,7 +237,7 @@ popenv [44]")
                             ds_list_add(_potionTypeList, _object_name)
                             scr_atr_incr(""PotionRewarded"", 1)
                             
-                            if (scr_atr(""PotionRewarded"") == 5)
+                            if (scr_atr(""PotionRewarded"") >= 3)
                             {
                                 scr_random_speech(""geraltPerkRewarded"", 100)
                                 ds_list_clear(_potionTypeList)
@@ -268,7 +268,7 @@ popenv [44]")
                             ds_list_add(_decoctionTypeList, _object_name)
                             scr_atr_incr(""DecoctionRewarded"", 1)
                             
-                            if (scr_atr(""DecoctionRewarded"") == 5)
+                            if (scr_atr(""DecoctionRewarded"") >= 2)
                             {
                                 scr_random_speech(""geraltPerkRewarded"", 100)
                                 ds_list_clear(_decoctionTypeList)
@@ -322,7 +322,6 @@ popenv [44]")
                     else if (instance_exists(o_perk_professional_witcher))
                     {
                         var _chance = _target.PRR * _target.Hit_Chance / 100
-                        scr_actionsLogUpdate(""o_perk_professional_witcher_block_chance_"" + string(_chance))
                         P_proc = scr_chance_value(_chance)
                     }
             ")
@@ -334,7 +333,6 @@ popenv [44]")
                     else if (instance_exists(o_perk_professional_witcher))
                     {
                         var _chance = _target.PRR * _target.Hit_Chance / 100
-                        scr_actionsLogUpdate(""o_perk_professional_witcher_block_chance_"" + string(_chance))
                         P_proc = scr_chance_value(_chance)
                     }
             ")
@@ -351,7 +349,7 @@ popenv [44]")
                     {ModLanguage.English,
                      "WIP"},
                     {ModLanguage.Chinese,
-                     "游戏开局习得~w~“青草试炼”~/~，并且角色每升~w~五~/~级，喝下~w~5~/~瓶不同的~y~魔药~/~后便获得~lg~1~/~个属性点，喝下~w~5~/~瓶不同的~y~煎药~/~后便获得~lg~1~/~个能力点。##" +
+                     "游戏开局习得~w~“青草试炼”~/~，并且角色每升~w~五~/~级，喝下~w~3~/~瓶不同的~y~魔药~/~后便获得~lg~1~/~个属性点，喝下~w~2~/~瓶不同的~y~煎药~/~后便获得~lg~1~/~个能力点。##" +
                      "~w~格挡~/~或~w~闪躲~/~一次击打，会令~w~3~/~回合内暴击几率~lg~+5%~/~，兵器伤害~lg~+5%~/~，反击几率~lg~+5%~/~。" +
                      "~w~暴击~/~会令~w~3~/~回合内闪躲几率~lg~+5%~/~，格挡几率~lg~+5%~/~，格挡力量上限~lg~+5~/~。这两组效果可以叠加，最多~w~5~/~层。##" +
                      "角色可以使用兵器~w~格挡~/~箭矢和投掷的物品，格挡几率受~lg~准度~/~的影响。"}
