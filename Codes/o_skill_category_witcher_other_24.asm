@@ -67,6 +67,17 @@ push.i gml_Script_ctr_SkillPoint
 conv.i.v
 call.i @@NewGMLObject@@(argc=5)
 pop.v.v local._igni
+pushi.e 167
+conv.i.v
+pushi.e 23
+conv.i.v
+pushi.e o_pass_skill_euphoria
+conv.i.v
+push.v self.connectionsRender
+push.i gml_Script_ctr_SkillPoint
+conv.i.v
+call.i @@NewGMLObject@@(argc=5)
+pop.v.v local._euphoria
 pushi.e 70
 conv.i.v
 pushi.e 62
