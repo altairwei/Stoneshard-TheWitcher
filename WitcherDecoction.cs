@@ -104,7 +104,7 @@ public partial class TheWitcher : Mod
 
             // 这里没用，只是 buff 效果出来后的事情。
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
-                if (instance_number(o_b_decoction_buff) < 3)
+                if (instance_number(o_b_decoction_buff) < 3 || (o_pass_skill_euphoria.is_open && instance_number(o_b_decoction_buff) < 5))
                 {
                     event_inherited()
                     audio_play_sound(snd_gui_drink_potion, 3, 0)
