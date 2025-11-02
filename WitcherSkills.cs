@@ -23,6 +23,7 @@ public partial class TheWitcher : Mod
         );
 
         AddSkill_Trial_Of_Grasses();
+        AddSkill_Euphoria();
         AddSkill_Witcher_Alchemy();
         AddSkill_Quen_Sign();
         AddSkill_Axii_Sign();
@@ -51,7 +52,8 @@ public partial class TheWitcher : Mod
                 event_inherited()
                 text = ""Witcher""
                 skill = [o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico,
-                         o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
+                         o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses,
+                         o_pass_skill_euphoria]
                 branch_sprite = s_witcher_branch
                 alarm[1] = 2
             ")
