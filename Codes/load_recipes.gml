@@ -92,7 +92,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe5":  "-",
         "Recipe6":  "-",
         "ADDITIVES": "hop, rotbloom",
-        "AMOUNT":   "1",
+        "AMOUNT":   "2",
         "XP":       "25",
         "SOURCE":   "Book"
     },
@@ -105,7 +105,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe5":  "-",
         "Recipe6":  "-",
         "ADDITIVES": "hornet_honey, bear_fat, truffle",
-        "AMOUNT":   "1",
+        "AMOUNT":   "2",
         "XP":       "25",
         "SOURCE":   "Book"
     },
@@ -118,7 +118,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe5":  "-",
         "Recipe6":  "-",
         "ADDITIVES": "moose_kidney, azurecap",
-        "AMOUNT":   "1",
+        "AMOUNT":   "2",
         "XP":       "25",
         "SOURCE":   "Book"
     },
@@ -144,7 +144,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe5":  "-",
         "Recipe6":  "-",
         "ADDITIVES": "silverleaf, wolf_tongue",
-        "AMOUNT":   "1",
+        "AMOUNT":   "2",
         "XP":       "25",
         "SOURCE":   "Book"
     },
@@ -157,7 +157,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe5":  "-",
         "Recipe6":  "-",
         "ADDITIVES": "spidervine, puffball, dragonfruit",
-        "AMOUNT":   "1",
+        "AMOUNT":   "2",
         "XP":       "25",
         "SOURCE":   "Book"
     },
@@ -229,6 +229,7 @@ global.recipes_witcher_alchemy_data = json_decode(@'{
         "Recipe4":  "-",
         "Recipe5":  "-",
         "Recipe6":  "-",
+        "ADDITIVES": "lentils, meat_fat_raw",
         "AMOUNT":   "1",
         "XP":       "5",
         "SOURCE":   "Base Recipe"
