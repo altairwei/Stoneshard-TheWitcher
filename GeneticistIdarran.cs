@@ -112,6 +112,7 @@ public partial class TheWitcher : Mod
                     o_inv_ginger, irandom_range(0, 1),
                     o_inv_hornet_honey, irandom_range(0, 1),
                     o_inv_honey, irandom_range(1, 3),
+                    o_inv_ghoul_heart, irandom_range(0, 1),
                     o_inv_harpy_egg_raw, irandom_range(0, 1),
                     o_inv_troll_gland, irandom_range(0, 1),
                     o_inv_gulon_liver, irandom_range(0, 1),

@@ -2,6 +2,7 @@ using System.Text.RegularExpressions;
 
 using ModShardLauncher;
 using ModShardLauncher.Mods;
+using UndertaleModLib;
 using UndertaleModLib.Models;
 
 namespace TheWitcher;
@@ -41,6 +42,7 @@ public partial class TheWitcher : Mod
         AddWitcherPotion();
         AddWitcherDecoction();
         AddWitcherAlchemyCraftingMenu();
+        AddBrynnUniversityAlchemyStation();
 
         o_skill_witcher_alchemy.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -80,26 +82,26 @@ public partial class TheWitcher : Mod
                 event_perform_object(child_skill, ev_create, 0)
             ")
 
-            // 每次游戏加载成功，这个事件就会执行一次。
-            /*
-            new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
-                event_inherited()
+        // 每次游戏加载成功，这个事件就会执行一次。
+        /*
+        new MslEvent(eventType: EventType.Other, subtype: 18, code: @"
+            event_inherited()
 
-                var _list = scr_atr(""recipesWitcherAlchemyOpened"")
-                if (is_undefined(_list))
-                {
-                    _list = __dsDebuggerListCreate()
-                    scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
-                }
+            var _list = scr_atr(""recipesWitcherAlchemyOpened"")
+            if (is_undefined(_list))
+            {
+                _list = __dsDebuggerListCreate()
+                scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
+            }
 
-                with (o_craftingMenu)
-                {
-                    event_user(11)
-                    event_user(13)
-                    event_user(12)
-                }
-            ")
-            */
+            with (o_craftingMenu)
+            {
+                event_user(11)
+                event_user(13)
+                event_user(12)
+            }
+        ")
+        */
         );
 
         AddCaravanAlchemyStation();
@@ -420,6 +422,11 @@ bt [{btNum}]")
             .ReplaceBy("")
             .Save();
 
+        Msl.LoadGML("gml_Object_o_AlchemyTable_hl_Create_0")
+            .MatchFrom("name = ds_map_find_value(global.consum_name")
+            .ReplaceBy("name = ds_map_find_value(global.caravan_upgrade_names, \"Alchemy\")")
+            .Save();
+
         Msl.AddNewEvent(
             objectName: "o_AlchemyTable_hl",
             eventType: EventType.Other,
@@ -441,6 +448,59 @@ bt [{btNum}]")
             eventType: EventType.Other,
             subtype: 15,
             eventCode: @""
+        );
+    }
+
+    private void AddBrynnUniversityAlchemyStation()
+    {
+        UndertaleSprite spr = Msl.GetSprite("s_BrynnUniversityAlchemyTable");
+        spr.CollisionMasks.RemoveAt(0);
+        spr.OriginX = 26;
+        spr.OriginY = 23;
+        spr.IsSpecialType = true;
+        spr.SVersion = 3;
+        spr.GMS2PlaybackSpeed = 15;
+        spr.GMS2PlaybackSpeedType = AnimSpeedType.FramesPerSecond;
+
+        UndertaleRoom room = Msl.GetRoom("r_BrynnUniversityCellar");
+
+        UndertaleRoom.Layer foreground = Msl.GetLayer(room, UndertaleRoom.LayerType.Instances, "ForegroundInstances");
+        UndertaleRoom.GameObject loot_marker1 = Msl.ThrowIfNull(
+            foreground.InstancesData.Instances.First(
+                t => t.ObjectDefinition.Name.Content == "o_loot_marker" && t.X == 323 && t.Y == 519));
+        foreground.InstancesData.Instances.Remove(loot_marker1);
+        room.GameObjects.Remove(loot_marker1);
+
+        UndertaleRoom.GameObject loot_marker2 = Msl.ThrowIfNull(
+            foreground.InstancesData.Instances.First(
+                t => t.ObjectDefinition.Name.Content == "o_loot_marker" && t.X == 321 && t.Y == 540));
+        foreground.InstancesData.Instances.Remove(loot_marker2);
+        room.GameObjects.Remove(loot_marker2);
+
+        UndertaleRoom.GameObject loot_marker3 = room.AddGameObject(
+            foreground,
+            "o_loot_marker",
+            Msl.AddCode(
+                name: "gml_RoomCC_r_BrynnUniversityCellar_1000_Create",
+                codeAsString: @"
+                    chance = 100
+                    loot = o_loot_oil
+                    depthshift = 20
+                    hasOwner = true
+            "),
+            x: 327, y: 546
+        );
+
+        UndertaleRoom.Layer stuff = Msl.GetLayer(room, UndertaleRoom.LayerType.Instances, "StuffInstances");
+        UndertaleRoom.GameObject table = Msl.ThrowIfNull(
+            stuff.InstancesData.Instances.First(
+                t => t.ObjectDefinition.Name.Content == "o_BrynnUniversityStuff11" && t.X == 327 && t.Y == 526));
+        table.ObjectDefinition.Sprite = Msl.GetSprite("s_BrynnUniversityAlchemyTable");
+
+        UndertaleRoom.GameObject grass_target = room.AddGameObject(
+            stuff,
+            "o_AlchemyTable_hl",
+            x: 327, y: 546
         );
     }
 }
