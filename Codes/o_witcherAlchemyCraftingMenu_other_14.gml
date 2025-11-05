@@ -118,7 +118,7 @@ else if _object
                     {
                         case o_inv_silverleaf:
                             ds_map_accumulate(_char_map, "Fatigue", -25)
-                            ds_map_accumulate(_char_map, "Cooldown_Reduction", 30)
+                            ds_map_accumulate(_char_map, "Cooldown_Reduction", -30)
                         break;
 
                         case o_inv_wolf_tongue:

@@ -20,7 +20,17 @@ function scr_craft_alchemy_base()
             with (_item)
             {
                 if (owner == _owner)
-                    _items_count++
+                {
+                    if (is_alcohol)
+                    {
+                        if (!__is_undefined(charge) && charge == max_charge)
+                            _items_count++
+                    }
+                    else
+                    {
+                        _items_count++
+                    }
+                }
             }
 
             if (_items_count >= _need_count)
@@ -47,7 +57,18 @@ function scr_craft_alchemy_base()
                     {
                         if (_need_count > 0)
                         {
-                            instance_destroy()
+
+                            if (is_alcohol && !__is_undefined(charge))
+                            {
+                                charge = 0
+                                ds_map_replace(data, "charge", charge)
+                                event_user(12)
+                            }
+                            else
+                            {
+                                event_user(12)
+                            }
+
                             _need_count--
                         }
                     }
