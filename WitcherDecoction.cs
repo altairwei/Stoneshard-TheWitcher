@@ -410,6 +410,9 @@ popz.v")
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
+                if (!variable_instance_exists(other, ""map_skills"") || other.map_skills == noone)
+                    exit;
+
                 var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
                 var _is_attack_skill = ds_list_find_index(_category, ""Attack"") >= 0
                 var _is_spell = ds_list_find_index(_category, ""Spell"") >= 0
@@ -658,6 +661,9 @@ popz.v")
                 }
                 else if (object_is_ancestor(other, o_skill))
                 {
+                    if (!variable_instance_exists(other, ""map_skills"") || other.map_skills == noone)
+                        exit;
+
                     var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
                     var _is_maneuver = ds_list_find_index(_category, ""Maneuver"") >= 0
                     var _is_Stance = ds_list_find_index(_category, ""Stance"") >= 0
@@ -712,6 +718,9 @@ popz.v")
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 14, code: @"
+                if (!variable_instance_exists(other, ""map_skills"") || other.map_skills == noone)
+                    exit;
+
                 var _category = scr_get_value_Dmap(other.skill, ""Category"", other.map_skills)
                 var _is_attack_skill = ds_list_find_index(_category, ""Attack"") >= 0
                 if (_category != 0 && _is_attack_skill)
