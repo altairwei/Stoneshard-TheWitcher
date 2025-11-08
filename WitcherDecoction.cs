@@ -145,6 +145,7 @@ public partial class TheWitcher : Mod
         o_loot_witcher_decoction.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
+                image_speed = 0
                 charge = 1
                 number = 0
             ")
@@ -970,10 +971,11 @@ popz.v
             bottle: true
         );
 
+        AdjustBuffIcon($"s_b_{id}");
         UndertaleGameObject buff = Msl.AddObject(
             name: $"o_b_{id}",
             parentName: "o_b_decoction_buff",
-            spriteName: "s_b_witcher_decoction",
+            spriteName: $"s_b_{id}",
             isVisible: true,
             isPersistent: false,
             isAwake: true
