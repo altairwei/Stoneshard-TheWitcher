@@ -4,9 +4,9 @@ using UndertaleModLib.Models;
 
 namespace TheWitcher;
 
-public partial class TheWitcher : Mod
+public class Utils
 {
-    private void InjectItemsToTable(string table, string? anchor = null, int? defaultKey = null, params Dictionary<int, string>[] items)
+    public static void InjectItemsToTable(string table, string? anchor = null, int? defaultKey = null, params Dictionary<int, string>[] items)
     {
         List<string> lines = Msl.ThrowIfNull(ModLoader.GetTable(table));
         int colCount = lines[0].Split(';').Length;
@@ -47,7 +47,7 @@ public partial class TheWitcher : Mod
         ModLoader.SetTable(lines, table);
     }
 
-    private void InjectItemsToTable(string table, string? anchor = null, string? defaultKey = null, params Dictionary<string, string>[] items)
+    public static void InjectItemsToTable(string table, string? anchor = null, string? defaultKey = null, params Dictionary<string, string>[] items)
     {
         List<string> lines = Msl.ThrowIfNull(ModLoader.GetTable(table));
         var header = lines[0].Split(';');

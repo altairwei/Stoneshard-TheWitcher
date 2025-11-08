@@ -488,7 +488,7 @@ bt [{btNum}]")
                     depthshift = 20
                     hasOwner = true
             "),
-            x: 323, y: 519
+            x: 318, y: 516
         );
 
         UndertaleRoom.Layer stuff = Msl.GetLayer(room, UndertaleRoom.LayerType.Instances, "StuffInstances");

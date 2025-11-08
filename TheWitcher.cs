@@ -32,6 +32,7 @@ public partial class TheWitcher : Mod
         AddCharacters();
         AddNewNPCs();
         AddEuipments();
+        Localization.AddLocalizationAll();
     }
 
     private void PatchWeaponCoatingSkill()

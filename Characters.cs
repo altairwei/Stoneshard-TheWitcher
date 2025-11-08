@@ -710,7 +710,7 @@ public partial class TheWitcher : Mod
             )
         );
 
-        InjectItemsToTable(
+        Utils.InjectItemsToTable(
             table: "gml_GlobalScript_table_text",
             anchor: "examineKingStatue_Mahir",
             defaultKey: 2,

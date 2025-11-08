@@ -165,7 +165,10 @@ global.__dialogue_flow_data.geneticist_idarran =
                     target = other.grass_target
                     completion_callback = function() {
                         with (o_npc_Idarran)
+                        {
+                            scr_npc_change_animation(grass_target.npc_sprite)
                             scr_dialogue_start("trial_of_grasses")
+                        }
                     }
                 }
             }
