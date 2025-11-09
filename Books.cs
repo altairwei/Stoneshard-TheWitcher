@@ -26,8 +26,6 @@ public partial class TheWitcher : Mod
             "),
 
             new MslEvent(eventType: EventType.Other, subtype: 24, code: @"
-                event_inherited()
-
                 var _list = scr_atr(""recipesWitcherAlchemyOpened"")
                 if (is_undefined(_list))
                 {
@@ -35,6 +33,7 @@ public partial class TheWitcher : Mod
                     scr_atr_set(""recipesWitcherAlchemyOpened"", _list)
                 }
 
+                var _already_learned = true
                 var _title = ds_list_find_value(global.other_hover, 77)
 
                 if (ds_list_find_index(_list, ""hanged_man_venom"") < 0)
@@ -48,6 +47,7 @@ public partial class TheWitcher : Mod
                             ((global.cameraHeight / 2) - 140) + (0 * (sprite_height + 2)))
 
                     scr_actionsLog(""learnSchematic"", [scr_id_get_name(o_player), _name])
+                    _already_learned = false
                 }
 
                 if (ds_list_find_index(_list, ""thunderbolt_potion"") < 0)
@@ -61,6 +61,7 @@ public partial class TheWitcher : Mod
                             ((global.cameraHeight / 2) - 140) + (1 * (sprite_height + 2)))
 
                     scr_actionsLog(""learnSchematic"", [scr_id_get_name(o_player), _name])
+                    _already_learned = false
                 }
 
                 if (ds_list_find_index(_list, ""ghoul_decoction"") < 0)
@@ -74,14 +75,33 @@ public partial class TheWitcher : Mod
                             ((global.cameraHeight / 2) - 140) + (2 * (sprite_height + 2)))
 
                     scr_actionsLog(""learnSchematic"", [scr_id_get_name(o_player), _name])
+                    _already_learned = false
                 }
 
-                with (o_craftingMenu)
+                if (_already_learned)
                 {
-                    event_user(11)
-                    event_user(13)
-                    event_user(12)
+                    if (!instance_exists(o_witcherAlchemyCraftingMenu))
+                    {
+                        with (scr_guiCreateContainer(global.guiBaseContainerSideLeft, o_witcherAlchemyCraftingMenu))
+                        {
+                            parent = other.id
+                            event_user(1)
+                        }
+                    }
                 }
+                else
+                {
+                    audio_play_sound(snd_skill_book_use, 4, 0)
+
+                    with (o_witcherAlchemyCraftingMenu)
+                    {
+                        event_user(11)
+                        event_user(13)
+                        event_user(12)
+                    }
+                }
+
+                event_inherited()
             ")
         );
 

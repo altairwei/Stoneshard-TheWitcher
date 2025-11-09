@@ -8,8 +8,75 @@ public class Localization
 {
     public static void AddLocalizationAll()
     {
+        AddSkillTexts();
+        AddItemTexts();
         AddGeraltTexts();
         AddIdarranTexts();
+    }
+
+    private static void AddSkillTexts()
+    {
+        Msl.InjectTableSkillsLocalization(
+            new LocalizationSkill(
+                id: "Witcher_Alchemy",
+                name: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "The Witcher's Alchemy"},
+                    {ModLanguage.Chinese, "猎魔人炼金术"}
+                },
+                description: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, @"Opens the menu for ~w~crafting weapon coating oil~/~."},
+                    {ModLanguage.Chinese, @"能够打开~w~猎魔人炼金术~/~界面，学会制作~w~剑油~/~、~w~魔药~/~以及~w~煎药~/~。"}
+                }
+            )
+        );
+    }
+
+    private static void AddItemTexts()
+    {
+        Msl.InjectTableTextCraftingCategoryLocalization(
+            new LocalizationCraftingCategory("weapon_oil", new Dictionary<ModLanguage, string>{
+                {ModLanguage.English, "Weapon Oil"},
+                {ModLanguage.Chinese, "剑油"}
+            }),
+            new LocalizationCraftingCategory("witcher_potion", new Dictionary<ModLanguage, string>{
+                {ModLanguage.English, "Potion"},
+                {ModLanguage.Chinese, "魔药"}
+            }),
+            new LocalizationCraftingCategory("witcher_decoction", new Dictionary<ModLanguage, string>{
+                {ModLanguage.English, "Decoction"},
+                {ModLanguage.Chinese, "煎药"}
+            })
+        );
+
+        Utils.InjectItemsToTable(
+            table: "gml_GlobalScript_table_items",
+            anchor: "workbench;Верстак;Workbench;",
+            defaultKey: 2,
+            new Dictionary<int, string>
+            {
+                [0] = "alchemy_workbench",
+                [2] = "Alchemy Station",
+                [3] = "炼金台"
+            }
+        );
+
+        Msl.InjectTableItemsLocalization(
+            new LocalizationItem(
+                id: "alcohol_essentia",
+                name: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "Alcohol Essentia"},
+                    {ModLanguage.Chinese, "醇素"}
+                },
+                effect: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "The ~lg~quintessential spirit~/~, coaxed from wine and ale. Highly concentrated and volatile, ~r~not for casual consumption~/~."},
+                    {ModLanguage.Chinese, "从葡萄酒与麦酒中诱出的~lg~精髓之灵~/~。浓度极高，性质躁动，~r~不宜直接饮用~/~。"}
+                },
+                description: new Dictionary<ModLanguage, string>{
+                    {ModLanguage.English, "A bottle of high-proof alcohol, serving as the fundamental solvent and base for countless alchemical concoctions."},
+                    {ModLanguage.Chinese, "一瓶高度酒精，作为无数炼金配方中不可或缺的基底与溶剂。"}
+                }
+            )
+        );
     }
 
     private static void AddGeraltTexts()

@@ -121,15 +121,26 @@ else if _object
                             ds_map_accumulate(_char_map, "Cooldown_Reduction", -30)
                         break;
 
-                        case o_inv_wolf_tongue:
+                        case o_inv_azurecap:
                             ds_map_accumulate(_char_map, "max_mp_res", 25)
                             ds_map_accumulate(_char_map, "Abilities_Energy_Cost", -25)
+                            ds_map_accumulate(_char_map, "Fatigue_Gain", 50)
                         break;
                     }
                 break;
             }
 
-            instance_destroy()
+            if (object_index == o_inv_caravan_alchemy)
+            {
+                if (!other.workbench)
+                {
+                    sh_diss = 200
+                }
+            }
+            else
+            {
+                instance_destroy()
+            }
         }
     }
 

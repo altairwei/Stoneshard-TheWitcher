@@ -132,6 +132,7 @@ public partial class TheWitcher : Mod
         o_loot_witcher_potion.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
+                image_speed = 0
                 charge = 1
                 number = 0
             ")
@@ -281,11 +282,13 @@ public partial class TheWitcher : Mod
             id: "tawny_owl",
             effects: new Dictionary<string, int>()
             {
-                {"Intoxication",        10},
-                {"max_mp_res",          40},
-                {"MP_Restoration",      35},
-                {"Nature_Resistance",  -5},
-                {"Magic_Resistance",   -5}
+                {"Intoxication",            10},
+                {"max_mp_res",              40},
+                {"Fatigue",                 -5},
+                {"Abilities_Energy_Cost",   -10},
+                {"MP_Restoration",          35},
+                {"Nature_Resistance",       -5},
+                {"Magic_Resistance",        -5}
             },
             duration: 60,
             name: new Dictionary<ModLanguage, string>() {
