@@ -877,7 +877,7 @@ popz.v
                     {
                         with (o_b_troll_decoction)
                         {
-                            if (target.id == other.target.id)
+                            if (instance_exists(target) && target.id == other.target.id)
                             {
                                 buff_id = other.id
                                 event_user(4)
@@ -893,7 +893,7 @@ popz.v
             {
                 with (o_b_troll_decoction)
                 {
-                    if (target.id == other.target.id)
+                    if (instance_exists(target) && target.id == other.target.id)
                     {
                         buff_id = other.id
                         event_user(4)
