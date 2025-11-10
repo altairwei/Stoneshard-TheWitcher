@@ -233,7 +233,7 @@ public class Localization
 
         Utils.ModifyItemsInTable(
             table: "gml_GlobalScript_table_lines",
-            match: "greeting;any;elf_noble, elf_guard;",
+            match: "greeting;any;elf_noble, elf_guard;arna, jonna",
             new Dictionary<string, string>
             {
                 ["Type"] = "arna, jonna, dirwin, velmir, leosthenes, jorgrim, hilda, geralt",
