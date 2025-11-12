@@ -65,7 +65,7 @@ public partial class TheWitcher : Mod
             MP: 20,
             Duration: 0,
             Class: Msl.SkillsStatsClass.spell,
-            Branch: "witcher",
+            Branch: "magic_mastery",
             Spell: true,
             AP: "x",
             Bonus_Range: true,
