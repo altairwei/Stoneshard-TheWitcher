@@ -229,6 +229,23 @@ public partial class TheWitcher : Mod
         Msl.AddFunction(ModFiles.GetCode("scr_charm_npc_to_ally.gml"), "scr_charm_npc_to_ally");
         Msl.AddFunction(ModFiles.GetCode("scr_charm_enemy_to_ally.gml"), "scr_charm_enemy_to_ally");
 
+        UndertaleGameObject o_onUnitEffect_axiicharm = Msl.AddObject(
+            name: "o_onUnitEffect_axiicharm",
+            parentName: "o_onUnitEffectSprite",
+            isVisible: true,
+            isPersistent: false,
+            isAwake: true
+        );
+
+        o_onUnitEffect_axiicharm.ApplyEvent(
+            new MslEvent(eventType: EventType.Other, subtype: 25, code: @"
+                event_inherited()
+                spriteIndexStart = s_axiicharm_start
+                spriteIndexLoop = s_axiicharm_loop
+                spriteIndexEnd = s_axiicharm_end
+            ")
+        );
+
         o_db_axii_charm.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
@@ -245,7 +262,7 @@ public partial class TheWitcher : Mod
             new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
                 event_inherited()
                 audio_stop_sound(sign_loop)
-                scr_onUnitEffectDestroy(signTarget)
+                signTarget = scr_onUnitEffectDestroy(signTarget)
 
                 with (target)
                 {
@@ -271,9 +288,9 @@ public partial class TheWitcher : Mod
                 with (target)
                 {
                     other.signTarget = scr_onUnitEffectCreate(
-                        s_axiicharm_start, s_axiicharm_loop, s_axiicharm_end, -1, true)
+                        id, o_onUnitEffect_axiicharm, -200, 0, 0, true)
                     with (other.signTarget)
-                        _id.sigil_loop = scr_audio_play_at_loop(snd_skill_sigil_of_binding_loop)
+                        _id.sign_loop = scr_audio_play_at_loop(snd_skill_sigil_of_binding_loop)
 
                     scr_charm_enemy_to_ally()
                 }
