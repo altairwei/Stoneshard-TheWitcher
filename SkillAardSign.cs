@@ -179,6 +179,11 @@ public partial class TheWitcher : Mod
                 }
 
                 event_inherited()
+            "),
+
+            new MslEvent(eventType: EventType.Destroy, subtype: 0, code: @"
+                with (owner)
+                    is_life = true
             ")
         );
 
