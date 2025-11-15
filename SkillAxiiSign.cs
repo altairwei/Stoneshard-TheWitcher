@@ -177,7 +177,7 @@ public partial class TheWitcher : Mod
                             || scr_instance_exists_in_list(o_db_daze, target.buffs))
                         _charm_proc = true
 
-                    var _charm_time = {Charm_Time}
+                    var _charm_time = scr_skill_get_duration({Charm_Time}, owner)
                     if (is_crit)
                         _charm_time = round(_charm_time * max(1, owner.Miracle_Power / 100))
 

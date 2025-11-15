@@ -432,7 +432,7 @@ public partial class TheWitcher : Mod
 
                                     damage = other.damage
                                     direction = point_direction(x, y, _point[0], _point[1])
-                                    duration = scr_skill_get_duration(9) + ((is_crit * owner.Miracle_Power) / 100)
+                                    duration = scr_skill_get_duration(9, owner) + ((is_crit * owner.Miracle_Power) / 100)
                                 }
                             }
                         }
