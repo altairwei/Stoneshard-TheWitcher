@@ -275,7 +275,7 @@ public partial class TheWitcher : Mod
         
         // Melee attack
         Msl.LoadGML("gml_GlobalScript_scr_attack")
-            .MatchFrom("_damage = 0")
+            .MatchFrom("_hit = (!_isDodge)")
             .InsertAbove(@"
                 with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
                 {
@@ -286,17 +286,24 @@ public partial class TheWitcher : Mod
             .Save();
 
         // Spell attack
-        /* TODO
-        Msl.LoadGML("gml_GlobalScript_scr_skill_damage")
-            .MatchFrom("    var dmg = 0")
-            .InsertBelow(@"
-            with (scr_instance_exists_in_list(o_b_magical_shield, target.buffs))
-            {
-                should_execute = true
-            }")
-                    .Save();
-        */
-        
+        Msl.LoadAssemblyAsString("gml_GlobalScript_scr_skill_damage")
+            .MatchFrom("pop.v.i local.dmg")
+            .InsertBelow(@"push.v arg.argument0
+pushi.e -9
+push.v [stacktop]self.buffs
+pushi.e o_b_magical_shield
+call.i gml_Script_scr_instance_exists_in_list(argc=2)
+pushenv [1096]
+
+:[1094]
+pushi.e 1
+pop.v.b self.should_execute
+bf [1096]
+
+:[1096]
+popenv [1094]")
+            .Save();
+
         // Arrow attack
         Msl.LoadGML("gml_Object_o_arrow_Other_10")
             .MatchFrom("if _isBlock")
@@ -310,8 +317,8 @@ public partial class TheWitcher : Mod
        
         // Throwed item attack
         Msl.LoadGML("gml_Object_o_throwed_loot_Other_10")
-            .MatchFrom("var _isBlock = scr_attack_shot_block_chance(_target)")
-            .InsertBelow(@"
+            .MatchFrom("if _isBlock")
+            .InsertAbove(@"
             with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
             {
                 should_execute = true
@@ -372,42 +379,25 @@ public partial class TheWitcher : Mod
                     .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
                     .Save();
 
-                // Throwed web
-                Msl.LoadGML("gml_Object_o_web_spit_Alarm_0")
-                    .MatchFrom("_shield = scr_instance_exists_in_list")
-                    .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
-                    .Save();
+        // Throwed web
+        Msl.LoadGML("gml_Object_o_web_spit_Alarm_0")
+            .MatchFrom("_shield = scr_instance_exists_in_list")
+            .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
+            .Save();
 
-                // Damage reduction by magical shield
-                /*TODO
-                Msl.LoadGML("gml_GlobalScript_scr_damage_calculation")
-                    .MatchFrom("var _interSacredDmg = Sacred_Damage * _damageK")
-                    .InsertBelow(@"
-                        var _magicalShield = scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs)
-                        if (instance_exists(_magicalShield))
-                        {
-                            with (_magicalShield)
-                            {
-                                damage = _interAllDmg
-                                event_user(4)
-                            }
-                            _interSlashingDmg = 0
-                            _interPiercingDmg = 0
-                            _interBluntDmg = 0
-                            _interRendingDmg = 0
-                            _interFireDmg = 0
-                            _interFrostDmg = 0
-                            _interShockDmg = 0
-                            _interCausticDmg = 0
-                            _interPoisonDmg = 0
-                            _interUnholyDmg = 0
-                            _interArcaneDmg = 0
-                            _interPsionicDmg = 0
-                            _interSacredDmg = 0
-                        }
-                    ")
-                    .Save();
-                */
+        // Damage reduction by magical shield
+        Msl.LoadGML("gml_GlobalScript_scr_damage_type_calc")
+            .MatchFrom("var _partDamageNormalizer = ")
+            .InsertAbove(@"
+        with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
+        {
+            damage = arg0
+            event_user(4)
+            arg0 = 0
+        }
+            ")
+            .Save();
+
         UndertaleSprite animation = Msl.GetSprite("s_magical_shield_proc");
         animation.CollisionMasks.RemoveAt(0);
         animation.OriginX = 20;

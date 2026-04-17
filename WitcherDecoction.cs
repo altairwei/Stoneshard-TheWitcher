@@ -813,10 +813,10 @@ popz.v")
 
         // 使用能力（包括技能和咒法）将会触发 event_user(4)
         Msl.LoadAssemblyAsString("gml_Object_o_skill_Other_13")
-            /*.MatchFrom("bf [end]")
-            .ReplaceBy("bf [1093]")
             .MatchFrom("bf [end]")
-            .ReplaceBy("bf [1093]")*/
+            .ReplaceBy("bf [1093]")
+            //.MatchFrom("bf [end]")
+            //.ReplaceBy("bf [1093]")
             .MatchFrom(":[end]")
             .InsertAbove(@"
 :[1093]
