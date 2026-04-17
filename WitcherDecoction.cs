@@ -813,10 +813,10 @@ popz.v")
 
         // 使用能力（包括技能和咒法）将会触发 event_user(4)
         Msl.LoadAssemblyAsString("gml_Object_o_skill_Other_13")
-            .MatchFrom("bf [end]")
+            /*.MatchFrom("bf [end]")
             .ReplaceBy("bf [1093]")
             .MatchFrom("bf [end]")
-            .ReplaceBy("bf [1093]")
+            .ReplaceBy("bf [1093]")*/
             .MatchFrom(":[end]")
             .InsertAbove(@"
 :[1093]
@@ -959,15 +959,15 @@ popz.v
             isAwake: true
         );
 
-        Msl.InjectTableItemStats(
+        TableUtils.InjectTableItemStats(
             id: id,
             Price: 500,
-            Cat: Msl.ItemStatsCategory.beverage,
-            Subcat: Msl.ItemStatsSubcategory.potion,
-            Material: Msl.ItemStatsMaterial.glass,
-            Weight: Msl.ItemStatsWeight.Light,
+            Cat: TableUtils.ItemStatsCategory.beverage,
+            Subcat: TableUtils.ItemStatsSubcategory.potion,
+            Material: TableUtils.ItemStatsMaterial.glass,
+            Weight: TableUtils.ItemStatsWeight.Light,
             Duration: 120,
-            tags: Msl.ItemStatsTags.special,
+            tags: TableUtils.ItemStatsTags.special,
             bottle: true
         );
 

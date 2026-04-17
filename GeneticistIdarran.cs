@@ -312,15 +312,19 @@ public partial class TheWitcher : Mod
             x: 609, y: 432
         );
 
-        Msl.LoadGML("gml_RoomCC_r_BrynnUniversityCellar_34_Create")
-            .MatchFrom("npc_sprite = s_npc_Student04uni_idle")
+
+        Msl.LoadGML("gml_RoomCC_r_BrynnUniversityCellar_33_Create")
+            .MatchFrom("npc_sprite = s_npc_MedicineLecturer_work02")
             .ReplaceBy("npc_sprite = s_npc_Idarran_alchemy")
             .Save();
 
-        Msl.LoadGML("gml_RoomCC_r_BrynnUniversityCellar_33_Create")
+
+  
+        Msl.LoadGML("gml_RoomCC_r_BrynnUniversityCellar_34_Create")
             .MatchFrom("npc_sprite = s_npc_Student04uni_work")
             .ReplaceBy("npc_sprite = s_npc_Idarran_reading\nis_rest = true")
             .Save();
+ 
     }
 
     private void EditRoom_BrynnNW()

@@ -272,12 +272,12 @@ public partial class TheWitcher : Mod
                 }
             ")
         );
-
+        
         // Melee attack
         Msl.LoadGML("gml_GlobalScript_scr_attack")
-            .MatchFrom("var DMG_r = 0")
+            .MatchFrom("_damage = 0")
             .InsertAbove(@"
-                with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
+                with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
                 {
                     should_execute = true
                     P_proc = false
@@ -286,18 +286,20 @@ public partial class TheWitcher : Mod
             .Save();
 
         // Spell attack
+        /* TODO
         Msl.LoadGML("gml_GlobalScript_scr_skill_damage")
             .MatchFrom("    var dmg = 0")
             .InsertBelow(@"
-    with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
-    {
-        should_execute = true
-    }")
-            .Save();
-
+            with (scr_instance_exists_in_list(o_b_magical_shield, target.buffs))
+            {
+                should_execute = true
+            }")
+                    .Save();
+        */
+        
         // Arrow attack
         Msl.LoadGML("gml_Object_o_arrow_Other_10")
-            .MatchFrom("if P_proc")
+            .MatchFrom("if _isBlock")
             .InsertAbove(@"
             with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
             {
@@ -305,11 +307,11 @@ public partial class TheWitcher : Mod
                 P_proc = false
             }")
             .Save();
-
+       
         // Throwed item attack
         Msl.LoadGML("gml_Object_o_throwed_loot_Other_10")
-            .MatchFrom("if P_proc")
-            .InsertAbove(@"
+            .MatchFrom("var _isBlock = scr_attack_shot_block_chance(_target)")
+            .InsertBelow(@"
             with (scr_instance_exists_in_list(o_b_magical_shield, _target.buffs))
             {
                 should_execute = true
@@ -317,85 +319,95 @@ public partial class TheWitcher : Mod
             }")
             .Save();
 
-        // Finish execution
+                // Finish execution
 
-        Msl.LoadAssemblyAsString("gml_GlobalScript_scr_damage_calculation")
-            .MatchFrom("pop.v.v self.is_deal_damage")
-            .InsertBelow(@"pushbltn.v builtin.argument0
-pushi.e -9
-push.v [stacktop]self.buffs
-pushi.e o_b_magical_shield
-conv.i.v
-call.i gml_Script_scr_instance_exists_in_list(argc=2)
-pushi.e -9
-pushenv [1097]
+/* TODO
+                Msl.LoadAssemblyAsString("gml_GlobalScript_scr_damage_calculation")
+                    .MatchFrom("pop.v.v self.is_deal_damage")
+                    .InsertBelow(@"pushbltn.v builtin.argument0
+        pushi.e -9
+        push.v [stacktop]self.buffs
+        pushi.e o_b_magical_shield
+        conv.i.v
+        call.i gml_Script_scr_instance_exists_in_list(argc=2)
+        pushi.e -9
+        pushenv [1097]
 
-:[1095]
-pushi.e 0
-pop.v.b self.should_execute
-pushi.e 0
-conv.i.v
-pushi.e 4
-conv.i.v
-pushi.e snd_block_1
-conv.i.v
-pushi.e snd_block_2
-conv.i.v
-pushi.e snd_block_3
-conv.i.v
-pushi.e snd_block_4
-conv.i.v
-call.i choose(argc=4)
-call.i audio_play_sound(argc=3)
-popz.v
-push.v self.Shield_Duration
-pushi.e 0
-cmp.i.v LTE
-bf [1097]
+        :[1095]
+        pushi.e 0
+        pop.v.b self.should_execute
+        pushi.e 0
+        conv.i.v
+        pushi.e 4
+        conv.i.v
+        pushi.e snd_block_1
+        conv.i.v
+        pushi.e snd_block_2
+        conv.i.v
+        pushi.e snd_block_3
+        conv.i.v
+        pushi.e snd_block_4
+        conv.i.v
+        call.i choose(argc=4)
+        call.i audio_play_sound(argc=3)
+        popz.v
+        push.v self.Shield_Duration
+        pushi.e 0
+        cmp.i.v LTE
+        bf [1097]
 
-:[1096]
-call.i instance_destroy(argc=0)
-popz.v
+        :[1096]
+        call.i instance_destroy(argc=0)
+        popz.v
 
-:[1097]
-popenv [1095]")
-            .Save();
+        :[1097]
+        popenv [1095]")
+                    .Save();
+*/
 
 
-        // Throwed net
-        Msl.LoadGML("gml_Object_o_net_throw_Alarm_0")
-            .MatchFrom("_shield = scr_instance_exists_in_list")
-            .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
-            .Save();
+                // Throwed net
+                Msl.LoadGML("gml_Object_o_net_throw_Alarm_0")
+                    .MatchFrom("_shield = scr_instance_exists_in_list")
+                    .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
+                    .Save();
 
-        // Throwed web
-        Msl.LoadGML("gml_Object_o_web_spit_Alarm_0")
-            .MatchFrom("_shield = scr_instance_exists_in_list")
-            .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
-            .Save();
+                // Throwed web
+                Msl.LoadGML("gml_Object_o_web_spit_Alarm_0")
+                    .MatchFrom("_shield = scr_instance_exists_in_list")
+                    .ReplaceBy("_shield = (scr_instance_exists_in_list(o_b_aether_shield) || scr_instance_exists_in_list(o_b_magical_shield))")
+                    .Save();
 
-        // Damage reduction by magical shield
-        Msl.LoadGML("gml_GlobalScript_scr_damage_physical_calc")
-            .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - argument0.tmpDEF * _partDamageNormalizer * (1 - Armor_Piercing / 100)) * (1 - argument2 / 100)), 0)))")
-            .InsertAbove(@"
-        with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
-        {
-            damage = argument1
-            event_user(4)
-            argument1 = 0
-        }
-            ")
-            .MatchFrom("var _dmgReal = math_round(argument3 * (max(((argument1 - argument4 * _partDamageNormalizer - 0.5 * argument0.tmpDEF * _partDamageNormalizer * argument6) * (1 - argument2 / 100)), 0)))")
-            .InsertAbove(@"
-        with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
-        {
-            damage = argument1
-            event_user(4)
-            argument1 = 0            
-        }
-            ")
-            .Save();
-
+                // Damage reduction by magical shield
+                /*TODO
+                Msl.LoadGML("gml_GlobalScript_scr_damage_calculation")
+                    .MatchFrom("var _interSacredDmg = Sacred_Damage * _damageK")
+                    .InsertBelow(@"
+                        var _magicalShield = scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs)
+                        if (instance_exists(_magicalShield))
+                        {
+                            with (_magicalShield)
+                            {
+                                damage = _interAllDmg
+                                event_user(4)
+                            }
+                            _interSlashingDmg = 0
+                            _interPiercingDmg = 0
+                            _interBluntDmg = 0
+                            _interRendingDmg = 0
+                            _interFireDmg = 0
+                            _interFrostDmg = 0
+                            _interShockDmg = 0
+                            _interCausticDmg = 0
+                            _interPoisonDmg = 0
+                            _interUnholyDmg = 0
+                            _interArcaneDmg = 0
+                            _interPsionicDmg = 0
+                            _interSacredDmg = 0
+                        }
+                    ")
+                    .Save();
+                */
         UndertaleSprite animation = Msl.GetSprite("s_magical_shield_proc");
         animation.CollisionMasks.RemoveAt(0);
         animation.OriginX = 20;
