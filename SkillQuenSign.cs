@@ -391,9 +391,9 @@ popenv [1094]")
             .InsertAbove(@"
         with (scr_instance_exists_in_list(o_b_magical_shield, argument0.buffs))
         {
-            damage = arg0
+            damage = argument1
             event_user(4)
-            arg0 = 0
+            argument1 = 0
         }
             ")
             .Save();
