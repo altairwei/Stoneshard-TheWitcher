@@ -11,67 +11,71 @@ public partial class TheWitcher : Mod
         AdjustSkillIcon("s_skills_yrden_sign");
         AdjustSpellCastSprites("s_yrdensign_cast_", 15, 62);
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "Yrden_Sign",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Yrden Sign"},
-                    {ModLanguage.Chinese, "亚登法印"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @""},
-                    {ModLanguage.Chinese, string.Join("##",
-                        "依据指定的位置，在地面放置~w~3~/~个持续~w~9~/~回合的~lg~亚登法印~/~：",
-                        "法印被触发前处于隐蔽状态，触发后每回合对敌人造成~p~/*Arcane_Damage*/点秘术伤害~/~。",
-                        "造成伤害后有~lg~/*Bleed_Chance*/%~/~几率使敌人腿部出血，有~lg~/*Immob_Chance*/%~/~几率使敌人移动受限~w~2~/~回合（受敌人的击退抗性影响）。",
-                        "每与一个~lg~亚登法印~/~相邻，当前法印的出血几率~lg~+/*Bleed_Chance*/%~/~，移动受限几率~lg~+/*Immob_Chance*/%~/~。",
-                        "站在法印上的普通敌人所受伤害~r~+9%~/~，幽魂类敌人所受伤害~r~+33%~/~。",
-                        "施法者站在~lg~亚登法印~/~上时，失手~lg~-9%~/~，精力恢复~lg~+9%~/~，暴击几率~lg~+3%~/~。"
-                    )}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("Yrden_Sign")
+                .English("Yrden Sign")
+                .Chinese("亚登法印")
             )
-        );
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("Yrden_Sign")
+                .English(@"")
+                .Chinese(string.Join("##",
+                    "依据指定的位置，在地面放置~w~3~/~个持续~w~9~/~回合的~lg~亚登法印~/~：",
+                    "法印被触发前处于隐蔽状态，触发后每回合对敌人造成~p~/*Arcane_Damage*/点秘术伤害~/~。",
+                    "造成伤害后有~lg~/*Bleed_Chance*/%~/~几率使敌人腿部出血，有~lg~/*Immob_Chance*/%~/~几率使敌人移动受限~w~2~/~回合（受敌人的击退抗性影响）。",
+                    "每与一个~lg~亚登法印~/~相邻，当前法印的出血几率~lg~+/*Bleed_Chance*/%~/~，移动受限几率~lg~+/*Immob_Chance*/%~/~。",
+                    "站在法印上的普通敌人所受伤害~r~+9%~/~，幽魂类敌人所受伤害~r~+33%~/~。",
+                    "施法者站在~lg~亚登法印~/~上时，失手~lg~-9%~/~，精力恢复~lg~+9%~/~，暴击几率~lg~+3%~/~。"
+                ))
+            )
+            .Save();
 
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "Yrden_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "YRDEN!"},
-                    {ModLanguage.Chinese, "亚登！"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("Yrden_Sign"),
+                new Loc("").English("YRDEN!").Chinese("亚登！"),
+                new Loc("Yrden_Sign_end")
             )
-        );
+            .Save();
 
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "MC_Yrden_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "YR...DEN..."},
-                    {ModLanguage.Chinese, "亚...等..."}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("MC_Yrden_Sign"),
+                new Loc("").English("YR...DEN...").Chinese("亚...等..."),
+                new Loc("MC_Yrden_Sign_end")
             )
-        );
+            .Save();
 
         string Immob_Chance = "(25 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
         string Arcane_Damage = "(2 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
         string Bleed_Chance = "(15 * (owner.Magic_Power + owner.Arcanistic_Power)) / 100";
 
-        Msl.InjectTableSkillsStats(
-            id: "Yrden_Sign",
-            Object: "o_yrden_sign_birth",
-            hook: Msl.SkillsStatsHook.MAGICMASTERY,
-            Target: Msl.SkillsStatsTarget.TargetPoint,
-            Range: "5",
-            KD: 24,
-            MP: 20,
-            Duration: 0,
-            Class: Msl.SkillsStatsClass.spell,
-            Branch: "magic_mastery",
-            Spell: true,
-            AP: "x",
-            Bonus_Range: true,
-            Crime: true
-        );
+        TableUtils.StatsTable("gml_GlobalScript_table_skills_stats")
+            .MatchFrom("Seal_of_Finesse;o_b_seal_finesse;No Target")
+            .CloneAbove(
+                new Row()
+                .Set("id", "Yrden_Sign")
+                .Set("Object", "o_yrden_sign_birth")
+                .Set("Target", "Target Point")
+                .Set("is_moving_zone", "0")
+                .Set("Range", "5")
+                .Set("KD", "24")
+                .Set("MP", "20")
+                .Set("FMB", "5")
+                .Set("Duration", "0")
+                .Set("Class", "spell")
+                .Set("Branch", "magic_mastery")
+                .Set("Spell", "1")
+                .Set("AP", "x")
+                .Set("Bonus_Range", "1")
+                .Set("Crime", "1")
+            )
+            .Save();
 
         UndertaleGameObject o_skill_yrden_sign = Msl.AddObject(
             name: "o_skill_yrden_sign",

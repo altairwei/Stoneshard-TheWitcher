@@ -11,65 +11,68 @@ public partial class TheWitcher : Mod
         AdjustSkillIcon("s_skills_aard_sign");
         AdjustSpellCastSprites("s_aardsign_cast_", 15, 62);
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "Aard_Sign",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Aard Sign"},
-                    {ModLanguage.Chinese, "阿尔德法印"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @"No translation"},
-                    {ModLanguage.Chinese, string.Join("##",
-                        "产生念动冲击波，对一定范围内的敌人造成~w~/*Blunt_Damage*/点钝击伤害~/~，本次伤害击退几率~w~/*Knockback_Chance*/%~/~、击晕几率~w~/*Daze_Chance*/%~/~、失衡几率~w~/*Stagger_Chance*/%~/~。",
-                        "若目标处于~r~慌乱~/~、~r~眩晕~/~等负面精神状态，念动冲击波会对目标额外造成~p~/*Psionic_Damage*/点灵能伤害~/~。",
-                        "命中目标会令其~w~4~/~回合内控制抗性~r~/*Stun_Resistance*/%~/~、位移抗性~r~/*Stun_Resistance*/%~/~、灵能抗性~r~/*Psionic_Resistance*/%~/~。这个效果可以叠加，最多~w~2~/~层。",
-                        "每有一个目标被法印直接击晕，所有技能当前剩余冷却时间便缩短~lg~2~/~个回合。"
-                    )}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("Aard_Sign")
+                .English("Aard Sign")
+                .Chinese("阿尔德法印")
             )
-        );
-
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "Aard_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "AARD!"},
-                    {ModLanguage.Chinese, "阿尔德！"}
-                }
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("Aard_Sign")
+                .English(@"No translation")
+                .Chinese(string.Join("##",
+                    "产生念动冲击波，对一定范围内的敌人造成~w~/*Blunt_Damage*/点钝击伤害~/~，本次伤害击退几率~w~/*Knockback_Chance*/%~/~、击晕几率~w~/*Daze_Chance*/%~/~、失衡几率~w~/*Stagger_Chance*/%~/~。",
+                    "若目标处于~r~慌乱~/~、~r~眩晕~/~等负面精神状态，念动冲击波会对目标额外造成~p~/*Psionic_Damage*/点灵能伤害~/~。",
+                    "命中目标会令其~w~4~/~回合内控制抗性~r~/*Stun_Resistance*/%~/~、位移抗性~r~/*Stun_Resistance*/%~/~、灵能抗性~r~/*Psionic_Resistance*/%~/~。这个效果可以叠加，最多~w~2~/~层。",
+                    "每有一个目标被法印直接击晕，所有技能当前剩余冷却时间便缩短~lg~2~/~个回合。"
+                ))
             )
-        );
+            .Save();
 
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "MC_Aard_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "A...ERD..."},
-                    {ModLanguage.Chinese, "奥...儿得..."}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("Aard_Sign"),
+                new Loc("").English("AARD!").Chinese("阿尔德！"),
+                new Loc("Aard_Sign_end")
             )
-        );
+            .Save();
 
-        Msl.InjectTableSkillsStats(
-            id: "Aard_Sign",
-            Object: "o_aard_sign_birth",
-            hook: Msl.SkillsStatsHook.MAGICMASTERY,
-            Target: Msl.SkillsStatsTarget.TargetArea,
-            Range: "2",
-            AOE_Lenght: 2,
-            AOE_Width: 3,
-            Pattern: Msl.SkillsStatsPattern.pyramid,
-            KD: 8,
-            MP: 16,
-            Reserv: 18,
-            Duration: 0,
-            Class: Msl.SkillsStatsClass.spell,
-            Branch: "magic_mastery",
-            Spell: true,
-            AP: "x",
-            Bonus_Range: false,
-            Crime: true
-        );
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("MC_Aard_Sign"),
+                new Loc("").English("A...ERD...").Chinese("奥...儿得..."),
+                new Loc("MC_Aard_Sign_end")
+            )
+            .Save();
+
+        TableUtils.StatsTable("gml_GlobalScript_table_skills_stats")
+            .MatchFrom("Seal_of_Finesse;o_b_seal_finesse;No Target")
+            .CloneAbove(
+                new Row()
+                .Set("id", "Aard_Sign")
+                .Set("Object", "o_aard_sign_birth")
+                .Set("Target", "Target Area")
+                .Set("is_moving_zone", "0")
+                .Set("Range", "2")
+                .Set("AOE_Lenght", "2")
+                .Set("AOE_Width", "3")
+                .Set("Pattern", "pyramid")
+                .Set("KD", "8")
+                .Set("MP", "16")
+                .Set("FMB", "10")
+                .Set("Duration", "0")
+                .Set("Class", "spell")
+                .Set("Branch", "magic_mastery")
+                .Set("Spell", "1")
+                .Set("AP", "x")
+                .Set("Bonus_Range", "0")
+                .Set("Crime", "1")
+            )
+            .Save();
 
         UndertaleGameObject o_skill_aard_sign = Msl.AddObject(
             name: "o_skill_aard_sign",

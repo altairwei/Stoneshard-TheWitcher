@@ -11,64 +11,67 @@ public partial class TheWitcher : Mod
         AdjustSkillIcon("s_skills_igni_sign");
         AdjustSpellCastSprites("s_ignisign_cast_", 15, 62);
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "Igni_Sign",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Igni Sign"},
-                    {ModLanguage.Chinese, "伊格尼法印"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @"No translation"},
-                    {ModLanguage.Chinese, string.Join("##",
-                        "对方圆~w~2~/~格之内一片区域造成~o~/*Fire_Damage*/点灼烧伤害~/~，~o~点燃~/~没有物体和生灵的方格。",
-                        "有~w~/*Ignition_Chance*/%~/~的几率~o~点燃~/~所有受到影响的目标，燃烧持续~w~2-3~/~个回合；令他们~w~10~/~个回合之内灼烧抗性~r~/*Fire_Resistance*/%~/~，这个效果可以叠加，最多~w~3~/~层。",
-                        "对~o~着火~/~目标的灼烧伤害~r~+30%~/~，并使其护甲耐久~r~减半~/~。每有一个目标未被~o~点燃~/~，伊格尼法印当前剩余冷却时间便缩短~lg~3~/~个回合。"
-                    )}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("Igni_Sign")
+                .English("Igni Sign")
+                .Chinese("伊格尼法印")
             )
-        );
-
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "Igni_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "IGNI!"},
-                    {ModLanguage.Chinese, "伊格尼！"}
-                }
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("Igni_Sign")
+                .English(@"No translation")
+                .Chinese(string.Join("##",
+                    "对方圆~w~2~/~格之内一片区域造成~o~/*Fire_Damage*/点灼烧伤害~/~，~o~点燃~/~没有物体和生灵的方格。",
+                    "有~w~/*Ignition_Chance*/%~/~的几率~o~点燃~/~所有受到影响的目标，燃烧持续~w~2-3~/~个回合；令他们~w~10~/~个回合之内灼烧抗性~r~/*Fire_Resistance*/%~/~，这个效果可以叠加，最多~w~3~/~层。",
+                    "对~o~着火~/~目标的灼烧伤害~r~+30%~/~，并使其护甲耐久~r~减半~/~。每有一个目标未被~o~点燃~/~，伊格尼法印当前剩余冷却时间便缩短~lg~3~/~个回合。"
+                ))
             )
-        );
+            .Save();
 
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "MC_Igni_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "I...IGNE..."},
-                    {ModLanguage.Chinese, "伊...哥尼..."}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("Igni_Sign"),
+                new Loc("").English("IGNI!").Chinese("伊格尼！"),
+                new Loc("Igni_Sign_end")
             )
-        );
+            .Save();
 
-        Msl.InjectTableSkillsStats(
-            id: "Igni_Sign",
-            Object: "o_igni_sign_birth",
-            hook: Msl.SkillsStatsHook.MAGICMASTERY,
-            Target: Msl.SkillsStatsTarget.TargetArea,
-            Range: "2",
-            AOE_Lenght: 2,
-            AOE_Width: 3,
-            Pattern: Msl.SkillsStatsPattern.pyramid,
-            KD: 12,
-            MP: 16,
-            Reserv: 18,
-            Duration: 0,
-            Class: Msl.SkillsStatsClass.spell,
-            Branch: "magic_mastery",
-            Spell: true,
-            AP: "x",
-            Bonus_Range: false,
-            Crime: true
-        );
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("MC_Igni_Sign"),
+                new Loc("").English("I...IGNE...").Chinese("伊...哥尼..."),
+                new Loc("MC_Igni_Sign_end")
+            )
+            .Save();
+
+        TableUtils.StatsTable("gml_GlobalScript_table_skills_stats")
+            .MatchFrom("Seal_of_Finesse;o_b_seal_finesse;No Target")
+            .CloneAbove(
+                new Row()
+                .Set("id", "Igni_Sign")
+                .Set("Object", "o_igni_sign_birth")
+                .Set("Target", "Target Area")
+                .Set("is_moving_zone", "0")
+                .Set("Range", "2")
+                .Set("AOE_Lenght", "2")
+                .Set("AOE_Width", "3")
+                .Set("Pattern", "pyramid")
+                .Set("KD", "12")
+                .Set("MP", "16")
+                .Set("FMB", "10")
+                .Set("Duration", "0")
+                .Set("Class", "spell")
+                .Set("Branch", "magic_mastery")
+                .Set("Spell", "1")
+                .Set("AP", "x")
+                .Set("Bonus_Range", "0")
+                .Set("Crime", "1")
+            )
+            .Save();
 
         UndertaleGameObject o_skill_igni_sign = Msl.AddObject(
             name: "o_skill_igni_sign",

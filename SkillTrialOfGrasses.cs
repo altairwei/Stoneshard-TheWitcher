@@ -10,22 +10,23 @@ public partial class TheWitcher : Mod
     {
         AdjustSkillIcon("s_skills_trial_of_grasses");
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "Trial_Of_Grasses",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Trial Of Grasses"},
-                    {ModLanguage.Chinese, "青草试炼"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @"No translation"},
-                    {ModLanguage.Chinese, string.Join("##",
-                        "免疫~w~煎药~/~的致死效果，但最多同时服用~w~3~/~瓶。此外，令猎魔人：",
-                        "免疫变化幅度~lg~+0.02~/~#生命上限~lg~+/*MAXHP*/~/~#生命自动恢复~lg~+/*HR*/%~/~#视野~lg~+2~/~#距离加成~lg~+1~/~#反击几率~lg~+/*CTA*/%~/~#闪躲几率~lg~+/*EVS*/%~/~"
-                    )}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("Trial_Of_Grasses")
+                .English("Trial Of Grasses")
+                .Chinese("青草试炼")
             )
-        );
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("Trial_Of_Grasses")
+                .English(@"No translation")
+                .Chinese(string.Join("##",
+                    "免疫~w~煎药~/~的致死效果，但最多同时服用~w~3~/~瓶。此外，令猎魔人：",
+                    "免疫变化幅度~lg~+0.02~/~#生命上限~lg~+/*MAXHP*/~/~#生命自动恢复~lg~+/*HR*/%~/~#视野~lg~+2~/~#距离加成~lg~+1~/~#反击几率~lg~+/*CTA*/%~/~#闪躲几率~lg~+/*EVS*/%~/~"
+                ))
+            )
+            .Save();
 
         UndertaleGameObject o_skill_trial_of_grasses = Msl.AddObject(
             name: "o_skill_trial_of_grasses",

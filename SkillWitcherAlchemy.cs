@@ -11,21 +11,23 @@ public partial class TheWitcher : Mod
 {
     private void AddSkill_Witcher_Alchemy()
     {
-        
         AddWitcherAlchemy_Alcohol();
-        
+
         AdjustSkillIcon("s_witcher_alchemy");
 
         // Skill - Witcher Alchemy
-        
-        Msl.InjectTableSkillsStats(
-            id: "Witcher_Alchemy",
-            Object: "object",
-            hook: Msl.SkillsStatsHook.BASIC
-        );
-        
+
+        TableUtils.StatsTable("gml_GlobalScript_table_skills_stats")
+            .MatchFrom("Trap_Search;o_trap_search;")
+            .CloneAbove(
+                new Row()
+                .Set("id", "Witcher_Alchemy")
+                .Set("Object", "object")
+            )
+            .Save();
+
         UndertaleGameObject o_skill_witcher_alchemy = Msl.GetObject("o_skill_witcher_alchemy");
-        
+
         o_skill_witcher_alchemy.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
                 event_inherited()
@@ -54,18 +56,13 @@ public partial class TheWitcher : Mod
                 KD = 0
             ")
         );
-        
 
         AddWeaponOil();
-       
         AddWitcherPotion();
-
         AddWitcherDecoction();
-
         AddWitcherAlchemyCraftingMenu();
-        
         AddBrynnUniversityAlchemyStation();
-        
+
         UndertaleGameObject o_skill_witcher_alchemy_ico = Msl.GetObject("o_skill_witcher_alchemy_ico");
 
         o_skill_witcher_alchemy_ico.ApplyEvent(
@@ -74,7 +71,6 @@ public partial class TheWitcher : Mod
                 child_skill = o_skill_witcher_alchemy
                 event_perform_object(child_skill, ev_create, 0)
             ")
-
         );
 
         AddCaravanAlchemyStation();
@@ -85,21 +81,23 @@ public partial class TheWitcher : Mod
         UndertaleGameObject o_inv_alcohol_essentia = Msl.GetObject("o_inv_alcohol_essentia");
         UndertaleGameObject o_loot_alcohol_essentia = Msl.GetObject("o_loot_alcohol_essentia");
 
-        TableUtils.InjectTableItemStats(
-            id: "alcohol_essentia",
-            Price: 60,
-            Cat: TableUtils.ItemStatsCategory.alcohol,
-            Material: TableUtils.ItemStatsMaterial.glass,
-            Weight: TableUtils.ItemStatsWeight.Light,
-            Duration: 240,
-            Thirsty: 70,
-            Intoxication: 40,
-            Toxicity_Change: 1,
-            Pain_Change: -0.5f,
-            Sanity_Change: -0.2f,
-            bottle: true,
-            tags: TableUtils.ItemStatsTags.special
-        );
+        TableUtils.StatsTable("gml_GlobalScript_table_items_stats")
+            .Append(new Row()
+                .Set("id", "alcohol_essentia")
+                .Set("Price", "60")
+                .Set("Cat", "alcohol")
+                .Set("Material", "glass")
+                .Set("Weight", "Light")
+                .Set("Duration", "240")
+                .Set("Thirsty", "70")
+                .Set("Intoxication", "40")
+                .Set("Toxicity_Change", "1")
+                .Set("Pain_Change", "-0.5")
+                .Set("Sanity_Change", "-0.2")
+                .Set("bottle", "1")
+                .Set("tags", "special")
+            )
+            .Save();
 
         o_inv_alcohol_essentia.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"

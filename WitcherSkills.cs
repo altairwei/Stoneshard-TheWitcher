@@ -31,20 +31,21 @@ public partial class TheWitcher : Mod
         AddSkill_Igni_Sign();
 
         // Add Skill Branch
-        
-        Msl.InjectTableTextTreesLocalization(
-            new LocalizationTextTree(
-                id: "Witcher",
-                tier: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Witcher"},
-                    {ModLanguage.Chinese, "猎魔人"}
-                },
-                hover: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "##~y~Main focus:~/~#~w~Survival~/~, ~w~Support~/~, ~w~Crowd Control~/~"},
-                    {ModLanguage.Chinese, "通过青草试炼获得强健的体魄和毒素免疫能力，在战斗中使用各种炼金物品和简单的法术。##~y~能力要义：~/~#~w~生存~/~、~w~辅助~/~、~w~控场~/~"}
-                }
+
+        TableUtils.LocalizationTable("gml_GlobalScript_table_text")
+            .MatchFrom("Tier_name_end;")
+            .InsertAbove(
+                new Loc("Witcher")
+                .English("Witcher")
+                .Chinese("猎魔人")
             )
-        );
+            .MatchFrom("skilltree_hover_end;")
+            .InsertAbove(
+                new Loc("Witcher_hover")
+                .English("##~y~Main focus:~/~#~w~Survival~/~, ~w~Support~/~, ~w~Crowd Control~/~")
+                .Chinese("通过青草试炼获得强健的体魄和毒素免疫能力，在战斗中使用各种炼金物品和简单的法术。##~y~能力要义：~/~#~w~生存~/~、~w~辅助~/~、~w~控场~/~")
+            )
+            .Save();
 
         o_skill_category_witcher.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @"
@@ -64,7 +65,6 @@ public partial class TheWitcher : Mod
             .MatchFrom("var _metaCategoriesArray = ")
             .InsertBelow(@"array_push(_metaCategoriesArray[1], o_skill_category_witcher)")
             .Save();
-
     }
 
     private static void AdjustSkillIcon(string name)

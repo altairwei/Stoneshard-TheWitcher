@@ -11,52 +11,57 @@ public partial class TheWitcher : Mod
         AdjustSkillIcon("s_skills_quen_sign");
         AdjustSpellCastSprites("s_quensign_cast_", 15, 62);
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "Quen_Sign",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Quen Sign"},
-                    {ModLanguage.Chinese, "昆恩法印"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @"Opens the menu for ~w~crafting weapon coating oil~/~."},
-                    {ModLanguage.Chinese, @"触发~w~6~/~回合耐久为~lg~/*Shield_Duration*/~/~点的~lg~“法力护盾”~/~：##精力自动恢复~r~-25%~/~##触发时有~w~/*Cure_Chance*/%~/~的概率会消除~r~流血~/~和~o~着火~/~状态。##护盾会吸收所有物理、自然和魔法伤害，直到破损为止。"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("Quen_Sign")
+                .English("Quen Sign")
+                .Chinese("昆恩法印")
             )
-        );
-
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "Quen_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "QUEN!"},
-                    {ModLanguage.Chinese, "昆恩！"}
-                }
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("Quen_Sign")
+                .English(@"Opens the menu for ~w~crafting weapon coating oil~/~.")
+                .Chinese(@"触发~w~6~/~回合耐久为~lg~/*Shield_Duration*/~/~点的~lg~“法力护盾”~/~：##精力自动恢复~r~-25%~/~##触发时有~w~/*Cure_Chance*/%~/~的概率会消除~r~流血~/~和~o~着火~/~状态。##护盾会吸收所有物理、自然和魔法伤害，直到破损为止。")
             )
-        );
+            .Save();
 
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "MC_Quen_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "QU...EN..."},
-                    {ModLanguage.Chinese, "昆...恩..."}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("Quen_Sign"),
+                new Loc("").English("QUEN!").Chinese("昆恩！"),
+                new Loc("Quen_Sign_end")
             )
-        );
+            .Save();
 
-        Msl.InjectTableSkillsStats(
-            id: "Quen_Sign",
-            Object: "o_b_magical_shield",
-            hook: Msl.SkillsStatsHook.MAGICMASTERY,
-            Range: "0",
-            KD: 8,
-            MP: 20,
-            Duration: 6,
-            Class: Msl.SkillsStatsClass.spell,
-            Branch: "magic_mastery",
-            Spell: true
-        );
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("MC_Quen_Sign"),
+                new Loc("").English("Q...UEN...").Chinese("昆...恩..."),
+                new Loc("MC_Quen_Sign_end")
+            )
+            .Save();
+
+        TableUtils.StatsTable("gml_GlobalScript_table_skills_stats")
+             .MatchFrom("Seal_of_Finesse;o_b_seal_finesse;No Target")
+            .CloneAbove(
+                new Row()
+                .Set("id", "Quen_Sign")
+                .Set("Target", "No Target")
+                .Set("is_moving_zone", "0")
+                .Set("Object", "o_b_magical_shield")
+                .Set("Range", "0")
+                .Set("KD", "8")
+                .Set("MP", "20")
+                .Set("FMB", "5")
+                .Set("Duration", "6")
+                .Set("Class", "spell")
+                .Set("Branch", "magic_mastery")
+                .Set("Spell", "1")
+            )
+            .Save();
 
         UndertaleGameObject o_skill_quen_sign = Msl.AddObject(
             name: "o_skill_quen_sign",
@@ -130,19 +135,20 @@ public partial class TheWitcher : Mod
 
         // Buff: Magical Shield
 
-        Msl.InjectTableModifiersLocalization(
-            new LocalizationModifier(
-                id: "o_b_magical_shield",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Magical Shield"},
-                    {ModLanguage.Chinese, "法力护盾"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @"Magical Shield absorbs all physical, natural and magical damage until broken. Current duration: ~lg~/*Shield_Duration*///*Max_Duration*/~/~"},
-                    {ModLanguage.Chinese, @"法力护盾会吸收所有物理、自然和魔法伤害，直到破损为止。当前耐久：~lg~/*Shield_Duration*///*Max_Duration*/~/~"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_effects")
+            .MatchFrom("buff_name_end;")
+            .InsertAbove(
+                new Loc("o_b_magical_shield")
+                .English("Magical Shield")
+                .Chinese("法力护盾")
             )
-        );
+            .MatchFrom("buff_desc_end;")
+            .InsertAbove(
+                new Loc("o_b_magical_shield")
+                .English(@"Magical Shield absorbs all physical, natural and magical damage until broken. Current duration: ~lg~/*Shield_Duration*///*Max_Duration*/~/~")
+                .Chinese(@"法力护盾会吸收所有物理、自然和魔法伤害，直到破损为止。当前耐久：~lg~/*Shield_Duration*///*Max_Duration*/~/~")
+            )
+            .Save();
 
         UndertaleGameObject o_onUnitEffect_MagicalShield_BG = Msl.AddObject(
             name: "o_onUnitEffect_MagicalShield_BG",

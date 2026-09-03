@@ -133,22 +133,23 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "blaviken_butcher",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Blaviken Butcher"},
-                    {ModLanguage.Chinese, "布拉维坎的屠夫"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "For each enemy killed, receive ~lg~+10%~/~ Weapon Damage and Magic Power, ~lg~+20%~/~ Crit Efficiency and Miracle Power, ~r~-5%~/~ Piercing Resistance for ~w~10~/~ turns. This effect stacks.##" +
-                        "Starts the game with ~w~\"Trial Of Grasses\"~/~ already learned and a ~y~Wolf School Medallion~/~ " +
-                        "when worn, killing a Mini-Boss for the first time grants the ~y~Wolf School Medallion~/~ various ~lg~enhancements~/~."},
-                    {ModLanguage.Chinese, "每杀一个敌人，兵器伤害与法力便~lg~+10%~/~，暴击效果与奇观效果便~lg~+20%~/~，同时穿刺抗性~r~-5%~/~，效果存续~w~10~/~回合。这个效果可以叠加。##" +
-                        "游戏开局习得~w~“青草试炼”~/~，还有一个~y~狼学派徽章~/~，佩戴时首次击杀关底头目会令~y~狼学派徽章~/~获得各种~lg~加成~/~。"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("blaviken_butcher")
+                .English("Blaviken Butcher")
+                .Chinese("布拉维坎的屠夫")
             )
-        );
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("blaviken_butcher")
+                .English("For each enemy killed, receive ~lg~+10%~/~ Weapon Damage and Magic Power, ~lg~+20%~/~ Crit Efficiency and Miracle Power, ~r~-5%~/~ Piercing Resistance for ~w~10~/~ turns. This effect stacks.##" +
+                    "Starts the game with ~w~\"Trial Of Grasses\"~/~ already learned and a ~y~Wolf School Medallion~/~ " +
+                    "when worn, killing a Mini-Boss for the first time grants the ~y~Wolf School Medallion~/~ various ~lg~enhancements~/~.")
+                .Chinese("每杀一个敌人，兵器伤害与法力便~lg~+10%~/~，暴击效果与奇观效果便~lg~+20%~/~，同时穿刺抗性~r~-5%~/~，效果存续~w~10~/~回合。这个效果可以叠加。##" +
+                    "游戏开局习得~w~“青草试炼”~/~，还有一个~y~狼学派徽章~/~，佩戴时首次击杀关底头目会令~y~狼学派徽章~/~获得各种~lg~加成~/~。")
+            )
+            .Save();
 
         /*
         int index = DataLoader.data.GameObjects.IndexOf(
@@ -340,79 +341,45 @@ popenv [44]")
             .Save();
         */
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "professional_witcher",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Professional Witcher"},
-                    {ModLanguage.Chinese, "猎魔大师"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English,
-                     "WIP"},
-                    {ModLanguage.Chinese,
-                     "游戏开局习得~w~“青草试炼”~/~，并且角色每升~w~五~/~级，喝下~w~3~/~瓶不同的~y~魔药~/~后便获得~lg~1~/~个属性点，喝下~w~2~/~瓶不同的~y~煎药~/~后便获得~lg~1~/~个能力点。##" +
-                     "~w~格挡~/~或~w~闪躲~/~一次击打，会令~w~3~/~回合内暴击几率~lg~+5%~/~，兵器伤害~lg~+5%~/~，反击几率~lg~+5%~/~。" +
-                     "~w~暴击~/~会令~w~3~/~回合内闪躲几率~lg~+5%~/~，格挡几率~lg~+5%~/~，格挡力量上限~lg~+5~/~。这两组效果可以叠加，最多~w~5~/~层。##" +
-                     "角色可以使用兵器~w~格挡~/~箭矢和投掷的物品，格挡几率受~lg~准度~/~的影响。"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("professional_witcher")
+                .English("Professional Witcher")
+                .Chinese("猎魔大师")
             )
-        );
-
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "geraltPerkRewarded",
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Feels... different. Stronger, maybe."},
-                    {ModLanguage.Chinese, "感觉……不一样了。或许更强了。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Power’s settling in. Guess the pain was worth it."},
-                    {ModLanguage.Chinese, "力量在体内安定下来了。看来那些痛苦没白受。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Another lesson learned in blood and alchemy."},
-                    {ModLanguage.Chinese, "又上一课，用血与炼金换来的。"}
-                }
-            ),
-
-            new LocalizationSpeech(
-                id: "geraltPerkProgressed",
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Another mix... body’s adapting, slowly but surely."},
-                    {ModLanguage.Chinese, "又一瓶……身体在慢慢适应。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Different brew, same burn. Guess that counts for progress."},
-                    {ModLanguage.Chinese, "换了种药，灼烧感还是一样。算是进步吧。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "The mutations never stop changing... nor do I."},
-                    {ModLanguage.Chinese, "突变从未停止……我也是。"}
-                }
-            ),
-
-            new LocalizationSpeech(
-                id: "geraltPerkUndigested",
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Not yet... body’s not ready for more."},
-                    {ModLanguage.Chinese, "还不行……身体还没准备好。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Need more time... or less poison."},
-                    {ModLanguage.Chinese, "还需要时间……或者少点毒素。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Can’t rush evolution. Not if I want to stay alive."},
-                    {ModLanguage.Chinese, "进化急不得，除非我不想活了。"}
-                }
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("professional_witcher")
+                .English("WIP")
+                .Chinese("游戏开局习得~w~“青草试炼”~/~，并且角色每升~w~五~/~级，喝下~w~3~/~瓶不同的~y~魔药~/~后便获得~lg~1~/~个属性点，喝下~w~2~/~瓶不同的~y~煎药~/~后便获得~lg~1~/~个能力点。##" +
+                    "~w~格挡~/~或~w~闪躲~/~一次击打，会令~w~3~/~回合内暴击几率~lg~+5%~/~，兵器伤害~lg~+5%~/~，反击几率~lg~+5%~/~。" +
+                    "~w~暴击~/~会令~w~3~/~回合内闪躲几率~lg~+5%~/~，格挡几率~lg~+5%~/~，格挡力量上限~lg~+5~/~。这两组效果可以叠加，最多~w~5~/~层。##" +
+                    "角色可以使用兵器~w~格挡~/~箭矢和投掷的物品，格挡几率受~lg~准度~/~的影响。")
             )
-        );
+            .Save();
+
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("geraltPerkRewarded"),
+                new Loc("").English("Feels... different. Stronger, maybe.").Chinese("感觉……不一样了。或许更强了。"),
+                new Loc("").English("Power’s settling in. Guess the pain was worth it.").Chinese("力量在体内安定下来了。看来那些痛苦没白受。"),
+                new Loc("").English("Another lesson learned in blood and alchemy.").Chinese("又上一课，用血与炼金换来的。"),
+                new Loc("geraltPerkRewarded_end"),
+
+                new Loc("geraltPerkProgressed"),
+                new Loc("").English("Another mix... body’s adapting, slowly but surely.").Chinese("又一瓶……身体在慢慢适应。"),
+                new Loc("").English("Different brew, same burn. Guess that counts for progress.").Chinese("换了种药，灼烧感还是一样。算是进步吧。"),
+                new Loc("").English("The mutations never stop changing... nor do I.").Chinese("突变从未停止……我也是。"),
+                new Loc("geraltPerkProgressed_end"),
+
+                new Loc("geraltPerkUndigested"),
+                new Loc("").English("Not yet... body’s not ready for more.").Chinese("还不行……身体还没准备好。"),
+                new Loc("").English("Need more time... or less poison.").Chinese("还需要时间……或者少点毒素。"),
+                new Loc("").English("Can’t rush evolution. Not if I want to stay alive.").Chinese("进化急不得，除非我不想活了。"),
+                new Loc("geraltPerkUndigested_end")
+            )
+            .Save();
     }
 }

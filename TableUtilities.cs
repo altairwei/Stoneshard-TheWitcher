@@ -1,3 +1,4 @@
+#nullable enable
 using ModShardLauncher;
 using System.Reflection;
 using System.Runtime.Serialization;

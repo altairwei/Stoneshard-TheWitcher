@@ -182,136 +182,100 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        TableUtils.InjectTableItemStats(
-            id: id,
-            Material: TableUtils.ItemStatsMaterial.glass,
-            Weight: TableUtils.ItemStatsWeight.Medium,
-            Price: 200,
-            Duration: 60,
-            Stacks: 3,
-            Cat: TableUtils.ItemStatsCategory.tool,
-            bottle: true,
-            tags: TableUtils.ItemStatsTags.special
-        );
+        TableUtils.StatsTable("gml_GlobalScript_table_items_stats")
+            .Append(
+                new Row()
+                .Set("id", id)
+                .Set("Material", "glass")
+                .Set("Weight", "Medium")
+                .Set("Price", "200")
+                .Set("Duration", "60")
+                .Set("Stacks", "3")
+                .Set("Cat", "tool")
+                .Set("bottle", "1")
+                .Set("tags", "special")
+            )
+            .Save();
 
         oil_idx++;
     }
 
     private void AddWeaponOilTexts()
     {
-        Msl.InjectTableItemsLocalization(
-            new LocalizationItem(
-                id: "hanged_man_venom",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Hanged man's venom"},
-                    {ModLanguage.Chinese, "吊死鬼之毒"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to humanoids by ~lg~10%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对类人生物造成的伤害增加~lg~10%~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Hanged Man's Venom is a toxin that is equally lethal to humans, elves and dwarves. Applied to a blade, it deals more damage than any other coating. This oil is ineffective against monsters."},
-                    {ModLanguage.Chinese, "吊死鬼之毒对于人类、精灵与矮人而言是致命的毒素。只要涂抹在剑刃上，它会比其他涂油造成更多的伤害。这种涂油对于怪物没多大效用。"}
-                }
-            ),
-
-            new LocalizationItem(
-                id: "vampire_oil",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Vampire Oil"},
-                    {ModLanguage.Chinese, "吸血鬼油"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to vampires by ~lg~10%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对变节信徒造成的伤害增加~lg~10%~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Whosoever seeks to destroy a vampire, to banish it from this world forever, should prepare St. Gregory's Oil, called Vampire Oil by witchers. No fleder or bruxa can withstand it."},
-                    {ModLanguage.Chinese, "无论谁想消灭吸血鬼，将其永远驱逐出这个世界，都应该准备圣格雷戈里油，猎魔人称之为吸血鬼油。任何蝙蝠或巫婆都无法抵御它。"}
-                }
-            ),
-
-            new LocalizationItem(
-                id: "necrophage_oil",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Necrophage Oil"},
-                    {ModLanguage.Chinese, "死灵油"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to undead by ~lg~10%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对不死生灵造成的伤害增加~lg~10%~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Necrophages are accustomed to poisonous vapours. Yet even the most rancid ghouls and graveirs cannot withstand the poison wounds inflicted by a blade coated with Necrophage oil."},
-                    {ModLanguage.Chinese, "亡灵习惯于有毒的蒸汽。然而，即使是最腐臭的食尸鬼和墓穴怪，也无法抵挡涂有死灵油的刀刃所造成的毒伤。"}
-                }
-            ),
-
-            new LocalizationItem(
-                id: "specter_oil",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Specter Oil"},
-                    {ModLanguage.Chinese, "鬼灵油"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to spectres by ~lg~20%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对幽魂造成的伤害增加~lg~20%~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "There is a mysterious boundary between the worlds of the dead and the living, one which is easier to cross for restless specters than for humans. To injure a spectral opponent, first anoint a blade with this oil. Only then will the weapon truly part the curtain dividing the worlds, thereby damaging the specter."},
-                    {ModLanguage.Chinese, "在亡灵世界和活人世界之间有一个神秘的界限，不安分的幽魂比人类更容易跨越这个界限。要伤害幽魂对手，首先要在刀刃上涂上这种油。只有这样，武器才能真正割开分隔两个世界的帷幕，从而伤害幽魂。"}
-                }
-            ),
-
-            new LocalizationItem(
-                id: "insectoid_oil",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Insectoid Oil"},
-                    {ModLanguage.Chinese, "类虫生物油"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to insectoid (such as Crawler, Buzzer, Rock Eater etc.) by ~lg~20%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对类虫生物（比如巨蜘、亡蜂、食岩虫等）造成的伤害增加~lg~20%~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "This blade grease increases damage dealt to arachnids and creatures similar to insects in their physiology. It is the most effective oil against monsters of this type. Witchers also use Insectoid oil to rid their fortresses of bugs and parasites."},
-                    {ModLanguage.Chinese, "这种剑油能增加对蛛形纲动物和生理结构与昆虫相似的生物造成的伤害。这是对付这类怪物最有效的油。猎魔人还使用这种油清除城堡中的虫子和寄生虫。"}
-                }
-            ),
-
-            new LocalizationItem(
-                id: "hybrid_oil",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Hybrid Oil"},
-                    {ModLanguage.Chinese, "混种兽油"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to hybrids (such as Harpy and Gulon) by ~lg~15%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对混种兽（比如哈比和谷隆）造成的伤害增加~lg~15%~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Hybrids combine the capabilities, the strengths, and the weaknesses of different creatures, so they should never be taken lightly. However, this oil is very effective against monsters of this type."},
-                    {ModLanguage.Chinese, "混种兽结合了不同生物的能力、长处和弱点，因此绝不能掉以轻心。不过，这种剑油对混种兽非常有效。"}
-                }
-            ),
-
-            new LocalizationItem(
-                id: "ogroid_oil",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Ogroid Oil"},
-                    {ModLanguage.Chinese, "食人魔油"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Applied to a weapon, it increases the damage dealt to trolls by ~lg~15%~/~."},
-                    {ModLanguage.Chinese, "应用于武器，对巨魔造成的伤害增加~lg~15%~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Trolls are giant, eat or ate human flesh. This oil is very effective against trolls."},
-                    {ModLanguage.Chinese, "巨魔是巨人，吃人肉。这种油对巨魔非常有效。"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_items")
+            .MatchFrom("consum_name_end;")
+            .InsertAbove(
+                new Loc("hanged_man_venom")
+                .English("Hanged Man's Venom")
+                .Chinese("吊死鬼之毒")
             )
-        );
+            .MatchFrom("consum_mid_end;")
+            .InsertAbove(
+                new Loc("hanged_man_venom")
+                .English("Applied to a weapon, it increases the damage dealt to humanoids by ~lg~10%~/~.")
+                .Chinese("应用于武器，对类人生物造成的伤害增加~lg~10%~/~。")
+            )
+            .MatchFrom("consum_desc_end;")
+            .InsertAbove(
+                new Loc("hanged_man_venom")
+                .English("Hanged Man's Venom is a toxin that is equally lethal to humans, elves and dwarves. Applied to a blade, it deals more damage than any other coating. This oil is ineffective against monsters.")
+                .Chinese("吊死鬼之毒对于人类、精灵与矮人而言是致命的毒素。只要涂抹在剑刃上，它会比其他涂油造成更多的伤害。这种涂油对于怪物没多大效用。")
+            )
+            .Save();
+
+        TableUtils.LocalizationTable("gml_GlobalScript_table_items")
+            .MatchFrom("consum_name_end;")
+            .InsertAbove(
+                new Loc("vampire_oil").English("Vampire Oil").Chinese("吸血鬼油"),
+                new Loc("necrophage_oil").English("Necrophage Oil").Chinese("死灵油"),
+                new Loc("specter_oil").English("Specter Oil").Chinese("鬼灵油"),
+                new Loc("insectoid_oil").English("Insectoid Oil").Chinese("类虫生物油"),
+                new Loc("hybrid_oil").English("Hybrid Oil").Chinese("混种兽油"),
+                new Loc("ogroid_oil").English("Ogroid Oil").Chinese("食人魔油")
+            )
+            .MatchFrom("consum_mid_end;")
+            .InsertAbove(
+                new Loc("vampire_oil")
+                    .English("Applied to a weapon, it increases the damage dealt to vampires by ~lg~10%~/~.")
+                    .Chinese("应用于武器，对变节信徒造成的伤害增加~lg~10%~/~。"),
+                new Loc("necrophage_oil")
+                    .English("Applied to a weapon, it increases the damage dealt to undead by ~lg~10%~/~.")
+                    .Chinese("应用于武器，对不死生灵造成的伤害增加~lg~10%~/~。"),
+                new Loc("specter_oil")
+                    .English("Applied to a weapon, it increases the damage dealt to spectres by ~lg~20%~/~.")
+                    .Chinese("应用于武器，对幽魂造成的伤害增加~lg~20%~/~。"),
+                new Loc("insectoid_oil")
+                    .English("Applied to a weapon, it increases the damage dealt to insectoid (such as Crawler, Buzzer, Rock Eater etc.) by ~lg~20%~/~.")
+                    .Chinese("应用于武器，对类虫生物（比如巨蜘、亡蜂、食岩虫等）造成的伤害增加~lg~20%~/~。"),
+                new Loc("hybrid_oil")
+                    .English("Applied to a weapon, it increases the damage dealt to hybrids (such as Harpy and Gulon) by ~lg~15%~/~.")
+                    .Chinese("应用于武器，对混种兽（比如哈比和谷隆）造成的伤害增加~lg~15%~/~。"),
+                new Loc("ogroid_oil")
+                    .English("Applied to a weapon, it increases the damage dealt to trolls by ~lg~15%~/~.")
+                    .Chinese("应用于武器，对巨魔造成的伤害增加~lg~15%~/~。")
+            )
+            .MatchFrom("consum_desc_end;")
+            .InsertAbove(
+                new Loc("vampire_oil")
+                    .English("Whosoever seeks to destroy a vampire, to banish it from this world forever, should prepare St. Gregory's Oil, called Vampire Oil by witchers. No fleder or bruxa can withstand it.")
+                    .Chinese("无论谁想消灭吸血鬼，将其永远驱逐出这个世界，都应该准备圣格雷戈里油，猎魔人称之为吸血鬼油。任何蝙蝠或巫婆都无法抵御它。"),
+                new Loc("necrophage_oil")
+                    .English("Necrophages are accustomed to poisonous vapours. Yet even the most rancid ghouls and graveirs cannot withstand the poison wounds inflicted by a blade coated with Necrophage oil.")
+                    .Chinese("亡灵习惯于有毒的蒸汽。然而，即使是最腐臭的食尸鬼和墓穴怪，也无法抵挡涂有死灵油的刀刃所造成的毒伤。"),
+                new Loc("specter_oil")
+                    .English("There is a mysterious boundary between the worlds of the dead and the living, one which is easier to cross for restless specters than for humans. To injure a spectral opponent, first anoint a blade with this oil. Only then will the weapon truly part the curtain dividing the worlds, thereby damaging the specter.")
+                    .Chinese("在亡灵世界和活人世界之间有一个神秘的界限，不安分的幽魂比人类更容易跨越这个界限。要伤害幽魂对手，首先要在刀刃上涂上这种油。只有这样，武器才能真正割开分隔两个世界的帷幕，从而伤害幽魂。"),
+                new Loc("insectoid_oil")
+                    .English("This blade grease increases damage dealt to arachnids and creatures similar to insects in their physiology. It is the most effective oil against monsters of this type. Witchers also use Insectoid oil to rid their fortresses of bugs and parasites.")
+                    .Chinese("这种剑油能增加对蛛形纲动物和生理结构与昆虫相似的生物造成的伤害。这是对付这类怪物最有效的油。猎魔人还使用这种油清除城堡中的虫子和寄生虫。"),
+                new Loc("hybrid_oil")
+                    .English("Hybrids combine the capabilities, the strengths, and the weaknesses of different creatures, so they should never be taken lightly. However, this oil is very effective against monsters of this type.")
+                    .Chinese("混种兽结合了不同生物的能力、长处和弱点，因此绝不能掉以轻心。不过，这种剑油对混种兽非常有效。"),
+                new Loc("ogroid_oil")
+                    .English("Trolls are giant, eat or ate human flesh. This oil is very effective against trolls.")
+                    .Chinese("巨魔是巨人，吃人肉。这种油对巨魔非常有效。")
+            )
+            .Save();
     }
 
     private void AddWeaponOilDamageMechanism()
@@ -339,14 +303,13 @@ pushloc.v local._oil_damage")
             .InsertBelow("else if (argument0 == \"Weapon_Oil\")\n        _colorTag = \"~dg~\";")
             .Save();
 
-        Msl.InjectTableLogDamagesLocalization(
-            new LocalizationLogText(
-                id: "Weapon_Oil",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "weapon oil"},
-                    {ModLanguage.Chinese, "点剑油"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_log")
+            .MatchFrom("damages_end;")
+            .InsertAbove(
+                new Loc("Weapon_Oil")
+                 .English("weapon oil")
+                 .Chinese("点剑油")
             )
-        );
+            .Save();
     }
 }

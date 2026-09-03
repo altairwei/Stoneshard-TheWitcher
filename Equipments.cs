@@ -29,18 +29,17 @@ public partial class TheWitcher : Mod
             DEF: 24
         );
 
-        Msl.InjectTableWeaponTextsLocalization(
-            new LocalizationWeaponText(
-                id: "Ursine Armor",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Ursine Armor"},
-                    {ModLanguage.Chinese, "熊派盔甲"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "WIP"},
-                    {ModLanguage.Chinese, "WIP"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_equipment")
+            .MatchFrom("weapon_name_end;")
+            .InsertAbove(
+                new Loc("Ursine Armor")
+                .English("Ursine Armor").Chinese("熊派盔甲")
             )
-        );
+            .MatchFrom("weapon_desc_end;")
+            .InsertAbove(
+                new Loc("Ursine Armor")
+                .English("WIP").Chinese("WIP")
+            )
+            .Save();
     }
 }

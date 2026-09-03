@@ -174,34 +174,38 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        TableUtils.InjectTableItemStats(
-            id: "witcher_medallion_wolf",
-            Price: 200,
-            EffPrice: 45,
-            Cat: TableUtils.ItemStatsCategory.treasure,
-            Material: TableUtils.ItemStatsMaterial.silver,
-            Weight: TableUtils.ItemStatsWeight.Light,
-            tags: TableUtils.ItemStatsTags.special
-        );
-
-        Msl.InjectTableItemsLocalization(
-            new LocalizationItem(
-                id: "witcher_medallion_wolf",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Wolf School Medallion"},
-                    {ModLanguage.Chinese, "狼学派徽章"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, " +
-                        "it vibrates and yanks sharply on its chain. You can also ~lg~use~/~ the medallion actively to perform a scan."},
-                    {ModLanguage.Chinese, "每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。也可主动~lg~使用~/~徽章进行侦测。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "The Witcher’s medallion is a silver amulet, crafted in different shapes to represent the various witcher schools. "},
-                    {ModLanguage.Chinese, "猎魔人徽章是一种银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。"}
-                }
+        TableUtils.StatsTable("gml_GlobalScript_table_items_stats")
+            .Append(new Row()
+                .Set("id", "witcher_medallion_wolf")
+                .Set("Price", "200")
+                .Set("EffPrice", "45")
+                .Set("Cat", "treasure")
+                .Set("Material", "silver")
+                .Set("Weight", "Light")
+                .Set("tags", "special")
             )
-        );
+            .Save();
+
+        TableUtils.LocalizationTable("gml_GlobalScript_table_items")
+            .MatchFrom("consum_name_end;")
+            .InsertAbove(
+                new Loc("witcher_medallion_wolf")
+                .English("Wolf School Medallion").Chinese("狼学派徽章")
+            )
+            .MatchFrom("consum_mid_end;")
+            .InsertAbove(
+                new Loc("witcher_medallion_wolf")
+                .English("Every ~lg~12~/~ turns, the medallion scans within a range ~lg~5~/~ times the wielder’s sight. If enemies are present, " +
+                    "it vibrates and yanks sharply on its chain. You can also ~lg~use~/~ the medallion actively to perform a scan.")
+                .Chinese("每~lg~60~/~回合，徽章会在~lg~3~/~倍视野范围内做侦测，当敌人存在时就会震动并且猛拉挂着它的链子。也可主动~lg~使用~/~徽章进行侦测。")
+            )
+            .MatchFrom("consum_desc_end;")
+            .InsertAbove(
+                new Loc("witcher_medallion_wolf")
+                .English("The Witcher’s medallion is a silver amulet, crafted in different shapes to represent the various witcher schools. ")
+                .Chinese("猎魔人徽章是一种银制的护符，做成不同的形状来代表猎魔人们所属的不同学派。")
+            )
+            .Save();
     }
 
     private void AddAncientTrollGland()
@@ -285,34 +289,38 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        TableUtils.InjectTableItemStats(
-            id: "ancient_troll_gland",
-            Price: 600,
-            EffPrice: 600,
-            tier: TableUtils.ItemStatsTier.Tier4,
-            Cat: TableUtils.ItemStatsCategory.ingredient,
-            Material: TableUtils.ItemStatsMaterial.organic,
-            Weight: TableUtils.ItemStatsWeight.Light,
-            tags: TableUtils.ItemStatsTags.alchemy
-        );
+        TableUtils.StatsTable("gml_GlobalScript_table_items_stats")
+             .Append(row => {
+                 row["id"] = "ancient_troll_gland";
+                 row["Price"] = "600";
+                 row["EffPrice"] = "600";
+                 row["tier"] = "4";
+                 row["Cat"] = "ingredient";
+                 row["Material"] = "organic";
+                 row["Weight"] = "Light";
+                 row["tags"] = "alchemy";
+             })
+             .Save();
 
-        Msl.InjectTableItemsLocalization(
-            new LocalizationItem(
-                id: "ancient_troll_gland",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Ancient Troll Gland"},
-                    {ModLanguage.Chinese, "古代巨魔腺体"}
-                },
-                effect: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Can be used to craft ~lg~advanced witcher mutagen potions~/~."},
-                    {ModLanguage.Chinese, "可用于制作猎魔人~lg~进阶突变药剂~/~。"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "The essence of an ancient troll’s vitality, regarded in Idarran as the finest ingredient for crafting advanced witcher mutagens."},
-                    {ModLanguage.Chinese, "古代巨魔生命力的精华，被艾达兰视为制作猎魔人进阶突变药剂的最佳候选。"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_items")
+            .MatchFrom("consum_name_end;")
+            .InsertAbove(
+                new Loc("ancient_troll_gland")
+                .English("Ancient Troll Gland").Chinese("古代巨魔腺体")
             )
-        );
+            .MatchFrom("consum_mid_end;")
+            .InsertAbove(
+                new Loc("ancient_troll_gland")
+                .English("Can be used to craft ~lg~advanced witcher mutagen potions~/~.")
+                .Chinese("可用于制作猎魔人~lg~进阶突变药剂~/~。")
+            )
+            .MatchFrom("consum_desc_end;")
+            .InsertAbove(
+                new Loc("ancient_troll_gland")
+                .English("The essence of an ancient troll’s vitality, regarded in Idarran as the finest ingredient for crafting advanced witcher mutagens.")
+                .Chinese("古代巨魔生命力的精华，被艾达兰视为制作猎魔人进阶突变药剂的最佳候选。")
+            )
+            .Save();
 
         Msl.LoadGML("gml_Object_o_ancientTroll_Create_0")
             .MatchFrom("ds_list_add(loot_list_add")
@@ -327,46 +335,44 @@ public partial class TheWitcher : Mod
 
     private void AddGeraltStealSword()
     {
-        TableUtils.InjectTableWeapons(
-            name: "Geralt Steel Sword",
-            Tier: TableUtils.WeaponsTier.Tier2,
-            id: "witchersword01",
-            Slot: TableUtils.WeaponsSlot.twohandedsword,
-            rarity: TableUtils.WeaponsRarity.Unique,
-            Mat: TableUtils.WeaponsMaterial.metal,
-            tags: TableUtils.WeaponsTags.specialexc,
-            Price: 150,
-            Markup: 1,
-            MaxDuration: 95,
-            Rng: 1,
-
-            Slashing_Damage: 20,
-            Armor_Piercing: 10,
-            Block_Power: 6,
-            PRR: 4,
-            CTA: 2,
-            Skills_Energy_Cost: 10
-        );
-
-        Msl.InjectTableWeaponTextsLocalization(
-            new LocalizationWeaponText(
-                id: "Geralt Steel Sword",
-                name: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Geralt's Steel Sword"},
-                    {ModLanguage.Chinese, "杰洛特的钢剑"}
-                },
-                description: new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English,
-                        "Geralt was once known for carrying two blades—steel for men, silver for monsters. " +
-                        "But after being stranded in Aldor, he only had time to commission a well-balanced steel sword from a local blacksmith."
-                    },
-                    {ModLanguage.Chinese,
-                        "杰洛特过去总是佩带双剑——钢剑对付人类，银剑斩杀怪物。 " +
-                        "然而刚流落奥尔多时，他仅来得及请当地铁匠为自己打造一柄趁手的钢剑。"
-                    }
-                }
+        TableUtils.StatsTable("gml_GlobalScript_table_weapons")
+            .Append(new Row()
+                .Set("name", "Geralt Steel Sword")
+                .Set("Tier", "2")
+                .Set("id", "witchersword01")
+                .Set("Slot", "twohandedsword")
+                .Set("rarity", "Unique")
+                .Set("Mat", "metal")
+                .Set("tags", "specialexc")
+                .Set("Price", "150")
+                .Set("Markup", "1")
+                .Set("MaxDuration", "95")
+                .Set("Rng", "1")
+                .Set("Slashing_Damage", "20")
+                .Set("Armor_Piercing", "10")
+                .Set("Block_Power", "6")
+                .Set("PRR", "4")
+                .Set("CTA", "2")
+                .Set("Skills_Energy_Cost", "10")
             )
-        );
+            .Save();
+
+        TableUtils.LocalizationTable("gml_GlobalScript_table_equipment")
+            .MatchFrom("weapon_name_end;")
+            .InsertAbove(
+                new Loc("Geralt Steel Sword")
+                .English("Geralt's Steel Sword").Chinese("杰洛特的钢剑")
+            )
+            .MatchFrom("weapon_desc_end;")
+            .InsertAbove(
+                new Loc("Geralt Steel Sword")
+                .English("Geralt was once known for carrying two blades—steel for men, silver for monsters. " +
+                    "But after being stranded in Aldor, he only had time to commission a well-balanced steel sword from a local blacksmith.")
+                .Chinese("杰洛特过去总是佩带双剑——钢剑对付人类，银剑斩杀怪物。 " +
+                    "然而刚流落奥尔多时，他仅来得及请当地铁匠为自己打造一柄趁手的钢剑。")
+            )
+            .Save();
+
         // sprite中心点设置
         UndertaleSprite swordSprite = Msl.GetSprite("s_loot_geraltsteelsword");
         swordSprite.OriginX = 17;

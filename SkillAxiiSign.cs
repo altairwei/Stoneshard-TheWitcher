@@ -11,61 +11,65 @@ public partial class TheWitcher : Mod
         AdjustSkillIcon("s_skills_axii_sign");
         AdjustSpellCastSprites("s_axiisign_cast_", 16, 62);
 
-        Msl.InjectTableSkillsLocalization(
-            new LocalizationSkill(
-                id: "Axii_Sign",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Axii Sign"},
-                    {ModLanguage.Chinese, "亚克西法印"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, @"No translation"},
-                    {ModLanguage.Chinese, string.Join("##",
-                        "有~lg~/*Charm_Chance*/%~/~的概率~lg~催眠~/~敌人~w~/*Charm_Time*/~/~回合（受~r~灵能抗性~/~影响），被催眠的敌人会优先攻击其他敌对单位。",
-                        "如果目标~lg~没有察觉~/~或处于~r~眩晕~/~状态，那么必然催眠成功。如果目标处于~r~慌乱~/~状态，催眠成功率~lg~+20%~/~。",
-                        "催眠失败或者敌人从催眠中醒来后会陷入~w~12~/~回合的~r~“慌乱”~/~。若催眠失败，则令该技能冷却时间~lg~减半~/~，同时令敌人所有技能的冷却时间~lg~+3~/~。",
-                        "在与某些居民对话时，可以~lg~催眠~/~对方以获得便利，而代价是阵营~r~声望下降~/~。"
-                    )}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_skills")
+            .MatchFrom("skill_name_end;")
+            .InsertAbove(
+                new Loc("Axii_Sign")
+                .English("Axii Sign")
+                .Chinese("亚克西法印")
             )
-        );
-
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "Axii_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "AXII!"},
-                    {ModLanguage.Chinese, "亚克西！"}
-                }
+            .MatchFrom("skill_desc_end;")
+            .InsertAbove(
+                new Loc("Axii_Sign")
+                .English(@"No translation")
+                .Chinese(string.Join("##",
+                    "有~lg~/*Charm_Chance*/%~/~的概率~lg~催眠~/~敌人~w~/*Charm_Time*/~/~回合（受~r~灵能抗性~/~影响），被催眠的敌人会优先攻击其他敌对单位。",
+                    "如果目标~lg~没有察觉~/~或处于~r~眩晕~/~状态，那么必然催眠成功。如果目标处于~r~慌乱~/~状态，催眠成功率~lg~+20%~/~。",
+                    "催眠失败或者敌人从催眠中醒来后会陷入~w~12~/~回合的~r~“慌乱”~/~。若催眠失败，则令该技能冷却时间~lg~减半~/~，同时令敌人所有技能的冷却时间~lg~+3~/~。",
+                    "在与某些居民对话时，可以~lg~催眠~/~对方以获得便利，而代价是阵营~r~声望下降~/~。"
+                ))
             )
-        );
+            .Save();
 
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "MC_Axii_Sign",
-                new Dictionary<ModLanguage, string> {
-                    {ModLanguage.English, "A...KI..."},
-                    {ModLanguage.Chinese, "雅克...西..."}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("Axii_Sign"),
+                new Loc("").English("AXII!").Chinese("亚克西！"),
+                new Loc("Axii_Sign_end")
             )
-        );
+            .Save();
 
-        Msl.InjectTableSkillsStats(
-            id: "Axii_Sign",
-            Object: "o_axii_charm_birth",
-            hook: Msl.SkillsStatsHook.MAGICMASTERY,
-            Target: Msl.SkillsStatsTarget.TargetObject,
-            Range: "5",
-            KD: 26,
-            MP: 48,
-            Duration: 12,
-            Class: Msl.SkillsStatsClass.spell,
-            Branch: "magic_mastery",
-            Spell: true,
-            AP: "x",
-            Bonus_Range: true,
-            Crime: true
-        );
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("MC_Axii_Sign"),
+                new Loc("").English("A...KI...").Chinese("雅克...西..."),
+                new Loc("MC_Axii_Sign_end")
+            )
+            .Save();
+
+        TableUtils.StatsTable("gml_GlobalScript_table_skills_stats")
+            .MatchFrom("Seal_of_Finesse;o_b_seal_finesse;No Target")
+            .CloneAbove(
+                new Row()
+                .Set("id", "Axii_Sign")
+                .Set("Object", "o_axii_charm_birth")
+                .Set("Target", "Target Object")
+                .Set("is_moving_zone", "0")
+                .Set("Range", "5")
+                .Set("KD", "26")
+                .Set("MP", "48")
+                .Set("FMB", "5")
+                .Set("Duration", "12")
+                .Set("Class", "spell")
+                .Set("Branch", "magic_mastery")
+                .Set("Spell", "1")
+                .Set("AP", "x")
+                .Set("Bonus_Range", "1")
+                .Set("Crime", "1")
+            )
+            .Save();
 
         UndertaleGameObject o_skill_axii_sign = Msl.AddObject(
             name: "o_skill_axii_sign",
@@ -125,19 +129,20 @@ public partial class TheWitcher : Mod
             ")
         );
 
-        Msl.InjectTableModifiersLocalization(
-            new LocalizationModifier(
-                id: "o_db_axii_charm",
-                name: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Charm"},
-                    {ModLanguage.Chinese, "魅惑"}
-                },
-                description: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "charmed by Axii Sign."},
-                    {ModLanguage.Chinese, "被亚克西法印所魅惑。"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_effects")
+            .MatchFrom("buff_name_end;")
+            .InsertAbove(
+                new Loc("o_db_axii_charm")
+                .English("Charm")
+                .Chinese("魅惑")
             )
-        );
+            .MatchFrom("buff_desc_end;")
+            .InsertAbove(
+                new Loc("o_db_axii_charm")
+                .English("charmed by Axii Sign.")
+                .Chinese("被亚克西法印所魅惑。")
+            )
+            .Save();
 
         UndertaleGameObject o_axii_charm_birth = Msl.AddObject(
             name: "o_axii_charm_birth",
@@ -362,64 +367,36 @@ public partial class TheWitcher : Mod
             .InsertBelow("with (o_axii_dialog_initializer) { event_user(0) }")
             .Save();
 
-        Msl.InjectTableDialogLocalization(
-            new LocalizationSentence(
-                id: "npc_bandit_fence_axii_charm",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "You don’t recognize me? It’s Ander! I even bought you a drink just before the shift started! ~r~[Hypnotize]~/~"},
-                    {ModLanguage.Chinese, "你认不出我了？我是安德尔啊！刚刚上工前还请了你杯酒呢！~r~[催眠]~/~"}
-                }
-            ),
-            new LocalizationSentence(
-                id: "npc_bandit_fence_axii_was_charmed",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Oh… sorry, must’ve been seeing things. Skinflint Homs still waiting on you to finish the inventory..."},
-                    {ModLanguage.Chinese, "哦... 抱歉刚眼看花了，铁公鸡还找你清点货物呢..."}
-                }
-            ),
-            new LocalizationSentence(
-                id: "npc_bandit_fence_axii_charm_inspection",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
-                    {ModLanguage.Chinese, "斯... 你小子面生啊，我放你进去过了？"}
-                }
-            ),
-
-            new LocalizationSentence(
-                id: "skinflint_homs_dont_know_player",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
-                    {ModLanguage.Chinese, "*戒备*谁放你进来的？报上名来。"}
-                }
-            ),
-            new LocalizationSentence(
-                id: "skinflint_homs_charm_pc",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
-                    {ModLanguage.Chinese, "我有个主意，你看我这有袋金币，我把它给你，你卖我商品，很合理吧？你赚钱不吃亏，别问我是谁，如何？~r~[催眠]~/~"}
-                }
-            ),
-            new LocalizationSentence(
-                id: "skinflint_homs_was_charmed",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
-                    {ModLanguage.Chinese, "*有节奏的*你给钱...我给货...我们都是好朋友..."}
-                }
-            ),
-            new LocalizationSentence(
-                id: "player_thieveryReaction_axii_charm_pc",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
-                    {ModLanguage.Chinese, "你什么都没看见。~r~[催眠]~/~"}
-                }
-            ),
-            new LocalizationSentence(
-                id: "player_thieveryReaction_axii_charm",
-                sentence: new Dictionary<ModLanguage, string>{
-                    {ModLanguage.English, "Hmph… you’ve got a strange face, kid. Did I already let you in?"},
-                    {ModLanguage.Chinese, "唉？我刚刚在干嘛来着..."}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_lines")
+            .PrefixDefault("any")
+            .MatchFrom("[NPC] GREETINGS;")
+            .InsertBelow(
+                new Loc("npc_bandit_fence_axii_charm")
+                    .English("You don’t recognize me? It’s Ander! I even bought you a drink just before the shift started! ~r~[Hypnotize]~/~")
+                    .Chinese("你认不出我了？我是安德尔啊！刚刚上工前还请了你杯酒呢！~r~[催眠]~/~"),
+                new Loc("npc_bandit_fence_axii_was_charmed")
+                    .English("Oh… sorry, must’ve been seeing things. Skinflint Homs still waiting on you to finish the inventory...")
+                    .Chinese("哦... 抱歉刚眼看花了，铁公鸡还找你清点货物呢..."),
+                new Loc("npc_bandit_fence_axii_charm_inspection")
+                    .English("Hmph… you’ve got a strange face, kid. Did I already let you in?")
+                    .Chinese("斯... 你小子面生啊，我放你进去过了？"),
+                
+                new Loc("skinflint_homs_dont_know_player")
+                    .English("Who are you? How did you get in here? State your business.")
+                    .Chinese("*戒备*谁放你进来的？报上名来。"),
+                new Loc("skinflint_homs_charm_pc")
+                    .English("I have an idea. I’ve got this bag of coins, and I give it to you, you sell me stuff, sounds reasonable? You make money and don’t lose out, don’t ask who I am, how about that? ~r~[Hypnotize]~/~")
+                    .Chinese("我有个主意，你看我这有袋金币，我把它给你，你卖我商品，很合理吧？你赚钱不吃亏，别问我是谁，如何？~r~[催眠]~/~"),
+                new Loc("skinflint_homs_was_charmed")
+                    .Chinese("*有节奏的*你给钱...我给货...我们都是好朋友...")
+                    .English("...*rhythmically* You give money... I give goods... we’re all good friends..."),
+                new Loc("player_thieveryReaction_axii_charm_pc")
+                    .Chinese("你什么都没看见。~r~[催眠]~/~")
+                    .English("You didn’t see anything. ~r~[Hypnotize]~/~"),
+                new Loc("player_thieveryReaction_axii_charm")
+                    .Chinese("唉？我刚刚在干嘛来着...")
+                    .English("Huh? What was I doing just now...")
             )
-        );
+            .Save();
     }
 }

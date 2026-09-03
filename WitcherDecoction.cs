@@ -769,28 +769,16 @@ popz.v")
 
         AddHooksForDecoctionBuff();
 
-        Msl.InjectTableItemsLocalization(decoction_texts.ToArray());
-        Msl.InjectTableModifiersLocalization(decoction_buff_texts.ToArray());
-
-        Msl.InjectTableSpeechesLocalization(
-            new LocalizationSpeech(
-                id: "useDecoctionLimit",
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "No... not another one. My blood’s already a cauldron."},
-                    {ModLanguage.Chinese, "不……不能再喝了。我的血已经在沸腾了。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "Another drop and I’ll start glowing in the dark."},
-                    {ModLanguage.Chinese, "再喝一滴，我可能会在黑夜里发光。"}
-                },
-
-                new Dictionary<ModLanguage, string>() {
-                    {ModLanguage.English, "That’s it. One more dose and I’ll end up studying myself in a jar."},
-                    {ModLanguage.Chinese, "够了。再来一瓶，我就该被装进罐子里研究了。"}
-                }
+        TableUtils.LocalizationTable("gml_GlobalScript_table_speech")
+            .MatchFrom("FORBIDDEN MAGIC;")
+            .InsertAbove(
+                new Loc("useDecoctionLimit"),
+                new Loc("").English("No... not another one. My blood’s already a cauldron.").Chinese("不……不能再喝了。我的血已经在沸腾了。"),
+                new Loc("").English("Another drop and I’ll start glowing in the dark.").Chinese("再喝一滴，我可能会在黑夜里发光。"),
+                new Loc("").English("That’s it. One more dose and I’ll end up studying myself in a jar.").Chinese("够了。再来一瓶，我就该被装进罐子里研究了。"),
+                new Loc("useDecoctionLimit_end")
             )
-        );
+            .Save();
     }
 
     private void AddHooksForDecoctionBuff()
@@ -934,8 +922,7 @@ popz.v
     }
 
     private int decoction_idx = 0;
-    private List<LocalizationItem> decoction_texts = new List<LocalizationItem>();
-    private List<LocalizationModifier> decoction_buff_texts = new List<LocalizationModifier>();
+
     private void AddWitcherDecoctionObject(
         string id, Dictionary<ModLanguage, string> name,
         Dictionary<ModLanguage, string> midtext, Dictionary<ModLanguage, string> description,
@@ -959,17 +946,20 @@ popz.v
             isAwake: true
         );
 
-        TableUtils.InjectTableItemStats(
-            id: id,
-            Price: 500,
-            Cat: TableUtils.ItemStatsCategory.beverage,
-            Subcat: TableUtils.ItemStatsSubcategory.potion,
-            Material: TableUtils.ItemStatsMaterial.glass,
-            Weight: TableUtils.ItemStatsWeight.Light,
-            Duration: 120,
-            tags: TableUtils.ItemStatsTags.special,
-            bottle: true
-        );
+        TableUtils.StatsTable("gml_GlobalScript_table_items_stats")
+            .Append(
+                new Row()
+                .Set("id", id)
+                .Set("Price", "500")
+                .Set("Cat", "beverage")
+                .Set("Subcat", "potion")
+                .Set("Material", "glass")
+                .Set("Weight", "Light")
+                .Set("Duration", "120")
+                .Set("tags", "special")
+                .Set("bottle", "1")
+            )
+            .Save();
 
         AdjustBuffIcon($"s_b_{id}");
         UndertaleGameObject buff = Msl.AddObject(
@@ -1002,25 +992,24 @@ popz.v
 
         buff.ApplyEvent(buffEvents);
 
-        decoction_buff_texts.Add(
-            new LocalizationModifier(
-                id: $"o_b_{id}",
-                name: name,
-                description: midtext
-            )
-        );
+        TableUtils.LocalizationTable("gml_GlobalScript_table_effects")
+            .MatchFrom("buff_name_end;")
+            .InsertAbove(new Loc($"o_b_{id}").English(name[ModLanguage.English]).Chinese(name[ModLanguage.Chinese]))
+            .MatchFrom("buff_desc_end;")
+            .InsertAbove(new Loc($"o_b_{id}").English(midtext[ModLanguage.English]).Chinese(midtext[ModLanguage.Chinese]))
+            .Save();
 
         midtext[ModLanguage.English] += "##Without having undergone ~o~The Trial of Grasses~/~, drinking this potion results in instant ~r~Death~/~.";
         midtext[ModLanguage.Chinese] += "##如果没有通过~o~青草试炼~/~，那么喝下此药会立即~r~死亡~/~。";
 
-        decoction_texts.Add(
-            new LocalizationItem(
-                id: id,
-                name: name,
-                effect: midtext,
-                description: description
-            )
-        );
+        TableUtils.LocalizationTable("gml_GlobalScript_table_items")
+            .MatchFrom("consum_name_end;")
+            .InsertAbove(new Loc(id).English(name[ModLanguage.English]).Chinese(name[ModLanguage.Chinese]))
+            .MatchFrom("consum_mid_end;")
+            .InsertAbove(new Loc(id).English(midtext[ModLanguage.English]).Chinese(midtext[ModLanguage.Chinese]))
+            .MatchFrom("consum_desc_end;")
+            .InsertAbove(new Loc(id).English(description[ModLanguage.English]).Chinese(description[ModLanguage.Chinese]))
+            .Save();
 
         decoction_idx++;
     }

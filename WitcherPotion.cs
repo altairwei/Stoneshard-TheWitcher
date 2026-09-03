@@ -334,8 +334,6 @@ public partial class TheWitcher : Mod
             }
         );
 
-        Msl.InjectTableItemsLocalization(potion_texts.ToArray());
-
         // Add attribute data to crafting menu list
         Msl.LoadGML("gml_Object_o_craftingMenuRecipeButton_Other_25")
             .MatchAll()
@@ -349,7 +347,6 @@ switch (idName)
     }
 
     private int potion_idx = 0;
-    private List<LocalizationItem> potion_texts = new List<LocalizationItem>();
     private List<string> attribute_codes = new List<string>();
     private void AddWitcherPotionObject(
         string id, Dictionary<string, int> effects, Dictionary<ModLanguage, string> name,
@@ -374,17 +371,20 @@ switch (idName)
             isAwake: true
         );
 
-        TableUtils.InjectTableItemStats(
-            id: id,
-            Price: 200,
-            Cat: TableUtils.ItemStatsCategory.beverage,
-            Subcat: TableUtils.ItemStatsSubcategory.potion,
-            Material: TableUtils.ItemStatsMaterial.glass,
-            Weight: TableUtils.ItemStatsWeight.Light,
-            Duration: duration,
-            tags: TableUtils.ItemStatsTags.special,
-            bottle: true
-        );
+        TableUtils.StatsTable("gml_GlobalScript_table_items_stats")
+            .Append(
+                new Row()
+                .Set("id", id)
+                .Set("Price", "200")
+                .Set("Cat", "beverage")
+                .Set("Subcat", "potion")
+                .Set("Material", "glass")
+                .Set("Weight", "Light")
+                .Set("Duration", $"{duration}")
+                .Set("tags", "special")
+                .Set("bottle", "1")
+            )
+            .Save();
 
         string effects_string = string.Join(
             "\n", effects.Select(kv => $"scr_consum_set_attribute(\"{kv.Key}\", {kv.Value})")
@@ -414,14 +414,14 @@ break;
             ")
         );
 
-        potion_texts.Add(
-            new LocalizationItem(
-                id: id,
-                name: name,
-                effect: midtext,
-                description: description
-            )
-        );
+        TableUtils.LocalizationTable("gml_GlobalScript_table_items")
+            .MatchFrom("consum_name_end;")
+            .InsertAbove(new Loc(id).English(name[ModLanguage.English]).Chinese(name[ModLanguage.Chinese]))
+            .MatchFrom("consum_mid_end;")
+            .InsertAbove(new Loc(id).English(midtext[ModLanguage.English]).Chinese(midtext[ModLanguage.Chinese]))
+            .MatchFrom("consum_desc_end;")
+            .InsertAbove(new Loc(id).English(description[ModLanguage.English]).Chinese(description[ModLanguage.Chinese]))
+            .Save();
 
         potion_idx++;
     }
@@ -457,17 +457,20 @@ break;
             isAwake: true
         );
 
-        TableUtils.InjectTableItemStats(
-            id: id,
-            Price: 200,
-            Cat: TableUtils.ItemStatsCategory.beverage,
-            Subcat: TableUtils.ItemStatsSubcategory.potion,
-            Material: TableUtils.ItemStatsMaterial.glass,
-            Weight: TableUtils.ItemStatsWeight.Light,
-            Duration: 20,
-            tags: TableUtils.ItemStatsTags.special,
-            bottle: true
-        );
+        TableUtils.StatsTable("gml_GlobalScript_table_items_stats")
+            .Append(
+                new Row()
+                .Set("id", id)
+                .Set("Price", "200")
+                .Set("Cat", "beverage")
+                .Set("Subcat", "potion")
+                .Set("Material", "glass")
+                .Set("Weight", "Light")
+                .Set("Duration", "20")
+                .Set("tags", "special")
+                .Set("bottle", "1")
+            )
+            .Save();
 
         inv.ApplyEvent(
             new MslEvent(eventType: EventType.Create, subtype: 0, code: @$"

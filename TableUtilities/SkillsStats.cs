@@ -1,4 +1,5 @@
-﻿using ModShardLauncher;
+#nullable enable
+using ModShardLauncher;
 
 
 namespace TheWitcher

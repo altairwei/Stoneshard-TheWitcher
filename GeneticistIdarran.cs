@@ -163,7 +163,7 @@ public partial class TheWitcher : Mod
         );
 
         /*
-        Utils.InjectItemsToTable(
+        TableUtils.InjectItemsToTable(
             table: "gml_GlobalScript_table_mobs_stats",
             anchor: "// NPCS;;;;;;;;;;;;",
             defaultKey: null,
