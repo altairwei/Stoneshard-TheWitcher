@@ -13,3 +13,5 @@ bin
 
 # Visual Studio files and folders
 .vs/
+# offline harness/probe (MSL packer excludes top-level dot dirs)
+.tools/

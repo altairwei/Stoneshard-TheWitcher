@@ -140,7 +140,13 @@ public partial class TheWitcher : Mod
                     global.swords_tier1, global.swords2h_tier1, global.daggers_tier1, global.bows_tier1, global.armor_tier1, global.athletics_tier1, global.combat_tier1,
                     [""Witcher"", o_skill_quen_sign_ico, o_skill_axii_sign_ico, o_skill_yrden_sign_ico, o_skill_aard_sign_ico, o_skill_igni_sign_ico, o_skill_trial_of_grasses]
                 ],
-                [o_perk_professional_witcher], (1 << 0), false)")
+                [o_perk_professional_witcher], (1 << 0), false)
+
+            // 登记存档头像回退表: 卸载 mod 后, save.map 里的 s_Geralt 会被清洗成原版 s_Default。
+            // 其他角色 mod 用同样的追加模式登记自己的 [mod sprite 名, 原版回退名] 即可接入。
+            if (!variable_global_exists(""mod_save_avatars""))
+                global.mod_save_avatars = []
+            array_push(global.mod_save_avatars, [""s_Geralt"", sprite_get_name(s_Default)])")
             .Save();
 
         /*

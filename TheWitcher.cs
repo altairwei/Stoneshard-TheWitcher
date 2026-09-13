@@ -10,9 +10,9 @@ using UndertaleModLib.Models;
 namespace TheWitcher;
 public partial class TheWitcher : Mod
 {
-    public override string Author => "";
+    public override string Author => "Altair";
     public override string Name => "The Witcher";
-    public override string Description => "Coder: Altair, 坦桑尼亚斑马\nDesigner: Altair, 北境的救世主, 蓝火\nArtist: 海兰芝, 北境的救世主, 六月下午的猫";
+    public override string Description => "Coder: Altair, 坦桑尼亚斑马; Designer: Altair, 北境的救世主, 蓝火; Artist: 海兰芝, 北境的救世主, 六月下午的猫";
     public override string Version => "0.4.5";
     public override string TargetVersion => "0.9.3.13";
 
@@ -21,6 +21,8 @@ public partial class TheWitcher : Mod
         Msl.AddFunction(ModFiles.GetCode("scr_apply_coating_oil.gml"), "scr_apply_coating_oil");
         Msl.AddFunction(ModFiles.GetCode("scr_coating_oil_damage_calc.gml"), "scr_coating_oil_damage_calc");
         Msl.AddFunction(ModFiles.GetCode("scr_hoversGetCoatingOilAttributes.gml"), "scr_hoversGetCoatingOilAttributes");
+        Msl.AddFunction(ModFiles.GetCode("scr_mod_avatar_fallback.gml"), "scr_mod_avatar_fallback");
+        Msl.AddFunction(ModFiles.GetCode("scr_mod_save_avatar_purge.gml"), "scr_mod_save_avatar_purge");
 
         AddObjects();
         PatchWeaponCoatingSkill();
@@ -32,6 +34,7 @@ public partial class TheWitcher : Mod
         AddCharacters();
         AddNewNPCs();
         AddEuipments();
+        SaveAvatarCompat();
         Localization.AddLocalizationAll();
     }
 
