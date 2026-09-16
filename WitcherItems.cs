@@ -340,7 +340,7 @@ public partial class TheWitcher : Mod
                 .Set("name", "Geralt Steel Sword")
                 .Set("Tier", "2")
                 .Set("id", "witchersword01")
-                .Set("Slot", "twohandedsword")
+                .Set("Slot", "2hsword")
                 .Set("rarity", "Unique")
                 .Set("Mat", "metal")
                 .Set("tags", "specialexc")
